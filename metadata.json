@@ -1,0 +1,6 @@
+{
+  "name": "Boligscore Eiendomsvurdering",
+  "description": "En applikasjon for å vurdere og score eiendommer basert på ulike kriterier og egendefinerte vektinger. Hjelper med å sammenligne boliger på en systematisk måte.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
