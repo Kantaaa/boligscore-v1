@@ -1,0 +1,37 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Vite cache
+.vite/
+
+# Local env files
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS stuff
+.DS_Store
+
+# System files
+Thumbs.db
+
+# Coverage (if you use testing tools like vitest or jest)
+coverage/
+
+# Local Supabase config (if you're using supabase CLI)
+supabase/.temp/
