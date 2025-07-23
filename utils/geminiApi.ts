@@ -1,14 +1,6 @@
-import { GoogleGenAI } from "@google/genai";
-import { GEMINI_API_KEY } from "../env"; // 👈 import your wrapped env var
+import { GoogleGenAI, Type } from "@google/genai";
 import { Property, AiSuggestion } from "../types";
-
-// As per strict guidelines, the API key is expected to be available in the execution environment.
-// The hosting platform is responsible for providing this variable.
-if (!GEMINI_API_KEY) {
-  console.warn("GEMINI_API_KEY not found. AI features will not work.");
-}
-
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+import { GEMINI_API_KEY } from "../env"; // <-- use this for the key
 
 const buildPrompt = (property: Property): string => {
   return `
@@ -66,11 +58,15 @@ const responseSchema = {
 export const getRenovationSuggestions = async (
   property: Property
 ): Promise<AiSuggestion[]> => {
-  if (!process.env.API_KEY) {
+  if (!GEMINI_API_KEY) {
+    console.warn("GEMINI_API_KEY is not set. AI feature is disabled.");
+    alert("AI feature is not available yet.");
     throw new Error(
-      "Gemini API-nøkkel er ikke konfigurert. AI-funksjoner er utilgjengelige."
+      "AI-funksjonen er deaktivert. API-nøkkel er ikke konfigurert."
     );
   }
+
+  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
   try {
     const response = await ai.models.generateContent({
@@ -99,10 +95,11 @@ export const getRenovationSuggestions = async (
     return result.suggestions;
   } catch (error: any) {
     console.error("Error fetching AI suggestions:", error);
-    // Provide a more user-friendly error message
     if (error.message.includes("API key not valid")) {
-      throw new Error("API-nøkkelen er ugyldig. Sjekk konfigurasjonen.");
+      throw new Error(
+        "API-nøkkelen er ugyldig. Vennligst sjekk konfigurasjonen."
+      );
     }
-    throw new Error("En feil oppstod under henting av AI-forslag.");
+    throw new Error("En uventet feil oppstod under henting av AI-forslag.");
   }
 };
