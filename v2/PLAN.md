@@ -1,22 +1,23 @@
 # Boligscore v2 — Plan
 
-> Status: arbeidsdokument. Alle avgjørelser som er landet er markert ✅. Åpne punkter er markert 🟡.
-> Plasseres i `v2/` i eksisterende repo. v1-koden (`App.tsx`, `components/`, m.fl.) lever videre i rot inntil v2 er klar til å overta.
+> Status: arbeidsdokument. Landete avgjørelser ✅. Åpne punkter 🟡.
+> v1-koden (`App.tsx`, `components/` i rot) lever videre til v2 er klar til cut-over.
 
 ---
 
 ## 1. Mål og ikke-mål
 
 ### Mål
-- Ny, ren versjon av Boligscore bygget for husholdninger (2+ brukere) som sammen vurderer boliger.
-- Uavhengige karakterer per bruker + **felles-karakter** som kan overstyre for totalen.
-- Delt eiendomsliste i husholdningen, men personlig scoring-opplevelse.
-- Moderne stack, god UX på mobil (PWA), enkelt å drifte alene.
+- Ny versjon av Boligscore for husholdninger (2+ brukere) som sammen vurderer boliger.
+- Uavhengige karakterer per bruker + **felles-karakter** som kan overstyre totalen.
+- Delt eiendomsliste, personlig scoring-opplevelse.
+- Moderne stack, god mobil-UX (PWA), enkel å drifte.
+- **Arkitektur som lar oss skalere til andre domener (bil, sofa, …) senere uten å bygge om kjernen.**
 
-### Ikke-mål (v2)
+### Ikke-mål (v2.0)
 - Offline-støtte.
-- Multi-tenant/organisasjoner utover én husholdning per bruker (for nå).
-- Avansert AI-analyse (kan komme som v2.x).
+- Avansert AI-analyse.
+- Andre domener enn bolig — men sømmer er bygget inn.
 - Maks-grense for antall husholdningsmedlemmer.
 
 ---
@@ -25,213 +26,234 @@
 
 | Lag | Valg |
 |-----|------|
-| Frontend | **Next.js 15** (App Router, React Server Components, Server Actions) |
+| Frontend | Next.js 15 (App Router, RSC, Server Actions) |
 | Språk | TypeScript (strict) |
-| Styling | **Tailwind v4** + **shadcn/ui** |
-| DB/Auth | **Supabase** (Postgres + Auth + RLS + Storage) |
-| Hosting | **Vercel** |
-| Keep-alive | **Vercel Cron** pinger Supabase så databasen ikke pauser (free tier) |
-| PWA | `next-pwa` eller tilsvarende, **ingen offline** (kun installerbarhet + ikoner + app-feel) |
-| Design-input | Stitch MCP (ideering + komponentskisser) |
-
-### Hvorfor
-- **Next.js 15 + Server Actions**: færre API-endepunkter, raskere iterasjon, god støtte i shadcn.
-- **Supabase RLS**: sikkerhet følger data, slipper å dobbelt-validere i appen.
-- **Vercel Cron**: gratis og trivielt å sette opp; Supabase free tier pauser etter 7 dager uten trafikk.
+| Styling | Tailwind v4 + shadcn/ui |
+| DB/Auth | Supabase (Postgres + Auth + RLS + Storage) — **ny cloud-instans for v2** |
+| Hosting | Vercel |
+| Keep-alive | Vercel Cron pinger Supabase (free tier pauser uten trafikk) |
+| PWA | `next-pwa` — installerbar, ingen offline-cache av data |
+| Package manager | pnpm |
+| UI-språk | Norsk (bokmål). i18n kan komme senere. |
+| Design-input | Stitch (ekstern) |
 
 ---
 
-## 3. Datamodell ✅
+## 3. Arkitekturvalg (tekniske) ✅
 
-Alle tabeller har `id uuid pk`, `created_at timestamptz`, `updated_at timestamptz` (via trigger) med mindre annet er spesifisert.
+1. **Server Components som default**, Client Components kun ved state/interaksjon (skjemaer, chip-rader, tabs).
+2. **Server Actions** for all mutasjon. Ingen egne REST-endepunkter med mindre nødvendig (Vercel Cron osv.).
+3. **Supabase-klienter**: server (RSC/Actions), server-admin (service role, cron), browser (for realtime senere). Standard `@supabase/ssr`.
+4. **Types**: generert med `supabase gen types typescript` → `lib/supabase/types.ts`. Kjøres som script.
+5. **Skjemaer**: `react-hook-form` + `zod`. Zod-schema delt mellom client og action.
+6. **Scoring-logikken** i `lib/scoring/` som rene TS-funksjoner, ingen DB-avhengighet. Enhetstestbar.
+7. **Env**: `@t3-oss/env-nextjs` for type-sikre env-vars.
+8. **Middleware** for auth-redirects på `/app/**`.
+9. **Testing**: Vitest for `lib/scoring/`, Playwright for 1–2 e2e-flyter i M6.
+10. **Mappestruktur** inne i `v2/web/`:
+    ```
+    app/
+    components/          # shadcn + delte
+    features/            # properties/, scoring/, household/, finn/
+    lib/
+      supabase/
+      scoring/
+      finn/
+      env.ts
+    ```
 
-### 3.1 `households`
+---
+
+## 4. Domene-ekstensibilitet (Option B) ✅
+
+Vi bygger bolig-spesifikt nå, men med rene sømmer slik at bil/sofa/feriested senere er **nye detalj-tabeller + parser + views**, ikke ombygging av kjernen.
+
+### Nøkkelgrep
+- Abstrakt `scoreables`-tabell eier id + domain + husholdning.
+- `properties` refererer `scoreables` 1:1, har bolig-spesifikke felter.
+- Scoring-tabeller (`user_scores`, `agreed_scores`, `weights`) refererer `scoreable_id`, ikke `property_id`.
+- `criteria.domain` lar oss ha ulike kriterie-sett per domene.
+- UI-komponenter er data-agnostiske (ta props, ikke et property-objekt).
+
+---
+
+## 5. Datamodell ✅
+
+Alle tabeller: `id uuid pk`, `created_at timestamptz`, `updated_at timestamptz` (via trigger) der ikke annet er oppgitt.
+
+### 5.1 `households`
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `name` | text |
+| `created_by` | uuid → auth.users |
+
+### 5.2 `household_members`
+Multi-household støttes ✅ — én bruker kan være i flere husholdninger.
+
+| Kolonne | Type |
+|---|---|
+| `household_id` | uuid → households |
+| `user_id` | uuid → auth.users |
+| `role` | text (`owner` \| `member`) |
+| `joined_at` | timestamptz |
+| pk | (household_id, user_id) |
+
+### 5.3 `scoreables`
+Generisk "ting som kan scores". Mellom-abstraksjon.
+
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `household_id` | uuid → households |
+| `domain` | text (`property`, senere: `car`, `sofa`, …) |
+| `added_by` | uuid → auth.users |
+| `status` | text (se §7) |
+
+### 5.4 `properties`
+Domene-detaljer for `domain = 'property'`.
+
 | Kolonne | Type | Notat |
 |---|---|---|
-| `id` | uuid | pk |
-| `name` | text | f.eks. "Ola & Kari" |
-| `created_by` | uuid | fk → auth.users |
-| `auto_criteria_thresholds` | jsonb | husholdnings-innstillinger for auto-kriteriers terskler (se §5.4) |
-
-### 3.2 `household_members`
-| Kolonne | Type | Notat |
-|---|---|---|
-| `household_id` | uuid | fk → households |
-| `user_id` | uuid | fk → auth.users |
-| `role` | text | `owner` \| `member` |
-| `joined_at` | timestamptz | |
-| pk | (household_id, user_id) | |
-
-Ingen maks-grense på medlemmer ✅. En bruker kan være i én husholdning om gangen (v2.0) — evt. flere senere.
-
-### 3.3 `properties`
-Delt på tvers av husholdningen.
-
-| Kolonne | Type | Notat |
-|---|---|---|
-| `id` | uuid | pk |
-| `household_id` | uuid | fk → households |
-| `finn_code` | text | nullable, unik per household hvis satt |
+| `scoreable_id` | uuid pk → scoreables(id) | 1:1 |
+| `finn_code` | text | unik per household hvis satt |
 | `finn_url` | text | |
 | `address` | text | |
 | `postal_code` | text | |
 | `city` | text | |
 | `price_asking` | int | NOK |
-| `common_debt` | int | NOK |
-| `total_price` | int | generert: asking + common_debt |
+| `common_debt` | int | |
+| `total_price` | int | generert |
 | `monthly_cost` | int | |
 | `usable_area_m2` | numeric | |
 | `primary_area_m2` | numeric | |
 | `build_year` | int | |
-| `ownership_type` | text | `eier` \| `andel` \| `aksje` |
-| `property_type` | text | `leilighet` \| `enebolig` \| `rekkehus` \| ... |
+| `ownership_type` | text | eier / andel / aksje |
+| `property_type` | text | leilighet / enebolig / rekkehus / … |
 | `rooms` | int | |
 | `bedrooms` | int | |
 | `floor` | int | |
 | `has_balcony` | bool | |
 | `has_elevator` | bool | |
 | `energy_label` | text | A–G |
-| `raw_finn_payload` | jsonb | full snapshot fra import for debug/reprocessing |
-| `status` | text | se §6 |
-| `added_by` | uuid | fk → auth.users |
+| `raw_finn_payload` | jsonb | debug/reprocessing |
 
-### 3.4 `property_user_scores`
-Uavhengig scoring per bruker.
+### 5.5 `criteria` (seed)
+| Kolonne | Type |
+|---|---|
+| `key` | text pk |
+| `domain` | text (`property`, …) |
+| `label` | text |
+| `type` | text (`subjective` \| `attribute`) |
+| `category` | text (for grupping i UI) |
+| `description` | text |
+| `default_weight` | numeric |
+| `sort_order` | int |
 
-| Kolonne | Type | Notat |
-|---|---|---|
-| `property_id` | uuid | fk |
-| `user_id` | uuid | fk |
-| `criterion_key` | text | ref. kriterium (se §5) |
-| `score` | numeric(3,1) | 1.0–6.0, nullable |
-| `note` | text | valgfri kommentar |
-| pk | (property_id, user_id, criterion_key) | |
+**Auto-kriterietypen er fjernet** ✅. Auto-beregnede fakta (pris/kvm, alder, osv.) vises som read-only info på bolig-siden, ikke som scorede rader.
 
-### 3.5 `property_agreed_scores`
-Felles-karakter. Kan settes for **alle** kriterietyper (auto, attributt, subjektiv) ✅.
+### 5.6 `user_scores`
+| Kolonne | Type |
+|---|---|
+| `scoreable_id` | uuid → scoreables |
+| `user_id` | uuid |
+| `criterion_key` | text → criteria(key) |
+| `score` | numeric(4,1) (0.0–10.0, 0.5-steg) |
+| pk | (scoreable_id, user_id, criterion_key) |
 
-| Kolonne | Type | Notat |
-|---|---|---|
-| `property_id` | uuid | fk |
-| `criterion_key` | text | |
-| `score` | numeric(3,1) | 1.0–6.0 |
-| `note` | text | valgfri |
-| `set_by` | uuid | fk → auth.users |
-| `set_at` | timestamptz | |
-| pk | (property_id, criterion_key) | |
-
-### 3.6 `household_weights`
-Primær vektsett ✅. Brukes som default for alle beregninger.
-
-| Kolonne | Type | Notat |
-|---|---|---|
-| `household_id` | uuid | fk |
-| `criterion_key` | text | |
-| `weight` | numeric | 0–10 e.l., summeres ikke nødvendigvis til 100 |
-| pk | (household_id, criterion_key) | |
-
-### 3.7 `user_weights`
-Valgfri privat overstyring (brukes kun i "min personlige score"-visning, påvirker ikke felles-totalen) ✅.
-
-| Kolonne | Type | Notat |
-|---|---|---|
-| `user_id` | uuid | |
-| `household_id` | uuid | (for å kunne slette ved exit) |
-| `criterion_key` | text | |
-| `weight` | numeric | |
-| pk | (user_id, criterion_key) | |
-
-### 3.8 `criteria` (referansetabell eller seed/enum)
-Starter som **seed-data** i migrasjon, ikke brukerredigerbar i v2.0. Vurderes åpnet senere.
-
-```
-criterion_key, label, type (auto|attribute|subjective), category, default_weight, unit, min, max, config_schema
-```
-
-### 3.9 `household_invites`
-For å invitere partner.
+### 5.7 `agreed_scores`
+Felles-karakter. Gyldig for alle kriterietyper.
 
 | Kolonne | Type |
 |---|---|
-| `id` uuid pk | |
-| `household_id` fk | |
-| `email` text | |
-| `token` text unique | |
-| `expires_at` | |
-| `accepted_at` | |
+| `scoreable_id` | uuid → scoreables |
+| `criterion_key` | text |
+| `score` | numeric(4,1) |
+| `set_by` | uuid |
+| `set_at` | timestamptz |
+| pk | (scoreable_id, criterion_key) |
 
-### 3.10 Views
+### 5.8 `household_weights`
+Primær vekting, delt i husholdningen.
 
-- `v_property_user_totals`: samlet per (property, user) med snitt-score og vektet total.
-- `v_property_shared_totals`: felles-karakter × household_weights.
-- `v_property_disagreements`: kriterier hvor |user_a - user_b| ≥ 3 (terskel ✅).
+| Kolonne | Type |
+|---|---|
+| `household_id` | uuid |
+| `criterion_key` | text |
+| `weight` | numeric (0–10) |
+| pk | (household_id, criterion_key) |
+
+### 5.9 `user_weights`
+Valgfri privat overstyring — brukes kun i personlig score-visning.
+
+| Kolonne | Type |
+|---|---|
+| `user_id` | uuid |
+| `household_id` | uuid |
+| `criterion_key` | text |
+| `weight` | numeric |
+| pk | (user_id, household_id, criterion_key) |
+
+### 5.10 `user_comments`
+Kommentar per bruker, per scoreable. Delte (synlig for alle i husholdningen).
+
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `scoreable_id` | uuid |
+| `user_id` | uuid |
+| `body` | text |
+
+### 5.11 `user_notes`
+**Private** notater per bruker.
+
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `scoreable_id` | uuid |
+| `user_id` | uuid |
+| `body` | text |
+
+### 5.12 `shared_notes`
+**Delte** notater i husholdningen. Kan opprettes når som helst (typisk etter at medlemmer har blitt enige).
+
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `scoreable_id` | uuid |
+| `body` | text |
+| `last_edited_by` | uuid |
+
+### 5.13 `household_invites`
+| Kolonne | Type |
+|---|---|
+| `id` | uuid pk |
+| `household_id` | uuid |
+| `email` | text (nullable — ved "kopier lenke") |
+| `token` | text unique |
+| `expires_at` | timestamptz |
+| `accepted_at` | timestamptz |
+
+### 5.14 Views
+- `v_user_totals` — vektet total per (scoreable, user).
+- `v_shared_totals` — felles-total per scoreable.
+- `v_disagreements` — rader hvor |Δ| over uenighetsterskel.
 
 ---
 
-## 4. Autentisering & RLS
+## 6. Autentisering & RLS ✅
 
 - Supabase Auth (magic link + e-post/passord).
-- **RLS på alle tabeller**. Hovedregel: rad er synlig/skrivbar hvis `auth.uid()` er medlem av `household_id`.
-- `property_user_scores` og `user_weights` har ekstra skrivesjekk: kun egen `user_id`.
-- `property_agreed_scores` kan skrives av alle medlemmer (med `set_by = auth.uid()`). Siste-skriving-vinner, ingen låsing i v2.0.
-- Invitasjoner: tokens validert server-side i en Route Handler / Server Action.
+- RLS på alle tabeller. Hovedregel: rad synlig/skrivbar hvis `auth.uid()` er medlem av `household_id`.
+- `user_scores`, `user_weights`, `user_notes`, `user_comments`: skriv-sjekk krever egen `user_id`.
+- `agreed_scores`, `shared_notes`: skrivbar av alle medlemmer, siste-skriving-vinner i v2.0.
+- Invitasjoner: tokens valideres server-side i Server Action.
 
 ---
 
-## 5. Scoring-modell ✅
+## 7. Statuser ✅
 
-### 5.1 Kriterietyper
-1. **Auto** — score regnes ut av appen fra `properties`-felt + husholdnings-terskler (f.eks. pris-per-kvm, byggeår, energimerke).
-2. **Attributt** — ja/nei eller diskret valg på eiendommen som mappes til en karakter (f.eks. balkong = ja → 5, nei → 2).
-3. **Subjektiv** — brukeren setter karakter 1–6 (beliggenhet, planløsning, nabolag, osv.).
-
-### 5.2 Karakterskala
-- **1.0–6.0**, 0.5-steg. Høyere er bedre.
-- **Manglende score = 0 med advarsel** ✅. Total beregnes fortsatt, men UI markerer at kriteriet er usatt.
-
-### 5.3 Totalberegning
-
-For en bolig P og bruker U i husholdning H:
-
-**Personlig total (U på P):**
-```
-total_user = Σ (score_user[c] × weight[c]) / Σ weight[c]
-```
-hvor `weight[c]` = `user_weights[c]` hvis satt, ellers `household_weights[c]`.
-
-**Felles total (husholdningens total på P):**
-```
-for hvert kriterium c:
-  effective_score[c] = agreed_score[c] hvis satt
-                       ellers snitt(property_user_scores[c] over alle medlemmer)
-total_shared = Σ (effective_score[c] × household_weights[c]) / Σ household_weights[c]
-```
-
-- Felles-override er gyldig for **alle** kriterietyper ✅ (også auto — da overstyrer husholdningen det appen regnet ut).
-- Manglende scorer teller som 0 i sum, men UI viser advarsel på raden.
-
-### 5.4 Auto-kriterie-terskler
-Lagres i `households.auto_criteria_thresholds` (jsonb) ✅. Eksempel:
-
-```json
-{
-  "price_per_sqm": { "excellent": 60000, "good": 80000, "poor": 110000 },
-  "build_year":    { "excellent": 2010, "good": 1990, "poor": 1960 },
-  "monthly_cost":  { "excellent": 4000, "good": 6000, "poor": 9000 }
-}
-```
-
-Mapping fra verdi → karakter skjer deterministisk i en ren TS-funksjon (kan testes).
-
-### 5.5 Uenighetsdeteksjon
-- Terskel: **|score_a − score_b| ≥ 3** på et kriterium markeres som "stor uenighet" ✅.
-- Vises som badge i compare-view og som en liste på property-detaljen ("Dere er uenige om: …").
-
----
-
-## 6. Statuser ✅
-
-Én enum-kolonne `properties.status`:
+Én enum-kolonne `scoreables.status`:
 
 | Key | Label |
 |---|---|
@@ -243,182 +265,221 @@ Mapping fra verdi → karakter skjer deterministisk i en ren TS-funksjon (kan te
 | `kjopt` | Kjøpt |
 | `ikke_aktuell` | Ikke aktuell |
 
-- Status er delt i husholdningen (én status per bolig).
-- Default ved opprettelse: `vurderer`.
-- Historikk: valgfri `property_status_history` tabell (🟡 ikke prioritert i v2.0 — kan legges til).
+Default: `vurderer`. Status er delt i husholdningen.
 
 ---
 
-## 7. Sider & flyter (informasjonsarkitektur)
+## 8. Scoring-modell ✅
 
+### 8.1 Skala
+- **0–10 i 0.5-steg**. Høyere er bedre.
+- Totalscore vises som **vektet snitt på samme skala (0–10)** — ikke /100.
+
+### 8.2 Kriterietyper
+1. **Subjektiv** — bruker setter karakter 0–10 (kjøkken, beliggenhet, …).
+2. **Attributt** — ja/nei eller diskret valg på boligen som mappes til en karakter (balkong=ja → 8, nei → 2).
+
+(Auto er **fjernet** — ingen auto-scorede rader.)
+
+### 8.3 Totalberegning
+
+For en scoreable S og bruker U i husholdning H:
+
+**Personlig total:**
 ```
-/                          Landing / logget-ut
-/login                     Supabase Auth
-/onboarding                Opprett/join husholdning + vekter
-/app                       Dashboard (favoritter + toppkandidater)
-/app/properties            Liste (alle statuser, filter/sort)
-/app/properties/new        Importer (FINN-lenke) eller manuell
-/app/properties/[id]       Detalj: score-innlegging + shared overrides
-/app/compare               Compare-view (Layout A, §8)
-/app/household             Medlemmer, invitasjoner, vekter, auto-terskler
-/app/settings              Profil, varsler, personlige vekter
+weights[c] = user_weights[c] hvis satt, ellers household_weights[c]
+total_user = Σ(score[c] × weights[c]) / Σ(weights[c])   over scorede c
 ```
+
+**Felles total:**
+```
+for hvert kriterium c:
+  effective[c] = agreed[c] hvis satt
+                 ellers snitt(user_scores[c] over alle medlemmer som har scoret)
+total_shared = Σ(effective[c] × household_weights[c]) / Σ(household_weights[c])   over c med verdi
+```
+
+### 8.4 Manglende score 🟡 (foreslått default, bekreft)
+**Ekskluder fra beregningen**: divisoren krymper så totalen reflekterer det som faktisk er scoret. UI viser advarsel ("3 kriterier mangler — regnes ikke med").
+
+(Alternativ: tell manglende som 0 — men på 0–10 er 0 gyldig "verste", så dette er forvirrende.)
+
+### 8.5 Uenighetsterskel 🟡 (foreslått default, bekreft)
+**|Δ| ≥ 5** markeres som "stor uenighet" (tilsvarer ≥3 på gammel 1–6-skala).
+
+Alternativ: ≥4 hvis vi vil være strengere.
+
+### 8.6 Felles-override
+Gyldig for alle kriterier. Inline-redigering i compare-view. Live lagring, siste-skriving-vinner.
 
 ---
 
-## 8. Compare-view — Layout A ✅
+## 9. Kriterier (seed-liste for domain=`property`) 🟡
 
-Tabell med **kriterier som rader**, boliger som kolonner. I tillegg to oppsummeringskolonner pr bolig:
+22 kriterier, forslag. Kan endres.
 
-```
-                Bolig 1              Bolig 2         ...
-                ┌──────────┬───────┐ ┌──────────┬───────┐
-                │ Snitt     │ Felles│ │ Snitt     │ Felles│
-Kriterium A     │ 4.3       │ 5.0   │ │ 3.8       │ —     │
-Kriterium B     │ 5.5       │ —     │ │ 4.0       │ 4.0   │
-...
-Total (vektet)  │ 4.6       │ 4.8   │ │ 3.9       │ 4.0   │
-```
+### Bolig innvendig (8)
+1. Kjøkken
+2. Bad
+3. Planløsning
+4. Lys og luftighet
+5. Oppbevaring
+6. Stue
+7. Balkong/terrasse
+8. Soverom
 
-- **Snitt** = snitt av medlemmenes user-scores.
-- **Felles** = agreed_score hvis satt, ellers "—".
-- Radene kan foldes per kategori.
-- Uenighets-badge på rader hvor terskelen er nådd.
-- Sortering/filter på topp. Mobil: horisontal scroll med sticky kriterium-kolonne.
+### Beliggenhet & område (6)
+9. Områdeinntrykk
+10. Nabolagsfølelse
+11. Offentlig transport
+12. Nærhet til jobb/sentrum
+13. Skoler/barnehager
+14. Grøntområder / tur
 
----
+### Standard & tilstand (4)
+15. Generell standard
+16. Byggeår/alder (opplevd)
+17. Støynivå
+18. Parkering/garasje
 
-## 9. FINN-import 🟡 (førsteforslag)
+### Helhet (4)
+19. Inntrykk på visning
+20. Potensial (oppussing, utvidelse)
+21. Pris vs forventning
+22. Magefølelse
 
-**Antagelser (bekreft/korriger):**
-- Bruker limer inn FINN-lenke eller finnkode.
-- Server Action henter HTML fra finn.no og parser ut felter (ikke offentlig API).
-- Parser kjøres server-side for å unngå CORS og for å skjule logikk.
-- Rå HTML/JSON lagres i `properties.raw_finn_payload` for reprocessing når parseren forbedres.
-- Dupe-detect: hvis `finn_code` allerede finnes i husholdningen → gå til eksisterende.
-
-**Planlagte felter å hente (best effort):**
-- adresse, postnummer, poststed
-- prisantydning, fellesgjeld, totalpris, felleskostnader
-- boligtype, eieform, byggeår
-- primærrom, bruksareal
-- antall rom, soverom, etasje
-- balkong, heis, energimerke
-- bilder (URLs) → valgfri nedlasting til Supabase Storage (v2.1)
-
-**Risiko:** FINN endrer markup. Strategi: parser skrevet defensivt med felt-for-felt try/catch, og `raw_finn_payload` lar oss reparse uten ny henting. Legge på en **schema-versjon** på payloaden.
-
-**Åpne spørsmål:**
-- Skal vi også støtte manuell import fra andre portaler (Hybel, Krogsveen)? Forslag: **nei** i v2.0, kun FINN + manuell.
-- Skal vi hente bilder ved import eller on-demand? Forslag: **on-demand** første gang bolig åpnes, cache i Storage.
-- Hvor mye metadata skal vi forsøke å trekke ut av prospekt-PDF? Forslag: **ingen** i v2.0.
+Alle er `subjective` med mindre annet bestemmes. Noen kan flyttes til `attribute` (balkong, parkering) hvis det gir mer mening.
 
 ---
 
-## 10. PWA
+## 10. Sider & flyter (informasjonsarkitektur) ✅
+
+```
+/                          Landing (logget ut)
+/login, /registrer         Supabase Auth
+/invitasjon/[token]        Godta invitasjon
+/app                       Dashboard (Boliger)
+/app/properties/new        Importer FINN / manuell
+/app/properties/[id]       Detalj (Oversikt / Min vurdering / Sammenligning / Kommentarer / Notater)
+/app/compare               Compare-view (Layout A)
+/app/weights               Vekter (felles + personlige)
+/app/household             Husstand (medlemmer, invitasjoner)
+/app/settings              Meg (profil, tema, …)
+```
+
+- Bunnmeny på mobil: **Boliger / Vekter / Husstand / Meg**.
+- Husholdning-velger øverst (dropdown) fordi multi-household støttes.
+
+---
+
+## 11. Compare-view — Layout A ✅
+
+Tabell: kriterier som rader, boliger som kolonner. Per bolig to kolonner: **Snitt** (av medlemmer) + **Felles** (agreed, editerbar inline).
+
+- Rader gruppert etter kategori (foldbart).
+- Uenighet-badge på rader over terskelen.
+- Sortering/filter på topp.
+- Mobil: horisontal scroll med sticky kriterium-kolonne.
+
+---
+
+## 12. FINN-import 🟡
+
+Antagelser (bekreft):
+- Bruker limer inn FINN-lenke/finn-kode.
+- Server Action henter HTML + parser defensivt. Rå payload lagres i `properties.raw_finn_payload`.
+- Dupe-detect på `finn_code` per household.
+- Bilder: on-demand nedlasting til Supabase Storage (v2.1), URLs bare i starten.
+- Andre portaler: ikke støttet i v2.0.
+- Prospekt-PDF-parsing: ikke støttet i v2.0.
+
+---
+
+## 13. PWA ✅
 
 - Manifest + ikoner (192, 512, maskable).
 - `theme_color`, `background_color` matcher design.
-- Installerbar på iOS/Android.
-- **Ingen service worker cache for dataruter** — vi ønsker ikke å vise stale scoring.
-- SW kan caches statiske assets (neste: `next-pwa` i `runtimeCaching: []` eller tilsvarende minimal konfig).
+- Installerbar iOS/Android.
+- **Ingen SW-cache for data** — vi vil ikke vise stale scoring.
+- SW kan cache statiske assets.
 
 ---
 
-## 11. Tredjepartstjenester og kostnader
+## 14. Milestones 🟡
 
-| Tjeneste | Tier | Notat |
-|---|---|---|
-| Vercel | Hobby (gratis) | Cron gratis (1/dag min). |
-| Supabase | Free | 500MB db, 1GB storage. Pauser uten trafikk → Cron fikser. |
-| Domene | Eksisterende | 🟡 avklares |
-| Sentry | Gratis hobby | Feilsporing. Valgfritt. |
+### M0 — Scaffold ✅ plan klar
+- [ ] Next.js 15 i `v2/web/`
+- [ ] Tailwind v4 + shadcn
+- [ ] `v2/supabase/migrations/` tom
+- [ ] Env-wiring (`@t3-oss/env-nextjs`)
+- [ ] Vercel Cron keep-alive-rute
+- [ ] Deploy til Vercel
 
----
-
-## 12. Milestones 🟡 (førsteforslag)
-
-### M0 — Scaffold (1–2 dager)
-- [ ] Next.js 15-prosjekt i `v2/` (eller egen `apps/web`-mappe hvis vi vil turborepo)
-- [ ] Tailwind v4 + shadcn oppsett
-- [ ] Supabase-prosjekt (dev) + auth + tom migration-struktur
-- [ ] Deploy til Vercel, env wiring
-- [ ] Vercel Cron route som pinger Supabase
-
-### M1 — Auth & husholdning (2–3 dager)
-- [ ] Auth-flows (login, magic link)
-- [ ] Opprett husholdning + invitasjon via e-post/token
+### M1 — Auth & husholdning
+- [ ] Login / registrer
+- [ ] Opprett husholdning + invite via e-post/lenke
 - [ ] Godta invitasjon
-- [ ] RLS-policies på households + household_members + household_invites
+- [ ] Multi-household dropdown + switch
+- [ ] RLS: households, household_members, household_invites
 
-### M2 — Datamodell & seed (2 dager)
-- [ ] Migrasjoner for alle tabeller i §3
-- [ ] Seed `criteria`
-- [ ] RLS på alle resterende tabeller
-- [ ] Views (§3.10)
+### M2 — Datamodell & seed
+- [ ] Migrasjoner for §5
+- [ ] Seed criteria (§9)
+- [ ] RLS resten
+- [ ] Views (§5.14)
+- [ ] Type-generering wired
 
-### M3 — Properties & scoring (3–5 dager)
-- [ ] Manuell property-opprettelse
-- [ ] Personlig scoring-UI (alle kriterietyper)
+### M3 — Properties & scoring
+- [ ] Manuell bolig-opprettelse
+- [ ] Scoring-UI (subjective + attribute)
 - [ ] Felles-override UI
-- [ ] Auto-kriterie-kalkulasjon
 - [ ] Household-vekter + personlige vekter
-- [ ] Auto-terskler-redigering
+- [ ] Kommentarer (delt per bruker), private notater, delt notat
+- [ ] Statuser
 
-### M4 — FINN-import (3–5 dager)
-- [ ] Server Action: hent + parse
-- [ ] Dupe-håndtering
-- [ ] Robust feilhåndtering + raw_payload-lagring
+### M4 — FINN-import
+- [ ] Server Action hent+parse
+- [ ] Dupe-håndtering + feilfallback til manuelt skjema
 - [ ] Test mot 10+ reelle annonser
 
-### M5 — Compare + dashboard (3–4 dager)
+### M5 — Compare + dashboard
 - [ ] Layout A compare-view
 - [ ] Uenighetsdeteksjon + badges
-- [ ] Dashboard med favoritter + top N
+- [ ] Dashboard med favoritter + topp N
 
-### M6 — Polish (2–3 dager)
+### M6 — Polish
 - [ ] PWA + ikoner
 - [ ] Mobil-UX runde
-- [ ] Tom-tilstander og advarsler
-- [ ] Grunnleggende e2e-test (Playwright) på de viktigste flyter
+- [ ] Tom- og feiltilstander
+- [ ] Playwright på kritiske flyter
 
-### M7 — Migrasjon fra v1 (valgfri, ⏳ 1–2 dager)
-- [ ] Eksport fra v1 Supabase
-- [ ] Import-script til v2 schema
-- [ ] v1 satt til read-only
-- [ ] Cut-over
+### M7 — Valgfri: migrering fra v1
+Avklares senere.
 
-**Estimat totalt:** ~3–5 uker deltid.
+**Estimat:** ~3–5 uker deltid.
 
 ---
 
-## 13. Åpne spørsmål (samlet)
+## 15. Åpne spørsmål 🟡
 
-1. **FINN-import**: bekreft antagelsene i §9.
-2. **Milestones**: rekkefølge og omfang ok? Skal noe droppes fra v2.0?
-3. **Multi-household per bruker**: skal vi designe for det fra start selv om vi ikke bruker det? (Litt ekstra arbeid i RLS + join-tabellen, men åpner for framtiden.)
-4. **Status-historikk** (§6): prioritert eller kan vente?
-5. **Domene** + e-postavsender for invitasjoner.
-6. **Migrering fra v1**: skal vi faktisk migrere eksisterende data, eller starte blankt?
-7. **Stitch MCP**: hvilke skjermer skal vi designe først? Forslag: property-detalj (scoring-UI) + compare-view.
+1. **Uenighetsterskel**: ≥5 (foreslått) eller ≥4?
+2. **Manglende score**: ekskluder (foreslått) eller tell som 0?
+3. **Kriterie-listen i §9**: godkjenner vi 22 som de er, eller justerer?
+4. **Domene** + e-postavsender for invitasjoner (trengs først i M1).
+5. **Status-historikk**: prioritert eller ikke?
+6. **Migrering fra v1**: ja eller ren nystart?
+7. **Attributt-kriterier**: hvilke av de 22 bør være `attribute` i stedet for `subjective`? (balkong, parkering kandidater)
 
 ---
 
-## 14. Mappestruktur (foreslått)
+## 16. Mappestruktur (landet) ✅
 
 ```
 boligscore-v1/
 ├── App.tsx ...              # v1, urørt til cut-over
 ├── v2/
-│   ├── PLAN.md              # dette dokumentet
-│   ├── web/                 # Next.js 15-app (opprettes i M0)
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── lib/
-│   │   │   ├── supabase/
-│   │   │   ├── scoring/     # ren TS, testbar
-│   │   │   └── finn/        # parser + types
-│   │   └── ...
+│   ├── PLAN.md
+│   ├── web/                 # Next.js 15 (M0)
 │   └── supabase/
 │       ├── migrations/
 │       └── seed.sql
@@ -426,15 +487,17 @@ boligscore-v1/
 
 ---
 
-## 15. Design (Stitch MCP)
+## 17. Design (Stitch)
 
-Når Stitch MCP er koblet til i klienten, prioriter disse skjermene i rekkefølge:
-1. **Property-detalj** (scoring-UI for alle 3 kriterietyper + felles-override-knapp)
-2. **Compare-view** (Layout A, mobil + desktop)
-3. **Dashboard**
-4. **Husholdnings-innstillinger** (vekter + auto-terskler)
-5. **FINN-import-skjerm** (lim inn lenke → preview → bekreft)
+Prioriterte skjermer:
+1. Property-detalj — scoring-UI
+2. Compare-view (Layout A) — mobil + desktop
+3. Dashboard (Boliger)
+4. Vekter
+5. FINN-import
+
+Stitch MCP er ikke koblet til i min sesjon — brief matet inn manuelt.
 
 ---
 
-_Sist oppdatert i denne sesjonen. Endringer skal inn her før de implementeres._
+_Sist oppdatert: etter landing av 0–10-skala, multi-household, scoreables-abstraksjon, fjerning av auto, notater/kommentarer._
