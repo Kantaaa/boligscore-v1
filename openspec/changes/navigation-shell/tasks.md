@@ -73,6 +73,6 @@
 
 ## 10. Documentation
 
-- [ ] 10.1 `docs/design-tokens.md` — full token table.
-- [ ] 10.2 Update root `README.md`: how to run the app locally (Next.js + Supabase CLI), where Mailpit lives, how to flip themes for testing.
-- [ ] 10.3 `docs/architecture/shell.md` — short explanation of layout structure, route protection, theme handling.
+- [x] 10.1 `docs/design-tokens.md` — full token table. _Placeholder values flagged as such — see task 2._
+- [x] 10.2 Update root `README.md`: how to run the app locally (Next.js + Supabase CLI), where Mailpit lives, how to flip themes for testing.
+- [x] 10.3 `docs/architecture/shell.md` — short explanation of layout structure, route protection, theme handling.
