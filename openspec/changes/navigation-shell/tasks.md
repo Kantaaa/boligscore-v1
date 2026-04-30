@@ -25,11 +25,11 @@
 
 ## 4. App shell layout
 
-- [ ] 4.1 `app/(public)/layout.tsx` — minimal layout for `/`, `/registrer`, `/logg-inn`, `/invitasjon/[token]`. No bottom nav, no household switcher.
-- [ ] 4.2 `app/app/layout.tsx` — protected app shell. Header (with `<HouseholdSwitcher />` slot from `households` capability) + main + bottom nav. Calls Supabase server-side to verify session; redirects to `/logg-inn?next=...` if absent.
-- [ ] 4.3 `<AppShellHeader>` component: app name on the left, household switcher on the right.
-- [ ] 4.4 `<BottomNav>` component: four destinations (`Boliger` → `/app`, `Vekter` → `/app/vekter`, `Husstand` → `/app/husstand`, `Meg` → `/app/meg`). Active state via `usePathname`.
-- [ ] 4.5 `<main>` gets `pb-[var(--bottom-nav-h)]` (bottom-nav height as a CSS variable) so content scrolls past the fixed nav.
+- [x] 4.1 `app/(public)/layout.tsx` — minimal layout for `/`, `/registrer`, `/logg-inn`, `/invitasjon/[token]`. No bottom nav, no household switcher.
+- [x] 4.2 `app/app/layout.tsx` — protected app shell. Header (with `<HouseholdSwitcher />` slot from `households` capability) + main + bottom nav. Calls Supabase server-side to verify session; redirects to `/logg-inn?next=...` if absent.
+- [x] 4.3 `<AppShellHeader>` component: app name on the left, household switcher on the right.
+- [x] 4.4 `<BottomNav>` component: four destinations (`Boliger` → `/app`, `Vekter` → `/app/vekter`, `Husstand` → `/app/husstand`, `Meg` → `/app/meg`). Active state via `usePathname`.
+- [x] 4.5 `<main>` gets `pb-[var(--bottom-nav-h)]` (bottom-nav height as a CSS variable) so content scrolls past the fixed nav.
 
 ## 5. Property detail tabs
 
