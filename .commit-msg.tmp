@@ -1,0 +1,17 @@
+[navigation-shell] 5. Property detail tabs
+
+Add the per-property tab system (design D6 — nested routes per tab).
+
+- New <PropertyTabs> component: underline-style strip, horizontally
+  scrollable on mobile when labels overflow, active state derived from
+  the URL via usePathname. Slugs are part of the public URL contract —
+  renaming requires a migration.
+- New layout at /app/bolig/[id]/layout.tsx renders the tab strip and
+  slots the active tab's page below it.
+- /app/bolig/[id]/page.tsx redirects to ./oversikt by default
+  (spec: "Default redirect to Oversikt").
+- Five tab pages stubbed (oversikt, min-vurdering, sammenligning,
+  kommentarer, notater), each with a TODO referencing the owning
+  capability (properties / scoring / comparison).
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>

@@ -33,10 +33,10 @@
 
 ## 5. Property detail tabs
 
-- [ ] 5.1 `app/app/bolig/[id]/layout.tsx` — renders `<PropertyTabs>` (active tab highlighted) and `{children}` slot.
-- [ ] 5.2 Tab destinations: `oversikt`, `min-vurdering`, `sammenligning`, `kommentarer`, `notater`. Each is a route segment with its own `page.tsx`.
-- [ ] 5.3 `app/app/bolig/[id]/page.tsx` — redirects to `./oversikt`.
-- [ ] 5.4 `<PropertyTabs>` component: underline-style, horizontally scrollable on mobile if it overflows, active tab via `usePathname`. Tab labels in Norwegian.
+- [x] 5.1 `app/app/bolig/[id]/layout.tsx` — renders `<PropertyTabs>` (active tab highlighted) and `{children}` slot.
+- [x] 5.2 Tab destinations: `oversikt`, `min-vurdering`, `sammenligning`, `kommentarer`, `notater`. Each is a route segment with its own `page.tsx`.
+- [x] 5.3 `app/app/bolig/[id]/page.tsx` — redirects to `./oversikt`.
+- [x] 5.4 `<PropertyTabs>` component: underline-style, horizontally scrollable on mobile if it overflows, active tab via `usePathname`. Tab labels in Norwegian.
 
 ## 6. Public routes
 
