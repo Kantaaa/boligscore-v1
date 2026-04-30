@@ -57,6 +57,9 @@ supabase/.temp/
 # Vercel
 .vercel/
 
+# Internal: scratch commit message file used by automated tooling.
+.commit-msg.tmp
+
 # OpenSpec — adapters for tools we don't use (re-runnable via `npx openspec init --tools <name>`)
 .agent/
 .amazonq/
