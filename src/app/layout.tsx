@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { InstallPromptProvider } from "@/components/pwa/InstallPromptProvider";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 import "./globals.css";
@@ -51,7 +52,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className="bg-bg text-fg font-sans antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <InstallPromptProvider>{children}</InstallPromptProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

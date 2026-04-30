@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Boligscore",
+  "short_name": "Boligscore",
+  "description": "Score boliger sammen med husstanden din.",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "nb-NO",
+  "dir": "ltr",
+  "theme_color": "#3a6ea5",
+  "background_color": "#f8f6f1",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

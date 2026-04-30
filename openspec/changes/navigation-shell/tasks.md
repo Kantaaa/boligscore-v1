@@ -47,12 +47,12 @@
 
 ## 7. PWA setup
 
-- [ ] 7.1 Install `@ducanh2912/next-pwa` and configure in `next.config.mjs`.
-- [ ] 7.2 Create `public/manifest.webmanifest` with `name: "Boligscore"`, `short_name: "Boligscore"`, `icons` (192 + 512), `display: standalone`, `start_url: /app`, `theme_color`, `background_color` (matching design tokens).
-- [ ] 7.3 Add `<link rel="manifest" href="/manifest.webmanifest" />` in `app/layout.tsx`.
-- [ ] 7.4 Generate icons (192px, 512px) from the Stitch logo or a placeholder.
-- [ ] 7.5 Capture `beforeinstallprompt` event in a client component, store in a Zustand/Context store, expose via "Installer som app" button on `Meg` page.
-- [ ] 7.6 Offline banner: top banner that appears when `navigator.onLine === false`, copy "Du er offline — endringer lagres ikke."
+- [x] 7.1 Install `@ducanh2912/next-pwa` and configure in `next.config.mjs`.
+- [x] 7.2 Create `public/manifest.webmanifest` with `name: "Boligscore"`, `short_name: "Boligscore"`, `icons` (192 + 512), `display: standalone`, `start_url: /app`, `theme_color`, `background_color` (matching design tokens).
+- [x] 7.3 Add `<link rel="manifest" href="/manifest.webmanifest" />` in `app/layout.tsx`. _Implemented via `metadata.manifest` in the root layout (Next.js renders the link tag)._
+- [~] 7.4 Generate icons (192px, 512px) from the Stitch logo or a placeholder. _Blocked: cannot generate binary PNGs in this loop. `public/icons/README.md` documents how to drop them in._
+- [x] 7.5 Capture `beforeinstallprompt` event in a client component, store in a Zustand/Context store, expose via "Installer som app" button on `Meg` page. _Implemented via `InstallPromptProvider` (React context) mounted in the root layout._
+- [x] 7.6 Offline banner: top banner that appears when `navigator.onLine === false`, copy "Du er offline — endringer lagres ikke."
 
 ## 8. Route protection
 
