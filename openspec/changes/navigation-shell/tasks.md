@@ -56,9 +56,9 @@
 
 ## 8. Route protection
 
-- [ ] 8.1 Middleware (`middleware.ts`) that checks Supabase session for `/app/*` paths and redirects to `/logg-inn?next=<encoded path>` if no session.
-- [ ] 8.2 The middleware must NOT block public routes (`/`, `/registrer`, `/logg-inn`, `/invitasjon/[token]`, `/dev/login`).
-- [ ] 8.3 `next` param validation: only allow same-origin paths (no open-redirect via crafted external URL).
+- [x] 8.1 Middleware (`middleware.ts`) that checks Supabase session for `/app/*` paths and redirects to `/logg-inn?next=<encoded path>` if no session.
+- [x] 8.2 The middleware must NOT block public routes (`/`, `/registrer`, `/logg-inn`, `/invitasjon/[token]`, `/dev/login`).
+- [x] 8.3 `next` param validation: only allow same-origin paths (no open-redirect via crafted external URL). _Implemented in `src/lib/auth/redirects.ts` with unit tests._
 
 ## 9. Tests
 
