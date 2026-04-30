@@ -40,10 +40,10 @@
 
 ## 6. Public routes
 
-- [ ] 6.1 `app/page.tsx` — landing page (delivered by `auth-onboarding`). Just stub for now.
-- [ ] 6.2 `app/registrer/page.tsx`, `app/logg-inn/page.tsx` — stubs (delivered by `auth-onboarding`).
-- [ ] 6.3 `app/invitasjon/[token]/page.tsx` — stub (delivered by `households`).
-- [ ] 6.4 `app/dev/login/page.tsx` — env-gated test bypass (delivered by `auth-onboarding`).
+- [x] 6.1 `app/page.tsx` — landing page (delivered by `auth-onboarding`). Just stub for now. _Stubbed at `(public)/page.tsx`._
+- [x] 6.2 `app/registrer/page.tsx`, `app/logg-inn/page.tsx` — stubs (delivered by `auth-onboarding`).
+- [x] 6.3 `app/invitasjon/[token]/page.tsx` — stub (delivered by `households`).
+- [x] 6.4 `app/dev/login/page.tsx` — env-gated test bypass (delivered by `auth-onboarding`). _Returns 404 in production unless `DEV_LOGIN_FORCE=1`._
 
 ## 7. PWA setup
 
