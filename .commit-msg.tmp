@@ -1,7 +1,0 @@
-[navigation-shell] fixup: remove stray .commit-msg.tmp
-
-The previous commit accidentally included an internal commit-message
-scratch file. Delete it now and add a .gitignore entry so it can never
-recur.
-
-Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
