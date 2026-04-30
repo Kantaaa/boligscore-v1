@@ -2,11 +2,11 @@
 
 ## 1. Next.js migration
 
-- [ ] 1.1 Initialize a fresh Next.js 14+ project with App Router, TypeScript, Tailwind, ESLint in a new branch (`v2-shell`).
-- [ ] 1.2 Move v1 source into `/legacy/` for reference; delete `/legacy/` once v2 is shipped.
-- [ ] 1.3 Add `@supabase/supabase-js` and `@supabase/ssr`. Create `lib/supabase/server.ts` (server components, server actions) and `lib/supabase/client.ts` (client components).
-- [ ] 1.4 Configure absolute imports (`@/*` → `./src/*` or root) in `tsconfig.json`.
-- [ ] 1.5 Set up Vercel project (preview deployments per PR).
+- [x] 1.1 Initialize a fresh Next.js 14+ project with App Router, TypeScript, Tailwind, ESLint in a new branch (`v2-shell`).
+- [x] 1.2 Move v1 source into `/legacy/` for reference; delete `/legacy/` once v2 is shipped.
+- [x] 1.3 Add `@supabase/supabase-js` and `@supabase/ssr`. Create `lib/supabase/server.ts` (server components, server actions) and `lib/supabase/client.ts` (client components).
+- [x] 1.4 Configure absolute imports (`@/*` → `./src/*` or root) in `tsconfig.json`.
+- [~] 1.5 Set up Vercel project (preview deployments per PR). _Blocked: requires user to link the GitHub repo to a Vercel project. `vercel.json` is committed so the link is one click._
 
 ## 2. Design tokens (extracted from Stitch)
 

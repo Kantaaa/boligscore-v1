@@ -4,9 +4,27 @@ node_modules/
 # Build output
 dist/
 build/
+.next/
+out/
 
 # Vite cache
 .vite/
+
+# Next.js / TypeScript
+*.tsbuildinfo
+next-env.d.ts.bak
+
+# PWA service worker artifacts (regenerated on build)
+public/sw.js
+public/sw.js.map
+public/workbox-*.js
+public/workbox-*.js.map
+public/fallback-*.js
+
+# Test artifacts
+test-results/
+playwright-report/
+playwright/.cache/
 
 # Local env files
 .env
@@ -35,6 +53,9 @@ coverage/
 
 # Local Supabase config (if you're using supabase CLI)
 supabase/.temp/
+
+# Vercel
+.vercel/
 
 # OpenSpec — adapters for tools we don't use (re-runnable via `npx openspec init --tools <name>`)
 .agent/
