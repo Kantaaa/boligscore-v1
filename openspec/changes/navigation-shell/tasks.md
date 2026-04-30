@@ -18,10 +18,10 @@
 
 ## 3. Theme provider
 
-- [ ] 3.1 Inline `<head>` script in `app/layout.tsx` that reads `localStorage.theme` and sets `document.documentElement.dataset.theme` synchronously.
-- [ ] 3.2 `<ThemeProvider>` client component exposes `theme`, `setTheme(t)` via React context. Persists to localStorage and (when authenticated) syncs to user profile.
-- [ ] 3.3 Theme toggle component used in `Meg` page.
-- [ ] 3.4 Verify no-FOUC: e2e test asserts the rendered theme matches `localStorage` on the first paint frame.
+- [x] 3.1 Inline `<head>` script in `app/layout.tsx` that reads `localStorage.theme` and sets `document.documentElement.dataset.theme` synchronously.
+- [x] 3.2 `<ThemeProvider>` client component exposes `theme`, `setTheme(t)` via React context. Persists to localStorage and (when authenticated) syncs to user profile. _Profile sync is a TODO handed off to `auth-onboarding`._
+- [x] 3.3 Theme toggle component used in `Meg` page.
+- [x] 3.4 Verify no-FOUC: e2e test asserts the rendered theme matches `localStorage` on the first paint frame. _Implemented under task 9.3._
 
 ## 4. App shell layout
 
