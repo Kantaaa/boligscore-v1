@@ -10,11 +10,11 @@
 
 ## 2. Design tokens (extracted from Stitch)
 
-- [ ] 2.1 Pull each Stitch screen via `mcp__stitch__get_screen` and inspect HTML for color/spacing/type values.
-- [ ] 2.2 Define semantic CSS variables in `app/globals.css` under `:root[data-theme="light"]` and `:root[data-theme="dark"]`. Tokens: `--color-bg`, `--color-surface`, `--color-fg`, `--color-fg-muted`, `--color-primary`, `--color-primary-fg`, `--color-accent`, `--color-border`, status colors (`--color-status-favoritt`, `--color-status-vurderer`, etc.), and a spacing scale.
-- [ ] 2.3 Map Tailwind theme to CSS variables in `tailwind.config.ts`: `colors: { surface: 'var(--color-surface)', fg: 'var(--color-fg)', primary: 'var(--color-primary)', ... }`.
-- [ ] 2.4 Type scale: define heading/body/caption sizes following Stitch screens. Use Tailwind `text-*` overrides or CSS variables.
-- [ ] 2.5 Document the full token table in `docs/design-tokens.md` with values in both themes + the Stitch screen the value was sourced from.
+- [~] 2.1 Pull each Stitch screen via `mcp__stitch__get_screen` and inspect HTML for color/spacing/type values. _Deferred: placeholder tokens used; rerun extraction in a dedicated pass before user testing._
+- [~] 2.2 Define semantic CSS variables in `app/globals.css` under `:root[data-theme="light"]` and `:root[data-theme="dark"]`. Tokens: `--color-bg`, `--color-surface`, `--color-fg`, `--color-fg-muted`, `--color-primary`, `--color-primary-fg`, `--color-accent`, `--color-border`, status colors (`--color-status-favoritt`, `--color-status-vurderer`, etc.), and a spacing scale. _Placeholder values committed (rolig blå primary, varm grå neutrals, pastell status). Pending Stitch refresh._
+- [x] 2.3 Map Tailwind theme to CSS variables in `tailwind.config.ts`: `colors: { surface: 'var(--color-surface)', fg: 'var(--color-fg)', primary: 'var(--color-primary)', ... }`.
+- [~] 2.4 Type scale: define heading/body/caption sizes following Stitch screens. Use Tailwind `text-*` overrides or CSS variables. _Default Tailwind scale in use until Stitch extraction codifies sizes._
+- [~] 2.5 Document the full token table in `docs/design-tokens.md` with values in both themes + the Stitch screen the value was sourced from. _Document committed; "Source" column says "placeholder" until Stitch values land._
 
 ## 3. Theme provider
 
