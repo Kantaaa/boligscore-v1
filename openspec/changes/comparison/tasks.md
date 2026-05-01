@@ -2,21 +2,21 @@
 
 ## 1. Database schema
 
-- [ ] 1.1 Migration: create `property_felles_scores(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, score int NOT NULL CHECK (score BETWEEN 0 AND 10), updated_by uuid NOT NULL REFERENCES auth.users(id), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, criterion_id))`. Index on `property_id`.
-- [ ] 1.2 `households.comparison_disagreement_threshold` already added by `households` capability (per its tasks 2.2). Verify default `3` and CHECK `BETWEEN 1 AND 10`.
+- [x] 1.1 Migration: create `property_felles_scores(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, score int NOT NULL CHECK (score BETWEEN 0 AND 10), updated_by uuid NOT NULL REFERENCES auth.users(id), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, criterion_id))`. Index on `property_id`. (Table created as STUB in `20260501000004_properties_dependent_stubs.sql`; this capability tightens RLS + adds triggers in `20260501000011_comparison.sql`.)
+- [x] 1.2 `households.comparison_disagreement_threshold` already added by `households` capability (per its tasks 2.2). Verify default `3` and CHECK `BETWEEN 1 AND 10`. (Defensive `do$$` block in 0011 asserts the column exists.)
 
 ## 2. RLS policies
 
-- [ ] 2.1 Enable RLS on `property_felles_scores`.
-- [ ] 2.2 SELECT: caller is a member of the property's household (JOIN through `properties`).
-- [ ] 2.3 INSERT/UPDATE/DELETE: `has_household_role(<property's household_id>, ARRAY['owner','member'])` — viewer denied. `updated_by` MUST equal `auth.uid()` (enforced via DEFAULT auth.uid() and trigger that rejects mismatched values).
+- [x] 2.1 Enable RLS on `property_felles_scores`. (Stub already enabled it; 0011 ensures all 4 policies are correctly defined.)
+- [x] 2.2 SELECT: caller is a member of the property's household (JOIN through `properties`).
+- [x] 2.3 INSERT/UPDATE/DELETE: `has_household_role(<property's household_id>, ARRAY['owner','member'])` — viewer denied. `updated_by` MUST equal `auth.uid()` (enforced via DEFAULT auth.uid() in client + WITH CHECK + BEFORE INSERT/UPDATE trigger).
 
 ## 3. SQL math functions
 
-- [ ] 3.1 Function `compute_felles_total(p_property_id uuid)` returns int|null. Numerator: `Σ (felles_score × household_weight)` over criteria with felles set. Denominator: `Σ household_weight` over ALL criteria. Returns `round((num/den) × 10)::int`. Returns NULL if denominator is 0.
-- [ ] 3.2 Function `compute_user_total(p_property_id uuid, p_user_id uuid)` similar but uses `property_scores` × `user_weights`.
-- [ ] 3.3 Function `get_property_comparison(p_property_id uuid, p_viewer_id uuid)` returns a row containing: property fields, threshold, member count, an array of `{criterion_id, section_id, criterion_label, your_score, partner_score, partner_user_id, snitt, felles_score}`, and the three totalscores.
-- [ ] 3.4 Test that the math matches a hand-computed example.
+- [x] 3.1 Function `compute_felles_total(p_property_id uuid)` returns int|null. Numerator: `Σ (felles_score × household_weight)` over criteria with felles set. Denominator: `Σ household_weight` over ALL criteria. Returns `round((num/den) × 10)::int`. Returns NULL if denominator is 0.
+- [x] 3.2 Function `compute_user_total(p_property_id uuid, p_user_id uuid)` similar but uses `property_scores` × `user_weights`.
+- [x] 3.3 Function `get_property_comparison(p_property_id uuid, p_viewer_id uuid)` returns a row containing: property fields, threshold, member count, an array of `{criterion_id, section_id, criterion_label, your_score, partner_score, partner_user_id, snitt, felles_score}`, and the three totalscores.
+- [x] 3.4 Test that the math matches a hand-computed example. (See `src/lib/comparison/math.test.ts`.)
 
 ## 4. Server actions / data layer
 
