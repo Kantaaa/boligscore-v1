@@ -45,9 +45,9 @@
 
 ## 6. Logout action
 
-- [ ] 6.1 `app/app/meg/page.tsx` — placeholder Meg page (will be expanded later) with "Logg ut" button.
-- [ ] 6.2 Server action `signOut()` calls `supabase.auth.signOut()` and redirects to `/`.
-- [ ] 6.3 Verify no logout action appears in the header or bottom nav (audit `<AppShellHeader>` and `<BottomNav>` from `navigation-shell`).
+- [x] 6.1 `app/app/meg/page.tsx` — placeholder Meg page (will be expanded later) with "Logg ut" button. Adds the signed-in email card; theme toggle and install-app button were already wired by `navigation-shell`.
+- [x] 6.2 Server action `signOut()` calls `supabase.auth.signOut()` and redirects to `/`.
+- [x] 6.3 Verify no logout action appears in the header or bottom nav (audit `<AppShellHeader>` and `<BottomNav>` from `navigation-shell`). — Audited; the only sign-out reference is `SignOutButton` rendered by the Meg page.
 
 ## 7. Dev login bypass
 
