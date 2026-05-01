@@ -1,10 +1,77 @@
-// TODO(scoring): full implementation — per-user scoring criteria + counter.
+import { notFound } from "next/navigation";
 
-export default function MinVurderingPage() {
+import { FaktaSection } from "@/components/scoring/FaktaSection";
+import { MinVurderingClient } from "@/components/scoring/MinVurderingClient";
+import type { HouseholdRole } from "@/lib/households/types";
+import { listMyHouseholds } from "@/server/households/listMyHouseholds";
+import {
+  getMyNotes,
+  getMyScores,
+  getPropertyWithScores,
+} from "@/server/scoring";
+import { getCriteria } from "@/server/weights";
+
+/**
+ * Min vurdering tab — server-fetches:
+ *   - the property + counters via `get_property_with_scores`,
+ *   - the 22-criterion catalog (cached lookup) via `getCriteria`,
+ *   - the caller's existing scores + section notes,
+ *   - the caller's role in the property's household (drives readOnly).
+ *
+ * Hands off to `<MinVurderingClient>` for interaction. The Fakta panel
+ * is a server component (read-only) rendered above the client tree.
+ */
+export default async function MinVurderingPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const propertyResult = await getPropertyWithScores(params.id);
+  if (!propertyResult.ok) {
+    notFound();
+  }
+  const property = propertyResult.data;
+
+  const [catalogResult, scoresResult, notesResult, householdsResult] =
+    await Promise.all([
+      getCriteria(),
+      getMyScores(params.id),
+      getMyNotes(params.id),
+      listMyHouseholds(),
+    ]);
+
+  if (!catalogResult.ok) {
+    return (
+      <article className="space-y-2">
+        <p role="alert" className="text-sm text-fg">
+          Kunne ikke laste kriterier — prøv å oppdatere siden.
+        </p>
+      </article>
+    );
+  }
+
+  const memberships = householdsResult.ok ? householdsResult.data : [];
+  const myMembership = memberships.find((m) => m.id === property.household_id);
+  const myRole: HouseholdRole = myMembership?.role ?? "viewer";
+  const readOnly = myRole === "viewer";
+
+  const initialScores = scoresResult.ok ? scoresResult.data : [];
+  const initialNotes = notesResult.ok ? notesResult.data : [];
+
   return (
-    <article className="space-y-2">
-      <h2 className="text-xl font-semibold">Min vurdering</h2>
-      <p className="text-fg-muted">Her vil du score boligen på alle kriterier.</p>
+    <article className="space-y-4">
+      <FaktaSection
+        price={property.price}
+        bra={property.bra}
+        yearBuilt={property.year_built}
+      />
+      <MinVurderingClient
+        property={property}
+        catalog={catalogResult.data}
+        initialScores={initialScores}
+        initialNotes={initialNotes}
+        readOnly={readOnly}
+      />
     </article>
   );
 }
