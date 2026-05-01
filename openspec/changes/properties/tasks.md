@@ -30,14 +30,14 @@
 
 ## 4. Server actions / data layer
 
-- [ ] 4.1 `createProperty(input)` — validates, inserts.
-- [ ] 4.2 `updateProperty(id, patch)` — checks role via RLS.
-- [ ] 4.3 `deleteProperty(id)` — owner/member only, requires confirmation keyword on client.
-- [ ] 4.4 `listProperties({ householdId, sort, filters, search })` — calls the function from 3.1, applies client-friendly filters/search server-side.
-- [ ] 4.5 `getProperty(id)` — single property + joined status.
-- [ ] 4.6 `listStatuses(householdId)` — global + household custom.
-- [ ] 4.7 `createStatus({ householdId, label, color, icon, sort_order })` — household-scoped only.
-- [ ] 4.8 `setPropertyStatus(propertyId, statusId)` — convenience wrapper for the inline status picker.
+- [x] 4.1 `createProperty(input)` — validates, inserts.
+- [x] 4.2 `updateProperty(id, patch)` — checks role via RLS.
+- [x] 4.3 `deleteProperty(id)` — owner/member only, requires confirmation keyword on client.
+- [x] 4.4 `listProperties({ householdId, sort, filters, search })` — calls the function from 3.1, applies client-friendly filters/search server-side.
+- [x] 4.5 `getProperty(id)` — single property + joined status.
+- [x] 4.6 `listStatuses(householdId)` — global + household custom.
+- [x] 4.7 `createStatus({ householdId, label, color, icon, sort_order })` — household-scoped only.
+- [x] 4.8 `setPropertyStatus(propertyId, statusId)` — convenience wrapper for the inline status picker.
 
 ## 5. UI — Ny bolig form (`/app/bolig/ny`)
 
