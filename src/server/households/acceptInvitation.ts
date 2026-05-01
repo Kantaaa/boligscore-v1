@@ -3,15 +3,14 @@
 import { revalidatePath } from "next/cache";
 
 import type { ActionResult, HouseholdRole } from "@/lib/households/types";
-import { err, ok } from "@/lib/households/types";
+import {
+  ALREADY_ACCEPTED_MESSAGE,
+  EXPIRED_MESSAGE,
+  err,
+  ok,
+} from "@/lib/households/types";
 
 import { requireUser } from "./_auth";
-
-export const ALREADY_MEMBER_MESSAGE =
-  "Du er allerede medlem av denne husholdningen";
-export const EXPIRED_MESSAGE = "Denne lenken har utløpt. Be om en ny.";
-export const ALREADY_ACCEPTED_MESSAGE =
-  "Denne invitasjonen er allerede brukt";
 
 /**
  * Accept an invitation atomically.

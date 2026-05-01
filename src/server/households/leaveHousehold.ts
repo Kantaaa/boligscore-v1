@@ -4,13 +4,9 @@ import { revalidatePath } from "next/cache";
 
 import { isSoleOwner } from "@/lib/households/roles";
 import type { ActionResult, HouseholdRole } from "@/lib/households/types";
-import { err, ok } from "@/lib/households/types";
+import { SOLE_OWNER_LEAVE_MESSAGE, err, ok } from "@/lib/households/types";
 
 import { requireUser } from "./_auth";
-
-/** Sole-owner refusal message (Norwegian copy locked in by spec). */
-export const SOLE_OWNER_LEAVE_MESSAGE =
-  "Du må først gjøre noen andre til eier før du kan forlate husholdningen";
 
 /**
  * Self-leave. Blocked when the caller is the only owner — the user

@@ -13,15 +13,20 @@ export { listMyHouseholds } from "./listMyHouseholds";
 export { getHousehold } from "./getHousehold";
 export { setMemberRole } from "./setMemberRole";
 export { removeMember } from "./removeMember";
-export { leaveHousehold, SOLE_OWNER_LEAVE_MESSAGE } from "./leaveHousehold";
+export { leaveHousehold } from "./leaveHousehold";
 export { createInvitation } from "./createInvitation";
 export { getInvitationByToken } from "./getInvitationByToken";
-export {
-  acceptInvitation,
-  ALREADY_ACCEPTED_MESSAGE,
-  ALREADY_MEMBER_MESSAGE,
-  EXPIRED_MESSAGE,
-} from "./acceptInvitation";
+export { acceptInvitation } from "./acceptInvitation";
 export { revokeInvitation } from "./revokeInvitation";
 export { listInvitations } from "./listInvitations";
 export { touchHousehold } from "./touchHousehold";
+
+// Spec-locked message constants — re-export for convenience. The actual
+// values live in @/lib/households/types so client components can import
+// them without a "use server" file boundary issue.
+export {
+  ALREADY_ACCEPTED_MESSAGE,
+  ALREADY_MEMBER_MESSAGE,
+  EXPIRED_MESSAGE,
+  SOLE_OWNER_LEAVE_MESSAGE,
+} from "@/lib/households/types";

@@ -84,3 +84,24 @@ export function ok<T>(data: T): { ok: true; data: T } {
 export function err(error: string): { ok: false; error: string } {
   return { ok: false, error };
 }
+
+// -----------------------------------------------------------------------------
+// User-facing message constants used by both server actions and UI.
+// Kept in this non-"use server" module so they can be `import`ed from
+// client components without tripping the Next.js "use server" rule that
+// only async functions may be exported from server-action files.
+// -----------------------------------------------------------------------------
+
+/** Spec-locked Norwegian message: viewing an invitation already accepted. */
+export const ALREADY_ACCEPTED_MESSAGE = "Denne invitasjonen er allerede brukt";
+
+/** Spec-locked Norwegian message: viewing an invitation past its expiry. */
+export const EXPIRED_MESSAGE = "Denne lenken har utløpt. Be om en ny.";
+
+/** Spec-locked Norwegian message: visiting an invite for an existing membership. */
+export const ALREADY_MEMBER_MESSAGE =
+  "Du er allerede medlem av denne husholdningen";
+
+/** Spec-locked Norwegian message: sole owner attempting to leave. */
+export const SOLE_OWNER_LEAVE_MESSAGE =
+  "Du må først gjøre noen andre til eier før du kan forlate husholdningen";
