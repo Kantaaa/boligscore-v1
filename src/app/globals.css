@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens. Values below are PLACEHOLDERS aligned with the brief
+ * (rolig blå primary, varm grå nøytraler, pastell statusfarger).
+ * They are pending a Stitch-extraction pass — see `docs/design-tokens.md`
+ * and `openspec/changes/navigation-shell/tasks.md` task 2.
+ */
+
+:root {
+  /* Layout primitives — same in both themes. */
+  --bottom-nav-h: 64px;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+:root[data-theme="light"] {
+  /* Surfaces — varm grå (warm grey) neutrals. */
+  --color-bg: #f8f6f1;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fdfcf8;
+  --color-fg: #1c1f1d;
+  --color-fg-muted: #5b605c;
+  --color-border: #e6e2d8;
+
+  /* Brand — rolig blå (calm blue). Decision: blue over green so status-kjopt (green) reads cleanly against it. */
+  --color-primary: #3a6ea5;
+  --color-primary-fg: #ffffff;
+  --color-accent: #c8a96a;
+
+  /* Status — pastel palette (icon + text + color, never color alone). */
+  --color-status-favoritt: #f4d35e;       /* gul */
+  --color-status-vurderer: #8fb4d8;       /* blå */
+  --color-status-paa-visning: #b8a4d4;    /* lilla */
+  --color-status-i-budrunde: #f0a868;     /* oransje */
+  --color-status-bud-inne: #d97c7c;       /* rød */
+  --color-status-kjopt: #88b894;          /* grønn */
+  --color-status-ikke-aktuell: #b8b3a8;   /* grå */
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #15181a;
+  --color-surface: #1c1f1d;
+  --color-surface-raised: #242826;
+  --color-fg: #ece9e1;
+  --color-fg-muted: #a0a39e;
+  --color-border: #2f3431;
+
+  --color-primary: #6fa3d4;
+  --color-primary-fg: #0e1213;
+  --color-accent: #d6b97a;
+
+  --color-status-favoritt: #d4b03e;
+  --color-status-vurderer: #6f95bc;
+  --color-status-paa-visning: #9885b8;
+  --color-status-i-budrunde: #cc8b50;
+  --color-status-bud-inne: #b86060;
+  --color-status-kjopt: #6a9676;
+  --color-status-ikke-aktuell: #8d8a82;
+}
+
+/* Visible focus ring for keyboard users on every interactive element. */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
