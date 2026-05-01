@@ -51,10 +51,10 @@
 
 ## 7. Dev login bypass
 
-- [ ] 7.1 `app/dev/login/route.ts` — route handler. Reads `as` query param (`alice` or `bob`), signs in via `signInWithPassword`, redirects to `/app`.
-- [ ] 7.2 Wrap entire handler in `if (process.env.NEXT_PUBLIC_DEV_LOGIN_ENABLED !== '1') return new Response(null, { status: 404 })`.
-- [ ] 7.3 Build-time guard in `next.config.mjs`: `if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PUBLIC_DEV_LOGIN_ENABLED === '1') throw new Error('dev/login MUST be disabled in production')`.
-- [ ] 7.4 Test users seeded via `supabase/seed.sql`: `alice@test.local` and `bob@test.local`, password `test1234` (per conventions.md).
+- [x] 7.1 `app/dev/login/route.ts` — route handler. Reads `as` query param (`alice` or `bob`), signs in via `signInWithPassword`, redirects to `/app`.
+- [x] 7.2 Wrap entire handler in `if (process.env.NEXT_PUBLIC_DEV_LOGIN_ENABLED !== '1') return new Response(null, { status: 404 })`. Implemented as a double gate (NEXT_PUBLIC_DEV_LOGIN_ENABLED **and** DEV_LOGIN_FORCE) — both must be "1".
+- [x] 7.3 Build-time guard in `next.config.mjs`: `if (process.env.VERCEL_ENV === 'production' && process.env.NEXT_PUBLIC_DEV_LOGIN_ENABLED === '1') throw new Error('dev/login MUST be disabled in production')`.
+- [x] 7.4 Test users seeded via `supabase/seed.sql`: `alice@test.local` and `bob@test.local`, password `test1234` (per conventions.md). For the hosted project we provide `scripts/seed-dev-users.mjs` (group 1.6) instead of relying on local Supabase.
 
 ## 8. Invitation acceptance handoff
 
