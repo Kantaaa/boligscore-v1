@@ -40,14 +40,14 @@
 
 ## 5. UI — Vekter page (`/app/vekter`)
 
-- [ ] 5.1 `app/app/vekter/page.tsx` — fetches `getCriteria` + `getHouseholdWeights` + `getUserWeights` in parallel.
-- [ ] 5.2 Segmented control at top: `Felles vekter` (default) / `Mine personlige vekter`. Active state via URL query param `?view=felles|personal` for shareable / browser-back behavior.
-- [ ] 5.3 Sections render in order with heading + description.
-- [ ] 5.4 Each row: criterion label (left), criterion description (small, below label), slider (right). On personal view: small "Felles: N" reference label between the criterion label and the slider.
-- [ ] 5.5 Slider component: Tailwind-styled native `<input type="range" min=0 max=10 step=1>`. Show current value as a number bubble or label. Touch-friendly thumb size.
-- [ ] 5.6 On slider release: call `setHouseholdWeight` or `setUserWeight`. Show "lagret" pulse on success.
-- [ ] 5.7 Reset button below each view: `Tilbakestill alle til 5`. Confirmation dialog before action.
-- [ ] 5.8 Viewer mode: sliders disabled (`<input disabled>`), reset hidden, segmented control still functional (they can view personal — well, only their own; viewers can have personal weights too, just read-only? clarify in tasks: viewers see their personal sliders disabled).
+- [x] 5.1 `app/app/vekter/page.tsx` — fetches `getCriteria` + `getHouseholdWeights` + `getUserWeights` in parallel.
+- [x] 5.2 Segmented control at top: `Felles vekter` (default) / `Mine personlige vekter`. Active state via URL query param `?view=felles|personal` for shareable / browser-back behavior.
+- [x] 5.3 Sections render in order with heading + description.
+- [x] 5.4 Each row: criterion label (left), criterion description (small, below label), slider (right). On personal view: small "Felles: N" reference label between the criterion label and the slider.
+- [x] 5.5 Slider component: Tailwind-styled native `<input type="range" min=0 max=10 step=1>`. Show current value as a number bubble or label. Touch-friendly thumb size.
+- [x] 5.6 On slider release: call `setHouseholdWeight` or `setUserWeight`. Show "lagret" pulse on success.
+- [x] 5.7 Reset button below each view: `Tilbakestill alle til 5`. Confirmation dialog before action.
+- [x] 5.8 Viewer mode: sliders disabled (`<input disabled>`), reset hidden, segmented control still functional (viewers see disabled sliders for both felles and their own personal weights).
 
 ## 6. Tests
 
