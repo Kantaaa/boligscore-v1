@@ -1,13 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * Playwright config (e2e). Tests live under `tests/e2e/` so Vitest's
- * `src/**/*.test.ts*` glob never picks them up.
- *
- * `webServer` boots `npm run start` on port 3000. The dev server is not
- * used because PWA features (the service worker, the manifest scope)
- * only ship in production builds.
- */
+// Playwright config (e2e). Tests live under tests/e2e/ so Vitest's
+// src test glob never picks them up.
+//
+// webServer boots `npm run start` on port 3000. The dev server is not
+// used because PWA features (the service worker, the manifest scope)
+// only ship in production builds.
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
