@@ -38,18 +38,18 @@
 
 ## 4. Server actions / data layer
 
-- [ ] 4.1 `createHousehold(name)` — Next.js Server Action. Inserts household + first owner membership in a transaction.
-- [ ] 4.2 `renameHousehold(id, name)` — checks role via RLS.
-- [ ] 4.3 `deleteHousehold(id)` — owner only, requires typed-name confirmation on client.
-- [ ] 4.4 `listMyHouseholds()` — returns `[{id, name, role, joined_at, last_accessed_at}]` for the current user.
-- [ ] 4.5 `getHousehold(id)` — fetch single household + member list with roles.
-- [ ] 4.6 `setMemberRole(householdId, userId, role)` — owner only.
-- [ ] 4.7 `removeMember(householdId, userId)` — owner only.
-- [ ] 4.8 `leaveHousehold(householdId)` — self only. Server-side check: deny if caller is sole owner; return error message in Norwegian.
-- [ ] 4.9 `createInvitation(householdId, role?, invitedEmail?)` — generates token, optionally sends email.
-- [ ] 4.10 `getInvitationByToken(token)` — RPC via `SECURITY DEFINER` so unauthenticated users can read enough to render the acceptance page (returns: household name, inviter name, role, expires_at; never the token row directly).
-- [ ] 4.11 `acceptInvitation(token)` — atomic update: `UPDATE household_invitations SET accepted_by = auth.uid() WHERE token = $1 AND accepted_by IS NULL AND expires_at > now() RETURNING household_id, role`. Then insert `household_members` row.
-- [ ] 4.12 `revokeInvitation(invitationId)` — owner or original creator can delete unaccepted invitations.
+- [x] 4.1 `createHousehold(name)` — Next.js Server Action. Inserts household + first owner membership in a transaction.
+- [x] 4.2 `renameHousehold(id, name)` — checks role via RLS.
+- [x] 4.3 `deleteHousehold(id)` — owner only, requires typed-name confirmation on client.
+- [x] 4.4 `listMyHouseholds()` — returns `[{id, name, role, joined_at, last_accessed_at}]` for the current user.
+- [x] 4.5 `getHousehold(id)` — fetch single household + member list with roles.
+- [x] 4.6 `setMemberRole(householdId, userId, role)` — owner only.
+- [x] 4.7 `removeMember(householdId, userId)` — owner only.
+- [x] 4.8 `leaveHousehold(householdId)` — self only. Server-side check: deny if caller is sole owner; return error message in Norwegian.
+- [x] 4.9 `createInvitation(householdId, role?, invitedEmail?)` — generates token, optionally sends email.
+- [x] 4.10 `getInvitationByToken(token)` — RPC via `SECURITY DEFINER` so unauthenticated users can read enough to render the acceptance page (returns: household name, inviter name, role, expires_at; never the token row directly).
+- [x] 4.11 `acceptInvitation(token)` — atomic update: `UPDATE household_invitations SET accepted_by = auth.uid() WHERE token = $1 AND accepted_by IS NULL AND expires_at > now() RETURNING household_id, role`. Then insert `household_members` row.
+- [x] 4.12 `revokeInvitation(invitationId)` — owner or original creator can delete unaccepted invitations.
 
 ## 5. Email integration — DEFERRED to follow-up change `households-email-invitations`
 
