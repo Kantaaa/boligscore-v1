@@ -17,10 +17,34 @@
  */
 export function safeNextParam(value: string | null | undefined): string | null {
   if (!value) return null;
+  if (typeof value !== "string") return null;
   if (!value.startsWith("/")) return null;
   if (value.startsWith("//")) return null;
   const isApp = value === "/app" || value.startsWith("/app/");
   const isInvitation = value.startsWith("/invitasjon/");
   if (!isApp && !isInvitation) return null;
   return value;
+}
+
+/**
+ * Resolve a `next` parameter to a definite redirect target.
+ *
+ * Wraps `safeNextParam` and applies a fallback. `auth-onboarding` task
+ * 9.1 lists this as the helper used by every "redirect after auth"
+ * call site so the fallback is consistent (always `/app` unless
+ * overridden).
+ *
+ * Examples:
+ *   resolveNextOrDefault("/app/vekter")           -> "/app/vekter"
+ *   resolveNextOrDefault("/invitasjon/abc")       -> "/invitasjon/abc"
+ *   resolveNextOrDefault("https://evil.com")       -> "/app"
+ *   resolveNextOrDefault("//evil.com/app")          -> "/app"
+ *   resolveNextOrDefault(undefined)                 -> "/app"
+ *   resolveNextOrDefault(undefined, "/app/onboarding") -> "/app/onboarding"
+ */
+export function resolveNextOrDefault(
+  value: string | null | undefined,
+  fallback = "/app",
+): string {
+  return safeNextParam(value) ?? fallback;
 }

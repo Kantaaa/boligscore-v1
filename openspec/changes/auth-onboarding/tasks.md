@@ -65,9 +65,9 @@ This page lives in `households` capability (`app/invitasjon/[token]/page.tsx`); 
 
 ## 9. Open-redirect protection
 
-- [ ] 9.1 Helper `validateNext(next: string | undefined): string` — returns `next` if it's a relative path starting with `/` and not starting with `//`, else returns `/app`.
-- [ ] 9.2 Use this helper in every redirect-after-auth path: register, login, magic link, dev login.
-- [ ] 9.3 Unit test the helper for: relative path → returns it; absolute URL → returns `/app`; protocol-relative `//evil.com` → returns `/app`; undefined → returns `/app`; non-string → returns `/app`.
+- [x] 9.1 Helper `validateNext(next: string | undefined): string` — returns `next` if it's a relative path starting with `/` and not starting with `//`, else returns `/app`. Implemented as `resolveNextOrDefault` in `src/lib/auth/redirects.ts` (wraps existing `safeNextParam`).
+- [x] 9.2 Use this helper in every redirect-after-auth path: register, login, magic link, dev login.
+- [x] 9.3 Unit test the helper for: relative path → returns it; absolute URL → returns `/app`; protocol-relative `//evil.com` → returns `/app`; undefined → returns `/app`; non-string → returns `/app`.
 
 ## 10. Tests
 
