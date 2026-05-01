@@ -379,51 +379,53 @@ begin
         limit 1;
     end if;
 
-    -- Build the per-criterion JSON array.
-    select coalesce(jsonb_agg(row), '[]'::jsonb)
+    -- Build the per-criterion JSON array. Order is enforced inside
+    -- the aggregate via ORDER BY (the subquery's ORDER BY alone does
+    -- NOT carry through jsonb_agg in Postgres).
+    select coalesce(
+        jsonb_agg(
+            jsonb_build_object(
+                'criterion_id',          c.id,
+                'criterion_key',         c.key,
+                'criterion_label',       c.label,
+                'criterion_sort_order',  c.sort_order,
+                'section_id',            c.section_id,
+                'section_key',           s.key,
+                'section_label',         s.label,
+                'section_sort_order',    s.sort_order,
+                'your_score',            ps_self.score,
+                'partner_score',         case when v_partner_user_id is not null
+                                              then ps_partner.score else null end,
+                'partner_user_id',       v_partner_user_id,
+                'snitt',                 case
+                    when v_partner_user_id is not null
+                      and ps_self.score is not null
+                      and ps_partner.score is not null
+                    then round((ps_self.score::numeric + ps_partner.score::numeric) / 2.0)::int
+                    else null
+                end,
+                'felles_score',          fs.score,
+                'felles_set',            (fs.score is not null)
+            )
+            order by s.sort_order, c.sort_order
+        ),
+        '[]'::jsonb
+    )
       into v_rows
-    from (
-        select jsonb_build_object(
-            'criterion_id',          c.id,
-            'criterion_key',         c.key,
-            'criterion_label',       c.label,
-            'criterion_sort_order',  c.sort_order,
-            'section_id',            c.section_id,
-            'section_key',           s.key,
-            'section_label',         s.label,
-            'section_sort_order',    s.sort_order,
-            'your_score',            ps_self.score,
-            'partner_score',         case when v_partner_user_id is not null
-                                          then ps_partner.score else null end,
-            'partner_user_id',       v_partner_user_id,
-            'snitt',                 case
-                when v_partner_user_id is not null
-                  and ps_self.score is not null
-                  and ps_partner.score is not null
-                then round((ps_self.score::numeric + ps_partner.score::numeric) / 2.0)::int
-                else null
-            end,
-            'felles_score',          fs.score,
-            'felles_set',            (fs.score is not null)
-        ) as row,
-        s.sort_order as s_order,
-        c.sort_order as c_order
-        from public.criteria c
-        join public.criterion_sections s on s.id = c.section_id
-        left join public.property_scores ps_self
-          on ps_self.property_id = p_property_id
-         and ps_self.user_id = p_viewer_id
-         and ps_self.criterion_id = c.id
-        left join public.property_scores ps_partner
-          on v_partner_user_id is not null
-         and ps_partner.property_id = p_property_id
-         and ps_partner.user_id = v_partner_user_id
-         and ps_partner.criterion_id = c.id
-        left join public.property_felles_scores fs
-          on fs.property_id = p_property_id
-         and fs.criterion_id = c.id
-        order by s.sort_order, c.sort_order
-    ) sorted_rows;
+    from public.criteria c
+    join public.criterion_sections s on s.id = c.section_id
+    left join public.property_scores ps_self
+      on ps_self.property_id = p_property_id
+     and ps_self.user_id = p_viewer_id
+     and ps_self.criterion_id = c.id
+    left join public.property_scores ps_partner
+      on v_partner_user_id is not null
+     and ps_partner.property_id = p_property_id
+     and ps_partner.user_id = v_partner_user_id
+     and ps_partner.criterion_id = c.id
+    left join public.property_felles_scores fs
+      on fs.property_id = p_property_id
+     and fs.criterion_id = c.id;
 
     return query
     select
