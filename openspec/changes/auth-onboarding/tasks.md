@@ -60,8 +60,8 @@
 
 This page lives in `households` capability (`app/invitasjon/[token]/page.tsx`); this capability only contributes the **redirect-when-unauthenticated** behavior, which lives in middleware or in the page itself.
 
-- [ ] 8.1 In `app/invitasjon/[token]/page.tsx` (created by `households`): if unauthenticated, redirect to `/registrer?next=/invitasjon/<token>`. (Document the requirement here; implementation may be split.)
-- [ ] 8.2 Verify `next` param round-trip works for both `/registrer` and `/logg-inn` paths.
+- [x] 8.1 In `app/invitasjon/[token]/page.tsx` (created by `households`): if unauthenticated, redirect to `/registrer?next=/invitasjon/<token>`. (Document the requirement here; implementation may be split.) Already implemented in `households` (line 70 of the page).
+- [x] 8.2 Verify `next` param round-trip works for both `/registrer` and `/logg-inn` paths. `safeNextParam` accepts `/invitasjon/<token>`; both `/registrer` and `/logg-inn` pages forward the validated value into their forms, and the form's success handler routes via `router.replace(r.data.next)`.
 
 ## 9. Open-redirect protection
 
