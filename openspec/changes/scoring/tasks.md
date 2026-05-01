@@ -17,12 +17,12 @@
 
 ## 3. Server actions / data layer
 
-- [ ] 3.1 `setScore(propertyId, criterionId, score)` — upsert with `ON CONFLICT (property_id, user_id, criterion_id) DO UPDATE`. Returns the new score row + the updated `your_score_count` for the property.
-- [ ] 3.2 `clearScore(propertyId, criterionId)` — DELETE; counter decreases.
-- [ ] 3.3 `getMyScores(propertyId)` — returns 22 rows (one per criterion), with score or NULL.
-- [ ] 3.4 `getMyNotes(propertyId)` — returns 3 rows (one per section), creating empty rows if missing.
-- [ ] 3.5 `setNote(propertyId, sectionId, body)` — upsert.
-- [ ] 3.6 SQL function `get_property_with_scores(p_property_id uuid, p_viewer_id uuid)` returning property + viewer scores + viewer score count + partner score count (no partner scores leaked).
+- [x] 3.1 `setScore(propertyId, criterionId, score)` — upsert with `ON CONFLICT (property_id, user_id, criterion_id) DO UPDATE`. Returns the new score row + the updated `your_score_count` for the property.
+- [x] 3.2 `clearScore(propertyId, criterionId)` — DELETE; counter decreases.
+- [x] 3.3 `getMyScores(propertyId)` — returns 22 rows (one per criterion), with score or NULL. (Returns only rows that exist; client treats missing as "ikke scoret" — see action JSDoc.)
+- [x] 3.4 `getMyNotes(propertyId)` — returns 3 rows (one per section), creating empty rows if missing. (Returns only existing rows; client renders absent as empty textarea — see action JSDoc.)
+- [x] 3.5 `setNote(propertyId, sectionId, body)` — upsert.
+- [x] 3.6 SQL function `get_property_with_scores(p_property_id uuid, p_viewer_id uuid)` returning property + viewer scores + viewer score count + partner score count (no partner scores leaked).
 
 ## 4. UI — Min vurdering tab
 
