@@ -82,6 +82,6 @@ This page lives in `households` capability (`app/invitasjon/[token]/page.tsx`); 
 
 ## 11. Documentation
 
-- [ ] 11.1 Update root `README.md`: section "Authentication & local testing" explaining email/password vs magic link, where Mailpit is, how to use `/dev/login`.
-- [ ] 11.2 `docs/architecture/auth.md` — short doc describing the auth flow, route protection, and dev bypass.
-- [ ] 11.3 `.env.example` — document `NEXT_PUBLIC_DEV_LOGIN_ENABLED`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- [x] 11.1 Update root `README.md`: section "Authentication & local testing" explaining email/password vs magic link, where Mailpit is, how to use `/dev/login`.
+- [x] 11.2 `docs/architecture/auth.md` — short doc describing the auth flow, route protection, and dev bypass.
+- [x] 11.3 `.env.example` — document `NEXT_PUBLIC_DEV_LOGIN_ENABLED`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`. — `.env.example` is gitignored in this repo, so the canonical reference now lives in `docs/architecture/auth.md` plus the README's "Authentication & local testing" section. The file on disk has been updated locally as a courtesy.
