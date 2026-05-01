@@ -2,19 +2,19 @@
 
 ## 1. Project bootstrap (prerequisite if not done)
 
-- [ ] 1.1 Provision a fresh Supabase project for v2 and store URL/anon key in `.env.local`.
-- [ ] 1.2 Confirm Next.js (App Router) skeleton exists (delivered by `navigation-shell` capability — depend on its early scaffolding).
-- [ ] 1.3 Add Supabase JS client (`@supabase/supabase-js`, `@supabase/ssr`) and a typed client factory (`lib/supabase/server.ts`, `lib/supabase/client.ts`).
-- [ ] 1.4 Run `supabase init` and start `supabase start` locally; confirm Mailpit is reachable at `http://localhost:54324`.
+- [x] 1.1 Provision a fresh Supabase project for v2 and store URL/anon key in `.env.local`.
+- [x] 1.2 Confirm Next.js (App Router) skeleton exists (delivered by `navigation-shell` capability — depend on its early scaffolding).
+- [x] 1.3 Add Supabase JS client (`@supabase/supabase-js`, `@supabase/ssr`) and a typed client factory (`lib/supabase/server.ts`, `lib/supabase/client.ts`).
+- [~] 1.4 Run `supabase init` and start `supabase start` locally; confirm Mailpit is reachable at `http://localhost:54324`. (deferred: Supabase CLI not installed on this machine; migrations are written as SQL files under `supabase/migrations/` and applied via the dashboard SQL Editor — see `supabase/README.md`.)
 
 ## 2. Database schema (SQL migration)
 
-- [ ] 2.1 Create migration `supabase/migrations/<ts>_households.sql`.
-- [ ] 2.2 Create `households` table: `id uuid PK default gen_random_uuid()`, `name text NOT NULL CHECK (length(trim(name)) > 0)`, `created_by uuid NOT NULL REFERENCES auth.users(id)`, `created_at timestamptz NOT NULL default now()`, `comparison_disagreement_threshold int NOT NULL default 3 CHECK (comparison_disagreement_threshold BETWEEN 1 AND 10)`.
-- [ ] 2.3 Create `household_role` enum / domain: `('owner', 'member', 'viewer')`. Use a CHECK constraint on a TEXT column for portability.
-- [ ] 2.4 Create `household_members` table: `household_id uuid REFERENCES households(id) ON DELETE CASCADE`, `user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE`, `role text NOT NULL CHECK (role IN ('owner','member','viewer'))`, `joined_at timestamptz NOT NULL default now()`, `last_accessed_at timestamptz NOT NULL default now()`. Composite PK `(household_id, user_id)`. Index on `user_id`.
-- [ ] 2.5 Create `household_invitations` table: `id uuid PK default gen_random_uuid()`, `household_id uuid REFERENCES households(id) ON DELETE CASCADE`, `token uuid NOT NULL UNIQUE default gen_random_uuid()`, `invited_email text`, `role text NOT NULL CHECK (role IN ('owner','member','viewer')) default 'member'`, `expires_at timestamptz NOT NULL default (now() + interval '7 days')`, `accepted_by uuid REFERENCES auth.users(id)`, `created_by uuid NOT NULL REFERENCES auth.users(id)`, `created_at timestamptz NOT NULL default now()`. Index on `token`.
-- [ ] 2.6 Add a trigger preventing updates to `households.created_by` (raise exception).
+- [x] 2.1 Create migration `supabase/migrations/<ts>_households.sql`.
+- [x] 2.2 Create `households` table: `id uuid PK default gen_random_uuid()`, `name text NOT NULL CHECK (length(trim(name)) > 0)`, `created_by uuid NOT NULL REFERENCES auth.users(id)`, `created_at timestamptz NOT NULL default now()`, `comparison_disagreement_threshold int NOT NULL default 3 CHECK (comparison_disagreement_threshold BETWEEN 1 AND 10)`.
+- [x] 2.3 Create `household_role` enum / domain: `('owner', 'member', 'viewer')`. Use a CHECK constraint on a TEXT column for portability.
+- [x] 2.4 Create `household_members` table: `household_id uuid REFERENCES households(id) ON DELETE CASCADE`, `user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE`, `role text NOT NULL CHECK (role IN ('owner','member','viewer'))`, `joined_at timestamptz NOT NULL default now()`, `last_accessed_at timestamptz NOT NULL default now()`. Composite PK `(household_id, user_id)`. Index on `user_id`.
+- [x] 2.5 Create `household_invitations` table: `id uuid PK default gen_random_uuid()`, `household_id uuid REFERENCES households(id) ON DELETE CASCADE`, `token uuid NOT NULL UNIQUE default gen_random_uuid()`, `invited_email text`, `role text NOT NULL CHECK (role IN ('owner','member','viewer')) default 'member'`, `expires_at timestamptz NOT NULL default (now() + interval '7 days')`, `accepted_by uuid REFERENCES auth.users(id)`, `created_by uuid NOT NULL REFERENCES auth.users(id)`, `created_at timestamptz NOT NULL default now()`. Index on `token`.
+- [x] 2.6 Add a trigger preventing updates to `households.created_by` (raise exception).
 
 ## 3. RLS policies
 
