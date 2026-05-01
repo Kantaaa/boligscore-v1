@@ -20,10 +20,10 @@ test.describe("Viewer write attempts", () => {
   test("viewer's UI hides write CTAs", async ({ page }) => {
     test.fixme(
       true,
-      "Awaits /dev/login + viewer-seeded test fixture (auth-onboarding).",
+      "Awaits a viewer-seeded fixture user (alice/bob seeded by scripts/seed-dev-users.mjs are owner/member only).",
     );
 
-    await page.goto("/dev/login?email=viewer@test.local");
+    await page.goto("/dev/login?as=alice");
     await page.goto("/app/husstand");
     await expect(
       page.getByRole("button", { name: "Endre navn" }),

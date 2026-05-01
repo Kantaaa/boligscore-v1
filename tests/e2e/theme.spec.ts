@@ -49,8 +49,12 @@ test.describe("Theme persistence and no-FOUC", () => {
   });
 
   test("theme toggle persists across reload", async ({ page }) => {
-    test.fixme(true, "Toggle lives on /app/meg and needs an authenticated session.");
+    test.fixme(
+      true,
+      "Run `node scripts/seed-dev-users.mjs` once, then unfreeze.",
+    );
 
+    await page.goto("/dev/login?as=alice");
     await page.goto("/app/meg");
     await page.getByRole("button", { name: /mørkt tema/i }).click();
     await expect(page).toHaveURL(/\/app\/meg$/);

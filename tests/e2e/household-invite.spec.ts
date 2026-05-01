@@ -7,20 +7,24 @@ import { expect, test } from "@playwright/test";
  * Bob (separate browser context) accepts the invitation; both end up
  * in the same household and the switcher works for both.
  *
- * Currently fixme: depends on `/dev/login` from the auth-onboarding
- * capability for sign-in. Once that ships, flip the fixme.
+ * /dev/login now ships (auth-onboarding 7) and uses the `?as=` query
+ * parameter (alice or bob). Run `node scripts/seed-dev-users.mjs` once
+ * to provision the test users, then unfreeze the test.
  */
 
 test.describe("Household invite & accept", () => {
   test("Alice invites, Bob accepts — both see the same household", async ({
     browser,
   }) => {
-    test.fixme(true, "Awaits /dev/login from auth-onboarding capability.");
+    test.fixme(
+      true,
+      "Run `node scripts/seed-dev-users.mjs` once, then unfreeze.",
+    );
 
     // --- Alice creates household & invitation ----------------------------
     const aliceContext = await browser.newContext();
     const alicePage = await aliceContext.newPage();
-    await alicePage.goto("/dev/login?email=alice@test.local");
+    await alicePage.goto("/dev/login?as=alice");
     // Onboarding flow — first-time user has no households, so /app
     // should redirect to /app/onboarding.
     await alicePage.waitForURL(/\/app\/onboarding/);
@@ -41,7 +45,7 @@ test.describe("Household invite & accept", () => {
     // Unauth → redirect to /registrer?next=/invitasjon/...
     await bobPage.waitForURL(/\/registrer/);
     // Sign Bob in via dev-login, preserving next=
-    await bobPage.goto(`/dev/login?email=bob@test.local&next=${encodeURIComponent(
+    await bobPage.goto(`/dev/login?as=bob&next=${encodeURIComponent(
       new URL(inviteUrl).pathname,
     )}`);
     await bobPage.waitForURL(/\/invitasjon\//);

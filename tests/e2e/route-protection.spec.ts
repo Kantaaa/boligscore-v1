@@ -15,8 +15,11 @@ test.describe("Auth gate on /app/*", () => {
   });
 
   test("authenticated user reaches /app/vekter directly", async ({ page }) => {
-    test.fixme(true, "Awaits /dev/login from auth-onboarding.");
-    await page.goto("/app/vekter");
+    test.fixme(
+      true,
+      "Run `node scripts/seed-dev-users.mjs` once, then unfreeze.",
+    );
+    await page.goto("/dev/login?as=alice&next=%2Fapp%2Fvekter");
     await expect(page).toHaveURL(/\/app\/vekter$/);
     await expect(
       page.getByRole("heading", { name: "Vekter" }),
@@ -24,9 +27,14 @@ test.describe("Auth gate on /app/*", () => {
   });
 
   test("post-login flow honours the next= param", async ({ page }) => {
-    test.fixme(true, "Awaits /dev/login from auth-onboarding.");
+    test.fixme(
+      true,
+      "Run `node scripts/seed-dev-users.mjs` once, then unfreeze.",
+    );
     await page.goto("/logg-inn?next=%2Fapp%2Fvekter");
-    // Sign in via dev-login form once it ships.
+    await page.getByLabel("E-post").fill("alice@test.local");
+    await page.getByLabel("Passord").fill("test1234");
+    await page.getByRole("button", { name: /Logg inn/ }).click();
     await expect(page).toHaveURL(/\/app\/vekter$/);
   });
 });

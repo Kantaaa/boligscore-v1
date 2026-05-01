@@ -51,9 +51,9 @@ test.describe("Invitation acceptance page", () => {
   }) => {
     test.fixme(
       true,
-      "Awaits dev-login + a fixture where the signed-in user is already a member.",
+      "Run `node scripts/seed-dev-users.mjs` once + create a household-membership fixture, then unfreeze.",
     );
-    await page.goto("/dev/login?email=alice@test.local");
+    await page.goto("/dev/login?as=alice");
     await page.goto("/invitasjon/<token-for-alice-existing-household>");
     await expect(
       page.getByText("Du er allerede medlem av denne husholdningen"),

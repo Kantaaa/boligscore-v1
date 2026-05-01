@@ -24,7 +24,10 @@ for (const route of PUBLIC_ROUTES) {
 }
 
 test.describe("a11y (protected routes)", () => {
-  test.fixme(true, "Awaits /dev/login from auth-onboarding.");
+  test.fixme(
+    true,
+    "Run `node scripts/seed-dev-users.mjs` once, then prepend `/dev/login?as=alice` to each goto and unfreeze.",
+  );
   for (const route of PROTECTED_ROUTES) {
     test(`a11y: ${route}`, async ({ page }) => {
       await page.goto(route);
