@@ -32,7 +32,23 @@ npm run dev
 The app expects Supabase to be reachable. For fully local development run
 `supabase start` (Supabase CLI) and point `NEXT_PUBLIC_SUPABASE_URL` /
 `NEXT_PUBLIC_SUPABASE_ANON_KEY` at the local instance. Mailpit, bundled
-with `supabase start`, captures dev emails on its built-in HTTP UI.
+with `supabase start`, captures dev emails on its built-in HTTP UI at
+`http://localhost:54324`.
+
+### Database migrations
+
+SQL migrations live under `supabase/migrations/` (numbered timestamp
+prefix) and a seed file at `supabase/seed.sql` provisions two test
+users. With the Supabase CLI:
+
+```bash
+supabase start             # boots local Postgres + Mailpit + Studio
+supabase db reset          # applies migrations + seed (destroys local data)
+```
+
+Without the CLI (e.g. against a hosted Supabase project) paste each
+migration into the dashboard SQL Editor in numeric order. Full
+instructions in `supabase/README.md`.
 
 ### Useful scripts
 
@@ -64,6 +80,22 @@ a stale cache when switching between dev and production locally.
 
 Deployment target is **Vercel** (per `openspec/changes/navigation-shell/design.md`
 D9). Each PR gets a preview deployment; `main` deploys to production.
+
+## Households & roles
+
+Every property, score, and weight in v2 belongs to a **household**
+(`openspec/changes/households/`). A user can join multiple households
+via copy-link invitations. Each membership has one of three roles:
+
+| Role | Read | Write (score / edit / add) | Manage (rename, delete, change roles) |
+| --- | --- | --- | --- |
+| `owner` | yes | yes | yes |
+| `member` | yes | yes | no |
+| `viewer` | yes | no | no |
+
+The role is enforced both in the UI (controls hide for `viewer`) and in
+the database via Row Level Security policies (see
+`docs/architecture/households.md`).
 
 ## Repo layout
 

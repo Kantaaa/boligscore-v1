@@ -26,11 +26,17 @@ describe("safeNextParam", () => {
     expect(safeNextParam("")).toBeNull();
   });
 
-  it("rejects paths outside /app", () => {
+  it("rejects paths outside /app and /invitasjon", () => {
     expect(safeNextParam("/")).toBeNull();
     expect(safeNextParam("/logg-inn")).toBeNull();
     expect(safeNextParam("/registrer")).toBeNull();
     expect(safeNextParam("/applepie")).toBeNull(); // /app- prefix attack
+  });
+
+  it("accepts /invitasjon/<token> for the households flow", () => {
+    expect(safeNextParam("/invitasjon/abc-def")).toBe("/invitasjon/abc-def");
+    // Bare /invitasjon (no token) is rejected — the flow always carries a token.
+    expect(safeNextParam("/invitasjon")).toBeNull();
   });
 
   it("rejects external and protocol-relative URLs (open-redirect guard)", () => {

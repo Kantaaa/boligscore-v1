@@ -1,11 +1,15 @@
 import Link from "next/link";
 
+import { HouseholdSwitcher } from "@/components/households/HouseholdSwitcher";
+
 /**
  * Header for the protected /app shell.
  *
  * Left:  app brand (links to /app forsiden).
- * Right: <HouseholdSwitcher /> — owned by the `households` capability;
- *        rendered as a placeholder slot until that capability lands.
+ * Right: <HouseholdSwitcher /> — chip with the active household name and
+ *        a dropdown for switch / "Opprett ny husholdning". Memberships
+ *        are pre-loaded by the protected layout and passed down through
+ *        the <ActiveHouseholdProvider> context.
  */
 export function AppShellHeader() {
   return (
@@ -17,20 +21,7 @@ export function AppShellHeader() {
         >
           Boligscore
         </Link>
-
-        {/*
-          TODO(households): replace with <HouseholdSwitcher /> once the
-          households capability ships. Should render a chip with the active
-          household name and a dropdown for switch / "Opprett ny husholdning".
-        */}
-        <div
-          aria-label="Husholdning-velger (kommer snart)"
-          className="inline-flex min-h-touch items-center gap-2 rounded-full border border-border bg-surface-raised px-3 text-sm text-fg-muted"
-        >
-          <span aria-hidden>🏠</span>
-          <span>Husstand</span>
-          <span aria-hidden>▾</span>
-        </div>
+        <HouseholdSwitcher />
       </div>
     </header>
   );
