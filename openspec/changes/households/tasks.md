@@ -78,18 +78,18 @@ MVP ships **copy-link only**. The "Send via e-post" button is **not** rendered i
 
 ## 8. UI — Onboarding (`/app/onboarding`)
 
-- [ ] 8.1 Form with single `name` input. Submit calls `createHousehold`.
-- [ ] 8.2 Post-create screen: "Kopier invitasjonslenke" (primary), "Send via e-post" (secondary), "Hopp over" (skip).
-- [ ] 8.3 Skip routes to `/app` (empty state).
-- [ ] 8.4 Auto-runs after first signup if `listMyHouseholds()` returns empty.
+- [x] 8.1 Form with single `name` input. Submit calls `createHousehold`.
+- [~] 8.2 Post-create screen: "Kopier invitasjonslenke" (primary), "Send via e-post" (secondary), "Hopp over" (skip). (deferred: "Send via e-post" intentionally omitted per design D9 — copy-link only in MVP.)
+- [x] 8.3 Skip routes to `/app` (empty state).
+- [x] 8.4 Auto-runs after first signup if `listMyHouseholds()` returns empty. (Enforced by /app page redirecting to /app/onboarding when memberships are zero.)
 
 ## 9. UI — Invitation acceptance (`/invitasjon/[token]`)
 
-- [ ] 9.1 Server-render the invitation summary via `getInvitationByToken`. Show household name, inviter, role, expiry.
-- [ ] 9.2 If unauthenticated: redirect to `/registrer?next=/invitasjon/<token>`.
-- [ ] 9.3 If expired / already accepted: show error variant with the right Norwegian message.
-- [ ] 9.4 If user is already a member: show "Du er allerede medlem" + button to switch active household.
-- [ ] 9.5 "Bli med" button calls `acceptInvitation`. On success, set `localStorage.activeHouseholdId` to the new household and redirect to `/app`.
+- [x] 9.1 Server-render the invitation summary via `getInvitationByToken`. Show household name, inviter, role, expiry.
+- [x] 9.2 If unauthenticated: redirect to `/registrer?next=/invitasjon/<token>`.
+- [x] 9.3 If expired / already accepted: show error variant with the right Norwegian message.
+- [x] 9.4 If user is already a member: show "Du er allerede medlem" + button to switch active household.
+- [x] 9.5 "Bli med" button calls `acceptInvitation`. On success, set `localStorage.activeHouseholdId` to the new household and redirect to `/app`.
 
 ## 10. Tests
 
