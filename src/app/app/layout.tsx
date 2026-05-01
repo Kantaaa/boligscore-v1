@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { ActiveHouseholdProvider } from "@/components/households/ActiveHouseholdProvider";
@@ -20,11 +21,14 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
  * /logg-inn?next=<encoded-current-path>. Middleware also enforces this
  * (defence in depth) — see src/middleware.ts.
  *
+ * Onboarding guard (auth-onboarding 5.4): if the authenticated user has
+ * zero households AND is not currently on /app/onboarding, force them
+ * to /app/onboarding. /app/onboarding itself MUST remain reachable so
+ * the user can create the first household — that's why we exclude it
+ * from the redirect rather than redirecting unconditionally.
+ *
  * Memberships are pre-fetched here once and passed down through
- * <ActiveHouseholdProvider>. Pages that need the "zero memberships ⇒
- * onboarding" redirect (design D7) call it themselves; the layout
- * cannot do it generically because /app/onboarding must remain
- * reachable when the user has zero households.
+ * <ActiveHouseholdProvider>.
  */
 export default async function AppLayout({
   children,
@@ -45,6 +49,16 @@ export default async function AppLayout({
 
   const householdsResult = await listMyHouseholds();
   const memberships = householdsResult.ok ? householdsResult.data : [];
+
+  // Onboarding redirect — applied to every /app/* path except onboarding
+  // itself. Read the request pathname from middleware's `x-pathname`
+  // header (set in src/middleware.ts).
+  if (memberships.length === 0) {
+    const pathname = headers().get("x-pathname") ?? "";
+    if (!pathname.startsWith("/app/onboarding")) {
+      redirect("/app/onboarding");
+    }
+  }
 
   return (
     <div className="min-h-dvh bg-bg text-fg">

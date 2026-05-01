@@ -17,6 +17,12 @@ export const config = {
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
+  // Forward the resolved pathname to RSC via a request header. Server
+  // components read these via `headers()`. Used by the protected layout
+  // to apply path-aware redirects (zero-households → /app/onboarding,
+  // skipped when already on /app/onboarding so we don't loop).
+  request.headers.set("x-pathname", pathname);
+
   // Public paths — never gate.
   const isPublic =
     pathname === "/" ||
