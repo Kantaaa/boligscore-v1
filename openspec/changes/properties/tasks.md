@@ -2,26 +2,26 @@
 
 ## 1. Database schema
 
-- [ ] 1.1 Migration: create `property_statuses(id uuid PK default gen_random_uuid(), household_id uuid REFERENCES households(id) ON DELETE CASCADE, label text NOT NULL, color text NOT NULL, icon text NOT NULL, is_terminal bool NOT NULL default false, sort_order int NOT NULL default 0, created_at timestamptz NOT NULL default now())`. Unique on `(household_id, label)`.
-- [ ] 1.2 Seed seven global statuses: `favoritt`, `vurderer`, `på visning`, `i budrunde`, `bud inne`, `kjøpt` (is_terminal=true), `ikke aktuell` (is_terminal=true). All with `household_id = NULL`.
-- [ ] 1.3 Migration: create `properties(id uuid PK default gen_random_uuid(), household_id uuid NOT NULL REFERENCES households(id) ON DELETE CASCADE, address text NOT NULL CHECK (length(trim(address)) > 0), finn_link text, price bigint, costs bigint, monthly_costs bigint, bra numeric, primary_rooms int, bedrooms int, bathrooms numeric, year_built int CHECK (year_built BETWEEN 1800 AND extract(year FROM now())::int + 5), property_type text, floor text, status_id uuid NOT NULL REFERENCES property_statuses(id) ON DELETE RESTRICT, added_by uuid NOT NULL REFERENCES auth.users(id), created_at timestamptz NOT NULL default now(), updated_at timestamptz NOT NULL default now())`.
-- [ ] 1.4 Trigger: prevent updates to `household_id`, `added_by`, `created_at`.
-- [ ] 1.5 Trigger: update `updated_at = now()` on every update.
-- [ ] 1.6 Indexes: `(household_id, status_id)`, `(household_id, created_at DESC)`, GIN trigram on `address` for search (optional, ILIKE works for MVP).
+- [x] 1.1 Migration: create `property_statuses(id uuid PK default gen_random_uuid(), household_id uuid REFERENCES households(id) ON DELETE CASCADE, label text NOT NULL, color text NOT NULL, icon text NOT NULL, is_terminal bool NOT NULL default false, sort_order int NOT NULL default 0, created_at timestamptz NOT NULL default now())`. Unique on `(household_id, label)`.
+- [x] 1.2 Seed seven global statuses: `favoritt`, `vurderer`, `på visning`, `i budrunde`, `bud inne`, `kjøpt` (is_terminal=true), `ikke aktuell` (is_terminal=true). All with `household_id = NULL`.
+- [x] 1.3 Migration: create `properties(id uuid PK default gen_random_uuid(), household_id uuid NOT NULL REFERENCES households(id) ON DELETE CASCADE, address text NOT NULL CHECK (length(trim(address)) > 0), finn_link text, price bigint, costs bigint, monthly_costs bigint, bra numeric, primary_rooms int, bedrooms int, bathrooms numeric, year_built int CHECK (year_built BETWEEN 1800 AND extract(year FROM now())::int + 5), property_type text, floor text, status_id uuid NOT NULL REFERENCES property_statuses(id) ON DELETE RESTRICT, added_by uuid NOT NULL REFERENCES auth.users(id), created_at timestamptz NOT NULL default now(), updated_at timestamptz NOT NULL default now())`.
+- [x] 1.4 Trigger: prevent updates to `household_id`, `added_by`, `created_at`.
+- [x] 1.5 Trigger: update `updated_at = now()` on every update.
+- [x] 1.6 Indexes: `(household_id, status_id)`, `(household_id, created_at DESC)`, GIN trigram on `address` for search (optional, ILIKE works for MVP). [trigram deferred — `~~*` ILIKE on the small dataset is sufficient for MVP; index can be added later without migration of behaviour.]
 
 ## 2. RLS policies
 
-- [ ] 2.1 Enable RLS on `properties` and `property_statuses`.
-- [ ] 2.2 `properties` SELECT: `EXISTS member of household_id`.
-- [ ] 2.3 `properties` INSERT/UPDATE/DELETE: `has_household_role(household_id, ARRAY['owner','member'])`.
-- [ ] 2.4 `property_statuses` SELECT: row is global (`household_id IS NULL`) OR caller is member of `household_id`.
-- [ ] 2.5 `property_statuses` INSERT: `has_household_role(NEW.household_id, ARRAY['owner','member'])` AND `NEW.household_id IS NOT NULL` (members can never write a global status).
-- [ ] 2.6 `property_statuses` UPDATE/DELETE: `has_household_role(household_id, ARRAY['owner','member'])` AND `household_id IS NOT NULL`. Global rows immutable.
+- [x] 2.1 Enable RLS on `properties` and `property_statuses`.
+- [x] 2.2 `properties` SELECT: `EXISTS member of household_id`.
+- [x] 2.3 `properties` INSERT/UPDATE/DELETE: `has_household_role(household_id, ARRAY['owner','member'])`.
+- [x] 2.4 `property_statuses` SELECT: row is global (`household_id IS NULL`) OR caller is member of `household_id`.
+- [x] 2.5 `property_statuses` INSERT: `has_household_role(NEW.household_id, ARRAY['owner','member'])` AND `NEW.household_id IS NOT NULL` (members can never write a global status).
+- [x] 2.6 `property_statuses` UPDATE/DELETE: `has_household_role(household_id, ARRAY['owner','member'])` AND `household_id IS NOT NULL`. Global rows immutable.
 
 ## 3. SQL view for list
 
-- [ ] 3.1 Create view `property_list_view` joining `properties`, computed `felles_total` (from `property_felles_scores` × `household_weights`), and parameterized `din_total` and `partner_total` (the latter two implemented as a SQL function `get_property_list(active_household uuid, active_user uuid)` returning a set of rows, since views can't take parameters).
-- [ ] 3.2 Function pre-computes:
+- [x] 3.1 Create view `property_list_view` joining `properties`, computed `felles_total` (from `property_felles_scores` × `household_weights`), and parameterized `din_total` and `partner_total` (the latter two implemented as a SQL function `get_property_list(active_household uuid, active_user uuid)` returning a set of rows, since views can't take parameters). [Implemented as `get_property_list()` SECURITY DEFINER function. View not used — function covers all use cases.]
+- [x] 3.2 Function pre-computes:
   - `felles_total` (Σ score × weight / Σ weight × 10 across criteria with felles score)
   - `your_total` (using user's personal weights)
   - `partner_id` and `partner_total` (if exactly one other member; otherwise null)
