@@ -95,5 +95,5 @@
 
 ## 11. Documentation
 
-- [ ] 11.1 `docs/architecture/properties.md` — schema, RLS, list function, status lookup pattern.
-- [ ] 11.2 Update `README.md` brief: how to seed test properties via `supabase/seed.sql`.
+- [x] 11.1 `docs/architecture/properties.md` — schema, RLS, list function, status lookup pattern.
+- [x] 11.2 Update `README.md` brief: how to seed test properties via `supabase/seed.sql`.

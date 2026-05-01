@@ -140,6 +140,21 @@ The hosted project does not have Mailpit; emails route through
 whatever SMTP is configured in the Supabase dashboard (or the built-in
 free tier).
 
+## Properties
+
+The `/app` page lists the active household's properties, sourced from
+`get_property_list(household, user)` (see
+`docs/architecture/properties.md`). Cards show address, price/BRA/year,
+the household's `Felles` total, and the user's `Din` total. Status is
+an extensible lookup — seven defaults ship as global rows; households
+may add custom statuses via the API.
+
+To get demo properties locally, `supabase db reset` runs
+`supabase/seed.sql` which seeds three properties at varied statuses
+(`vurderer`, `på visning`, `favoritt`) for the shared `Alice & Bob`
+household. Against a hosted Supabase, paste the same seed once after
+the migrations.
+
 ## Households & roles
 
 Every property, score, and weight in v2 belongs to a **household**
