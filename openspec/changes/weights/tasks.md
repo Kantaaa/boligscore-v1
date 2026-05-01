@@ -29,14 +29,14 @@
 
 ## 4. Server actions / data layer
 
-- [ ] 4.1 `getCriteria()` — returns full list of criteria + sections, ordered.
-- [ ] 4.2 `getHouseholdWeights(householdId)` — returns 22 rows.
-- [ ] 4.3 `getUserWeights(householdId, userId)` — returns 22 rows. Server validates that `userId === auth.uid()` (defense-in-depth on top of RLS).
-- [ ] 4.4 `setHouseholdWeight(householdId, criterionId, weight)` — owner/member only.
-- [ ] 4.5 `setUserWeight(householdId, criterionId, weight)` — own weights only; owner/member roles only.
-- [ ] 4.6 `resetHouseholdWeights(householdId)` — bulk update to 5.
-- [ ] 4.7 `resetUserWeights(householdId)` — bulk update to 5 for caller.
-- [ ] 4.8 Helper `weightSetIsAllZero(rows)` — used by comparison math to detect divide-by-zero case.
+- [x] 4.1 `getCriteria()` — returns full list of criteria + sections, ordered.
+- [x] 4.2 `getHouseholdWeights(householdId)` — returns 22 rows.
+- [x] 4.3 `getUserWeights(householdId, userId)` — returns 22 rows. Server validates that `userId === auth.uid()` (defense-in-depth on top of RLS).
+- [x] 4.4 `setHouseholdWeight(householdId, criterionId, weight)` — owner/member only.
+- [x] 4.5 `setUserWeight(householdId, criterionId, weight)` — own weights only; owner/member roles only.
+- [x] 4.6 `resetHouseholdWeights(householdId)` — bulk update to 5.
+- [x] 4.7 `resetUserWeights(householdId)` — bulk update to 5 for caller.
+- [x] 4.8 Helper `weightSetIsAllZero(rows)` — used by comparison math to detect divide-by-zero case.
 
 ## 5. UI — Vekter page (`/app/vekter`)
 
