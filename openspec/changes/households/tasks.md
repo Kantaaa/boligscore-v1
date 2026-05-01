@@ -61,20 +61,20 @@ MVP ships **copy-link only**. The "Send via e-post" button is **not** rendered i
 
 ## 6. UI — Husstand page (`/app/husstand`)
 
-- [ ] 6.1 Page lists active household: name (editable for owner), member list with role badges and "fjern" / "endre rolle" actions for owners.
-- [ ] 6.2 Invitation panel: "Kopier lenke" (primary, copies `${origin}/invitasjon/${token}` to clipboard). Role selector (default `member`, options `owner` / `member` / `viewer`) when generating a new invitation. **No "Send via e-post" button in MVP** — deferred to follow-up change.
-- [ ] 6.3 Pending invitations list with revoke action.
-- [ ] 6.4 Danger zone (owner only): "Slett husholdning" with typed-name confirmation modal.
-- [ ] 6.5 "Forlat husholdning" action (visible to non-sole-owner members).
-- [ ] 6.6 All status / role indicators use icon + text + color (per a11y rules in conventions.md).
+- [x] 6.1 Page lists active household: name (editable for owner), member list with role badges and "fjern" / "endre rolle" actions for owners.
+- [x] 6.2 Invitation panel: "Kopier lenke" (primary, copies `${origin}/invitasjon/${token}` to clipboard). Role selector (default `member`, options `owner` / `member` / `viewer`) when generating a new invitation. **No "Send via e-post" button in MVP** — deferred to follow-up change.
+- [x] 6.3 Pending invitations list with revoke action.
+- [x] 6.4 Danger zone (owner only): "Slett husholdning" with typed-name confirmation modal.
+- [x] 6.5 "Forlat husholdning" action (visible to non-sole-owner members).
+- [x] 6.6 All status / role indicators use icon + text + color (per a11y rules in conventions.md).
 
 ## 7. UI — Household switcher
 
-- [ ] 7.1 Component `<HouseholdSwitcher />` rendered in the app shell header (delivered by `navigation-shell` but the component itself ships here).
-- [ ] 7.2 Chip displays active household name with house emoji and dropdown caret.
-- [ ] 7.3 Dropdown lists all memberships with role badges + "Opprett ny husholdning" (routes to `/app/onboarding`).
-- [ ] 7.4 Selecting a household updates `localStorage.activeHouseholdId`, calls a server action to bump `household_members.last_accessed_at`, and re-renders the active route.
-- [ ] 7.5 If user has zero memberships, redirect to `/app/onboarding`.
+- [x] 7.1 Component `<HouseholdSwitcher />` rendered in the app shell header (delivered by `navigation-shell` but the component itself ships here).
+- [x] 7.2 Chip displays active household name with house emoji and dropdown caret.
+- [x] 7.3 Dropdown lists all memberships with role badges + "Opprett ny husholdning" (routes to `/app/onboarding`).
+- [x] 7.4 Selecting a household updates `localStorage.activeHouseholdId`, calls a server action to bump `household_members.last_accessed_at`, and re-renders the active route.
+- [x] 7.5 If user has zero memberships, redirect to `/app/onboarding`.
 
 ## 8. UI — Onboarding (`/app/onboarding`)
 
