@@ -2,18 +2,18 @@
 
 ## 1. Database schema
 
-- [ ] 1.1 Migration: create `property_scores(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, score int NOT NULL CHECK (score BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, user_id, criterion_id))`. Index on `(property_id, user_id)` for the per-tab fetch.
-- [ ] 1.2 Migration: create `property_score_history(id uuid PK default gen_random_uuid(), property_id uuid NOT NULL, user_id uuid NOT NULL, criterion_id uuid NOT NULL, old_score int, new_score int NOT NULL, changed_at timestamptz NOT NULL default now())`. No FKs (history outlives the source row if scores deleted).
-- [ ] 1.3 Migration: create `property_section_notes(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, section_id uuid REFERENCES criterion_sections(id) ON DELETE RESTRICT, body text NOT NULL default '', visibility text NOT NULL default 'private' CHECK (visibility IN ('private','shared')), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, user_id, section_id))`.
-- [ ] 1.4 Trigger `property_scores_history_trg` AFTER INSERT OR UPDATE ON `property_scores` WHEN (OLD.score IS DISTINCT FROM NEW.score OR OLD IS NULL): insert into `property_score_history`.
+- [x] 1.1 Migration: create `property_scores(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, score int NOT NULL CHECK (score BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, user_id, criterion_id))`. Index on `(property_id, user_id)` for the per-tab fetch.
+- [x] 1.2 Migration: create `property_score_history(id uuid PK default gen_random_uuid(), property_id uuid NOT NULL, user_id uuid NOT NULL, criterion_id uuid NOT NULL, old_score int, new_score int NOT NULL, changed_at timestamptz NOT NULL default now())`. No FKs (history outlives the source row if scores deleted).
+- [x] 1.3 Migration: create `property_section_notes(property_id uuid REFERENCES properties(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, section_id uuid REFERENCES criterion_sections(id) ON DELETE RESTRICT, body text NOT NULL default '', visibility text NOT NULL default 'private' CHECK (visibility IN ('private','shared')), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (property_id, user_id, section_id))`.
+- [x] 1.4 Trigger `property_scores_history_trg` AFTER INSERT OR UPDATE ON `property_scores` WHEN (OLD.score IS DISTINCT FROM NEW.score OR OLD IS NULL): insert into `property_score_history`.
 
 ## 2. RLS policies
 
-- [ ] 2.1 Enable RLS on all three new tables.
-- [ ] 2.2 `property_scores` SELECT: caller is a member of the property's household (via JOIN to properties + has_household_role).
-- [ ] 2.3 `property_scores` INSERT/UPDATE/DELETE: `user_id = auth.uid()` AND caller has role `owner` or `member` in the property's household.
-- [ ] 2.4 `property_score_history` SELECT: `user_id = auth.uid()` AND member of the property's household. INSERT/UPDATE/DELETE: blocked at API (only the trigger writes; service-role on server-actions if needed).
-- [ ] 2.5 `property_section_notes` SELECT: caller is a member of the property's household AND (`visibility = 'shared'` OR `user_id = auth.uid()`). UPDATE/INSERT/DELETE: `user_id = auth.uid()` AND owner/member role.
+- [x] 2.1 Enable RLS on all three new tables.
+- [x] 2.2 `property_scores` SELECT: caller is a member of the property's household (via JOIN to properties + has_household_role).
+- [x] 2.3 `property_scores` INSERT/UPDATE/DELETE: `user_id = auth.uid()` AND caller has role `owner` or `member` in the property's household.
+- [x] 2.4 `property_score_history` SELECT: `user_id = auth.uid()` AND member of the property's household. INSERT/UPDATE/DELETE: blocked at API (only the trigger writes; service-role on server-actions if needed).
+- [x] 2.5 `property_section_notes` SELECT: caller is a member of the property's household AND (`visibility = 'shared'` OR `user_id = auth.uid()`). UPDATE/INSERT/DELETE: `user_id = auth.uid()` AND owner/member role.
 
 ## 3. Server actions / data layer
 
