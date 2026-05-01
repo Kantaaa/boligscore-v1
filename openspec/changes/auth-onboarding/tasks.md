@@ -16,9 +16,9 @@
 
 ## 2. Public landing page
 
-- [ ] 2.1 `app/page.tsx` — headline "Score boliger sammen. Bli enige raskere.", supporting text, primary CTA `Registrer` (link to `/registrer`), secondary CTA `Logg inn` (link to `/logg-inn`).
-- [ ] 2.2 Subtle hero illustration or screenshot; no marketing scroll, no testimonials.
-- [ ] 2.3 Norwegian copy throughout. Tone: rolig, ryddig, trygg.
+- [x] 2.1 `app/page.tsx` — headline "Score boliger sammen. Bli enige raskere.", supporting text, primary CTA `Registrer` (link to `/registrer`), secondary CTA `Logg inn` (link to `/logg-inn`).
+- [x] 2.2 Subtle hero illustration or screenshot; no marketing scroll, no testimonials.
+- [x] 2.3 Norwegian copy throughout. Tone: rolig, ryddig, trygg.
 
 ## 3. Register page
 
