@@ -2,11 +2,17 @@
 
 ## 1. Supabase auth configuration
 
-- [ ] 1.1 In Supabase project dashboard (or `supabase/config.toml` for local): enable email/password and magic link providers; set Site URL to deploy origin.
-- [ ] 1.2 Set redirect URLs whitelist: `http://localhost:3000/**`, `https://*.vercel.app/**`, prod domain.
-- [ ] 1.3 In dev (`supabase/config.toml`): `[auth.email] enable_confirmations = false`. In prod (Supabase dashboard): `enable_confirmations = true`.
-- [ ] 1.4 Customize email templates (Norwegian copy) for: magic link, signup confirmation, password reset.
-- [ ] 1.5 Verify Mailpit captures emails: run `supabase start`, trigger a password reset, see it in Mailpit at `http://localhost:54324`.
+> Hosted Supabase: settings live in the dashboard, not in `supabase/config.toml`.
+> `docs/architecture/auth.md` documents what to configure manually. Dev users
+> for the hosted project are seeded via `scripts/seed-dev-users.mjs` instead
+> of `supabase/seed.sql` (which is local-CLI-only).
+
+- [~] 1.1 In Supabase project dashboard (or `supabase/config.toml` for local): enable email/password and magic link providers; set Site URL to deploy origin. — Documented in `docs/architecture/auth.md`; manual dashboard step.
+- [~] 1.2 Set redirect URLs whitelist: `http://localhost:3000/**`, `https://*.vercel.app/**`, prod domain. — Documented; manual dashboard step.
+- [~] 1.3 In dev (`supabase/config.toml`): `[auth.email] enable_confirmations = false`. In prod (Supabase dashboard): `enable_confirmations = true`. — Documented; manual dashboard step.
+- [~] 1.4 Customize email templates (Norwegian copy) for: magic link, signup confirmation, password reset. — Documented; manual dashboard step.
+- [~] 1.5 Verify Mailpit captures emails: run `supabase start`, trigger a password reset, see it in Mailpit at `http://localhost:54324`. — Hosted project has no Mailpit; deferred to local-Supabase-CLI workflow.
+- [x] 1.6 Provide `scripts/seed-dev-users.mjs` so the hosted project gets `alice@test.local` / `bob@test.local` (password `test1234`) idempotently via the admin API.
 
 ## 2. Public landing page
 
