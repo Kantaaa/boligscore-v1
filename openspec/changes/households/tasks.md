@@ -93,13 +93,13 @@ MVP ships **copy-link only**. The "Send via e-post" button is **not** rendered i
 
 ## 10. Tests
 
-- [ ] 10.1 **Unit (Vitest)**: role helper functions, sole-owner check, invitation expiry helper, name validator.
-- [ ] 10.2 **Integration (Vitest + Supabase local)**: RLS — for each role (owner/member/viewer), verify allowed operations succeed and forbidden ones fail (read, write on each household-scoped table). Race-condition test for concurrent invitation acceptance.
-- [ ] 10.3 **Integration**: `acceptInvitation` atomicity (two simultaneous calls — exactly one succeeds).
-- [ ] 10.4 **Integration**: cascade delete — deleting a household removes members, invitations, and household-scoped data from other tables.
-- [ ] 10.5 **E2E (Playwright)**: full invite-and-accept flow — Alice creates household, copies link, opens new browser context as Bob, accepts, both see same household. Switcher works.
+- [x] 10.1 **Unit (Vitest)**: role helper functions, sole-owner check, invitation expiry helper, name validator.
+- [~] 10.2 **Integration (Vitest + Supabase local)**: RLS — for each role (owner/member/viewer), verify allowed operations succeed and forbidden ones fail (read, write on each household-scoped table). Race-condition test for concurrent invitation acceptance. (Test bodies written in `tests/integration/rls.test.ts`, gated by `TEST_SUPABASE_URL` env var; skipped in this loop because no Supabase local instance is available.)
+- [~] 10.3 **Integration**: `acceptInvitation` atomicity (two simultaneous calls — exactly one succeeds). (Skipped — see 10.2; spec mapping in `tests/integration/acceptInvitation.test.ts`.)
+- [~] 10.4 **Integration**: cascade delete — deleting a household removes members, invitations, and household-scoped data from other tables. (Skipped — see 10.2; `tests/integration/cascadeDelete.test.ts`.)
+- [~] 10.5 **E2E (Playwright)**: full invite-and-accept flow — Alice creates household, copies link, opens new browser context as Bob, accepts, both see same household. Switcher works. (Spec written in `tests/e2e/household-invite.spec.ts` with `test.fixme()` until /dev/login from auth-onboarding ships.)
 - [ ] ~~10.6 **E2E**: Mailpit-based invitation email — Alice sends invitation by email, test reads Mailpit's HTTP API, follows the link as Bob, accepts, verifies membership.~~ (deferred with email-send follow-up change)
-- [ ] 10.7 **E2E**: viewer attempts to add a property → UI blocks AND a direct API call would fail RLS (curl/test with viewer JWT).
+- [~] 10.7 **E2E**: viewer attempts to add a property → UI blocks AND a direct API call would fail RLS (curl/test with viewer JWT). (Spec written in `tests/e2e/household-viewer-rls.spec.ts` with `test.fixme()`; needs both /dev/login and the properties capability for the API write target.)
 
 ## 11. Documentation
 
