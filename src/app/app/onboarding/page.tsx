@@ -1,7 +1,13 @@
+import { redirect } from "next/navigation";
+
 import { OnboardingClient } from "@/components/households/OnboardingClient";
 import { listMyHouseholds } from "@/server/households/listMyHouseholds";
 
 export const dynamic = "force-dynamic";
+
+interface PageProps {
+  searchParams: { force?: string | string[] };
+}
 
 /**
  * Onboarding page.
@@ -13,13 +19,19 @@ export const dynamic = "force-dynamic";
  *   2. show invitation CTAs (Kopier lenke / Hopp over)
  *   3. "Hopp over" navigates to /app
  *
- * Users who already have memberships still see this page (e.g.
- * triggered by the switcher's "Opprett ny husholdning") — it just
- * funnels them through the same form.
+ * Reverse guard (auth-onboarding 5.5): users who already have at least
+ * one household and visit /app/onboarding directly are redirected to
+ * /app. The `?force=1` escape hatch lets the household-switcher's
+ * "Opprett ny husholdning" entry land here on purpose.
  */
-export default async function OnboardingPage() {
+export default async function OnboardingPage({ searchParams }: PageProps) {
   const memberships = await listMyHouseholds();
   const origin = process.env.NEXT_PUBLIC_APP_ORIGIN || "";
+
+  const force = searchParams.force === "1";
+  if (memberships.ok && memberships.data.length > 0 && !force) {
+    redirect("/app");
+  }
 
   return (
     <section

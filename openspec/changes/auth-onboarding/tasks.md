@@ -37,11 +37,11 @@
 
 ## 5. Onboarding page
 
-- [ ] 5.1 `app/app/onboarding/page.tsx` — single-input form: "Hva skal vi kalle husholdningen deres?". On submit, calls `createHousehold` (from `households` capability).
-- [ ] 5.2 After creation, advance to invitation step: invitation link generated immediately, "Kopier invitasjonslenke" button copies it. Helper text per the brief.
-- [ ] 5.3 "Hopp over — legg til senere" button routes to `/app`.
-- [ ] 5.4 Auto-redirect logic: in `app/app/layout.tsx`, if authenticated user has zero households AND not currently on `/app/onboarding`, redirect to `/app/onboarding`.
-- [ ] 5.5 Reverse guard: if user already has at least one household and visits `/app/onboarding` directly, redirect to `/app`.
+- [x] 5.1 `app/app/onboarding/page.tsx` — single-input form: "Hva skal vi kalle husholdningen deres?". On submit, calls `createHousehold` (from `households` capability). — Already shipped by `households`; no changes required.
+- [x] 5.2 After creation, advance to invitation step: invitation link generated immediately, "Kopier invitasjonslenke" button copies it. Helper text per the brief. — Already shipped by `households` (`OnboardingClient`).
+- [x] 5.3 "Hopp over — legg til senere" button routes to `/app`. — Already shipped by `households` (`OnboardingClient` skip handler).
+- [x] 5.4 Auto-redirect logic: in `app/app/layout.tsx`, if authenticated user has zero households AND not currently on `/app/onboarding`, redirect to `/app/onboarding`. Pathname forwarded from middleware via `x-pathname` header.
+- [x] 5.5 Reverse guard: if user already has at least one household and visits `/app/onboarding` directly, redirect to `/app`. Switcher's "Opprett ny husholdning" entry uses `?force=1` to opt out of the guard.
 
 ## 6. Logout action
 

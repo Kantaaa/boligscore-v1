@@ -135,7 +135,7 @@ export function HouseholdSwitcher() {
           </ul>
           <div className="border-t border-border">
             <Link
-              href="/app/onboarding"
+              href="/app/onboarding?force=1"
               role="menuitem"
               onClick={() => setOpen(false)}
               className="flex min-h-touch items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-surface-raised"
