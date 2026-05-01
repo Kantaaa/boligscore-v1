@@ -56,5 +56,5 @@
 
 ## 7. Documentation
 
-- [ ] 7.1 `docs/architecture/scoring.md` — schema, history trigger, RLS, optimistic UI pattern.
-- [ ] 7.2 Update `docs/criteria.md` (from weights capability) to ensure the criteria list is canonical and shared.
+- [x] 7.1 `docs/architecture/scoring.md` — schema, history trigger, RLS, optimistic UI pattern.
+- [x] 7.2 Update `docs/criteria.md` (from weights capability) to ensure the criteria list is canonical and shared. (Added "Consumers" section noting scoring's getCriteria + Fakta virtual section.)

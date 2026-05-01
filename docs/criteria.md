@@ -117,3 +117,20 @@ Making criteria editable would require localization, validation, and
 migration logic for the score history when criteria change. None of
 that is needed for MVP. If the criteria list ever needs to change, we
 ship a new migration.
+
+## Consumers
+
+This list is the canonical source for:
+
+- **`weights`** — seeds 22 rows into `criteria` from the migration
+  above (`20260501000007_weights_criteria_seed.sql`).
+- **`scoring`** — uses `getCriteria()` to render the chip rows on
+  Min vurdering. The grouping by `section_id` matches the 3 sections
+  here. See `docs/architecture/scoring.md`.
+- **`comparison`** — reads the same list to align the felles/din
+  columns. (Future capability — not yet implemented.)
+
+The "Fakta" virtual section (Pris/kvm, Størrelse, Alder) is
+deliberately NOT in the `criteria` table — those values are computed
+on the fly from `properties.{price, bra, year_built}` and rendered
+read-only by `<FaktaSection>` in the scoring UI (D6, D10).
