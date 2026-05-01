@@ -103,6 +103,6 @@ MVP ships **copy-link only**. The "Send via e-post" button is **not** rendered i
 
 ## 11. Documentation
 
-- [ ] 11.1 Update root `README.md` with Supabase CLI local-dev section (Mailpit URL, seed command).
-- [ ] 11.2 Update `README.md` with role explanation table (owner / member / viewer).
-- [ ] 11.3 Add a short `docs/architecture/households.md` summarizing the RLS model and `has_household_role` helper for future contributors.
+- [x] 11.1 Update root `README.md` with Supabase CLI local-dev section (Mailpit URL, seed command).
+- [x] 11.2 Update `README.md` with role explanation table (owner / member / viewer).
+- [x] 11.3 Add a short `docs/architecture/households.md` summarizing the RLS model and `has_household_role` helper for future contributors.
