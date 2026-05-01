@@ -87,6 +87,12 @@ security definer
 set search_path = public
 as $$
 begin
+    -- No-op updates (same score) produce no history row.
+    -- The WHEN clause is on the trigger for UPDATE only; INSERT
+    -- triggers cannot reference OLD, so we re-check here.
+    if tg_op = 'UPDATE' and old.score is not distinct from new.score then
+        return null;
+    end if;
     insert into public.property_score_history
         (property_id, user_id, criterion_id, old_score, new_score, changed_at)
     values
@@ -105,7 +111,6 @@ drop trigger if exists property_scores_history_trg on public.property_scores;
 create trigger property_scores_history_trg
     after insert or update on public.property_scores
     for each row
-    when (old is null or old.score is distinct from new.score)
     execute function public._scoring_score_history_fn();
 
 -- RLS — property_scores -------------------------------------------------------
