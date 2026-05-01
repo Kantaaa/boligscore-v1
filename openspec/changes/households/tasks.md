@@ -18,19 +18,19 @@
 
 ## 3. RLS policies
 
-- [ ] 3.1 Enable RLS on all three tables.
-- [ ] 3.2 Create SQL function `public.has_household_role(hid uuid, roles text[])` returning bool, defined as `SELECT EXISTS(SELECT 1 FROM household_members WHERE household_id = hid AND user_id = auth.uid() AND role = ANY(roles))`. Mark `STABLE` and `SECURITY DEFINER`.
-- [ ] 3.3 `households` policies:
+- [x] 3.1 Enable RLS on all three tables.
+- [x] 3.2 Create SQL function `public.has_household_role(hid uuid, roles text[])` returning bool, defined as `SELECT EXISTS(SELECT 1 FROM household_members WHERE household_id = hid AND user_id = auth.uid() AND role = ANY(roles))`. Mark `STABLE` and `SECURITY DEFINER`.
+- [x] 3.3 `households` policies:
   - SELECT: `EXISTS (SELECT 1 FROM household_members WHERE household_id = households.id AND user_id = auth.uid())`.
   - INSERT: any authenticated user (creator becomes owner via app code or trigger).
   - UPDATE: `has_household_role(id, ARRAY['owner'])`.
   - DELETE: `has_household_role(id, ARRAY['owner'])`.
-- [ ] 3.4 `household_members` policies:
+- [x] 3.4 `household_members` policies:
   - SELECT: must be a member of the same household.
   - INSERT: only via accept-invitation server action OR by an owner.
   - UPDATE (role change): `has_household_role(household_id, ARRAY['owner'])`.
   - DELETE (remove/leave): self OR owner.
-- [ ] 3.5 `household_invitations` policies:
+- [x] 3.5 `household_invitations` policies:
   - SELECT: members of the household OR token-by-token public read for acceptance flow (handled via a `SECURITY DEFINER` function so anonymous can fetch by token).
   - INSERT: `has_household_role(household_id, ARRAY['owner','member'])`.
   - UPDATE (mark accepted): the accepting user only, and only if `accepted_by IS NULL` and `expires_at > now()`.
