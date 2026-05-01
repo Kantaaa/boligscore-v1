@@ -27,20 +27,20 @@
 
 ## 5. UI — Sammenligning tab
 
-- [ ] 5.1 `app/app/bolig/[id]/sammenligning/page.tsx` — server-fetches `getComparison`; passes data + viewer's role to a client component.
-- [ ] 5.2 `<TotalscorePanel>` — renders `Felles` (hero), `Din`, `<Partner>` (small). Warning bar for missing felles count. Empty state for single-member.
-- [ ] 5.3 `<ComparisonMatrix>` — three section blocks; each block renders `<MatrixRow>` per criterion.
-- [ ] 5.4 `<MatrixRow>` — columns `Kriterium | Ine | Kanta | Snitt | Felles`. Highlights row when `|Δ| ≥ threshold`. `Felles` cell is interactive.
-- [ ] 5.5 `<FellesCell>` — clickable; opens `<ChipPickerPopover>`. Shows current felles or snitt placeholder. Disabled for viewer.
-- [ ] 5.6 `<ChipPickerPopover>` — 11 chips arranged 6+5. Selection calls `setFellesScore` then closes. Backdrop tap dismisses without save.
-- [ ] 5.7 Single-member fallback: if `member_count === 1`, render the simplified 2-column matrix and the simplified totalscore panel.
-- [ ] 5.8 3+ member fallback: same simplified UI as single-member case.
+- [x] 5.1 `app/app/bolig/[id]/sammenligning/page.tsx` — server-fetches `getComparison`; passes data + viewer's role to a client component.
+- [x] 5.2 `<TotalscorePanel>` — renders `Felles` (hero), `Din`, `<Partner>` (small). Warning bar for missing felles count. Empty state for single-member.
+- [x] 5.3 `<ComparisonMatrix>` — three section blocks; each block renders `<MatrixRow>` per criterion.
+- [x] 5.4 `<MatrixRow>` — columns `Kriterium | Ine | Kanta | Snitt | Felles`. Highlights row when `|Δ| ≥ threshold`. `Felles` cell is interactive.
+- [x] 5.5 `<FellesCell>` — clickable; opens `<ChipPickerPopover>`. Shows current felles or snitt placeholder. Disabled for viewer.
+- [x] 5.6 `<ChipPickerPopover>` — 11 chips arranged 6+5. Selection calls `setFellesScore` then closes. Backdrop tap dismisses without save.
+- [x] 5.7 Single-member fallback: if `member_count === 1`, render the simplified 2-column matrix and the simplified totalscore panel.
+- [x] 5.8 3+ member fallback: same simplified UI as single-member case (D9).
 
 ## 6. Refresh on focus
 
-- [ ] 6.1 Custom hook `useFocusRefresh(callback, debounceMs = 200)` listens for `visibilitychange` and `focus` events; calls `callback` when the tab becomes visible.
-- [ ] 6.2 Mount the hook in the comparison page client component to refetch `getComparison` on focus.
-- [ ] 6.3 Also refetch after every successful `setFellesScore` (server action returns the new total; client merges).
+- [x] 6.1 Custom hook `useFocusRefresh(callback, debounceMs = 200)` listens for `visibilitychange` and `focus` events; calls `callback` when the tab becomes visible.
+- [x] 6.2 Mount the hook in the comparison page client component to refetch `getComparison` on focus.
+- [x] 6.3 Also refetch after every successful `setFellesScore` (server action returns the new total; client merges).
 
 ## 7. Threshold setting UI
 
