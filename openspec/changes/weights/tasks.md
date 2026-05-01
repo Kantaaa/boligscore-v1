@@ -2,30 +2,30 @@
 
 ## 1. Database schema (criteria seed)
 
-- [ ] 1.1 Migration: create `criterion_sections(id uuid PK default gen_random_uuid(), key text NOT NULL UNIQUE, label text NOT NULL, description text, sort_order int NOT NULL)`.
-- [ ] 1.2 Migration: create `criteria(id uuid PK default gen_random_uuid(), key text NOT NULL UNIQUE, section_id uuid NOT NULL REFERENCES criterion_sections(id), label text NOT NULL, description text, sort_order int NOT NULL)`.
-- [ ] 1.3 Seed three sections: `bolig_innvendig` ("Bolig innvendig"), `beliggenhet_omrade` ("Beliggenhet & område"), `helhet` ("Helhet").
-- [ ] 1.4 Seed 22 criteria with the keys/labels from the design brief:
-  - Bolig innvendig: `kjokken`, `bad`, `planlosning`, `lys_luft`, `oppbevaring`, `stue`, `balkong_terrasse`.
-  - Beliggenhet & område: `omradeinntrykk`, `nabolag`, `transport`, `skoler`.
-  - Helhet: `visningsinntrykk`, `potensial`.
-  - Plus 9 more from v1's `ScoringCriterion` enum that match the brief (audit and reconcile to land on exactly 22). Document the final list in `docs/criteria.md`.
+- [x] 1.1 Migration: create `criterion_sections(id uuid PK default gen_random_uuid(), key text NOT NULL UNIQUE, label text NOT NULL, description text, sort_order int NOT NULL)`. (Stub created in `properties` capability; this capability seeds it.)
+- [x] 1.2 Migration: create `criteria(id uuid PK default gen_random_uuid(), key text NOT NULL UNIQUE, section_id uuid NOT NULL REFERENCES criterion_sections(id), label text NOT NULL, description text, sort_order int NOT NULL)`. (Stub created in `properties` capability; this capability seeds it.)
+- [x] 1.3 Seed three sections: `bolig_innvendig` ("Bolig innvendig"), `beliggenhet_omrade` ("Beliggenhet & område"), `helhet` ("Helhet").
+- [x] 1.4 Seed 22 criteria with the keys/labels from the design brief:
+  - Bolig innvendig: `kjokken`, `bad`, `planlosning`, `lys_luft`, `oppbevaring`, `stue`, `balkong_terrasse`, `antall_soverom`, `antall_bad`.
+  - Beliggenhet & område: `omradeinntrykk`, `nabolagsfolelse`, `transport`, `skoler`, `beliggenhet_makro`, `parkering`, `stoy`.
+  - Helhet: `visningsinntrykk`, `potensial`, `tilstand`, `hage`, `utleiedel`, `solforhold`.
+  - Final list documented in `docs/criteria.md`.
 
 ## 2. Database schema (weight tables)
 
-- [ ] 2.1 Migration: create `household_weights(household_id uuid REFERENCES households(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, weight int NOT NULL default 5 CHECK (weight BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), updated_by uuid REFERENCES auth.users(id), PRIMARY KEY (household_id, criterion_id))`.
-- [ ] 2.2 Migration: create `user_weights(household_id uuid REFERENCES households(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, weight int NOT NULL default 5 CHECK (weight BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (household_id, user_id, criterion_id))`.
-- [ ] 2.3 Trigger on `households` AFTER INSERT: insert 22 rows into `household_weights` for the new household with `weight = 5`.
-- [ ] 2.4 Trigger on `household_members` AFTER INSERT: insert 22 rows into `user_weights` for the new (user × household) with `weight = 5`.
+- [x] 2.1 Migration: create `household_weights(household_id uuid REFERENCES households(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, weight int NOT NULL default 5 CHECK (weight BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), updated_by uuid REFERENCES auth.users(id), PRIMARY KEY (household_id, criterion_id))`. (Stub from `properties`; constraints already match.)
+- [x] 2.2 Migration: create `user_weights(household_id uuid REFERENCES households(id) ON DELETE CASCADE, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE, criterion_id uuid REFERENCES criteria(id) ON DELETE RESTRICT, weight int NOT NULL default 5 CHECK (weight BETWEEN 0 AND 10), updated_at timestamptz NOT NULL default now(), PRIMARY KEY (household_id, user_id, criterion_id))`. (Stub from `properties`; constraints already match.)
+- [x] 2.3 Trigger on `households` AFTER INSERT: insert 22 rows into `household_weights` for the new household with `weight = 5`.
+- [x] 2.4 Trigger on `household_members` AFTER INSERT: insert 22 rows into `user_weights` for the new (user × household) with `weight = 5`.
 
 ## 3. RLS policies
 
-- [ ] 3.1 Enable RLS on `criteria`, `criterion_sections`, `household_weights`, `user_weights`.
-- [ ] 3.2 `criteria` and `criterion_sections`: SELECT for any authenticated user; no writes via API (service-role only via migration).
-- [ ] 3.3 `household_weights` SELECT: caller is member of `household_id`.
-- [ ] 3.4 `household_weights` UPDATE: `has_household_role(household_id, ARRAY['owner','member'])`. INSERT/DELETE blocked at API (handled by trigger only).
-- [ ] 3.5 `user_weights` SELECT: caller is member of `household_id` AND `user_id = auth.uid()` (you can only see your OWN personal weights, not your partner's). INSERT/DELETE blocked at API.
-- [ ] 3.6 `user_weights` UPDATE: same conditions as SELECT (only your own).
+- [x] 3.1 Enable RLS on `criteria`, `criterion_sections`, `household_weights`, `user_weights`. (Already enabled in stub migration.)
+- [x] 3.2 `criteria` and `criterion_sections`: SELECT for any authenticated user; no writes via API (service-role only via migration). (Stub policy retained.)
+- [x] 3.3 `household_weights` SELECT: caller is member of `household_id`. (Stub policy retained.)
+- [x] 3.4 `household_weights` UPDATE: `has_household_role(household_id, ARRAY['owner','member'])`. INSERT/DELETE blocked at API (handled by trigger only).
+- [x] 3.5 `user_weights` SELECT: caller is member of `household_id` AND `user_id = auth.uid()` (you can only see your OWN personal weights, not your partner's). INSERT/DELETE blocked at API. (Stub policy retained.)
+- [x] 3.6 `user_weights` UPDATE: same conditions as SELECT (only your own).
 
 ## 4. Server actions / data layer
 
