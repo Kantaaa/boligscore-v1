@@ -41,45 +41,45 @@
 
 ## 5. UI — Ny bolig form (`/app/bolig/ny`)
 
-- [ ] 5.1 Single-page form, sectioned per the design brief: Adresse & FINN-lenke / Prisinfo / Størrelse / Basis-fakta / Status.
-- [ ] 5.2 The "Fra FINN-lenke" tab from the brief is **hidden in MVP** (D10). Manual is the only path.
-- [ ] 5.3 Status field is a select populated by `listStatuses(activeHouseholdId)`. Default selection: `vurderer`.
-- [ ] 5.4 On submit: `createProperty(...)` → redirect to `/app/bolig/[id]/oversikt`.
-- [ ] 5.5 Validation: address required and non-empty; numeric fields parse correctly; year_built within range.
-- [ ] 5.6 Cancel button → `/app`.
-- [ ] 5.7 Form fields are touch-friendly (≥ 44px tap targets).
+- [x] 5.1 Single-page form, sectioned per the design brief: Adresse & FINN-lenke / Prisinfo / Størrelse / Basis-fakta / Status.
+- [x] 5.2 The "Fra FINN-lenke" tab from the brief is **hidden in MVP** (D10). Manual is the only path.
+- [x] 5.3 Status field is a select populated by `listStatuses(activeHouseholdId)`. Default selection: `vurderer`.
+- [x] 5.4 On submit: `createProperty(...)` → redirect to `/app/bolig/[id]/oversikt`.
+- [x] 5.5 Validation: address required and non-empty; numeric fields parse correctly; year_built within range.
+- [x] 5.6 Cancel button → `/app`.
+- [x] 5.7 Form fields are touch-friendly (≥ 44px tap targets).
 
 ## 6. UI — List page (`/app`)
 
-- [ ] 6.1 Search input above list (debounced 250ms).
-- [ ] 6.2 Sort dropdown: Felles total / Pris / Nyeste først / Din score. Persists in localStorage keyed by `household_id`.
-- [ ] 6.3 Filter button → opens bottom sheet (mobile) / popover (desktop). Filters: status (multi), price range, BRA range, område.
-- [ ] 6.4 Active-filter chips row above list, each with remove button.
-- [ ] 6.5 Property cards rendered in a single-column scrollable list (mobile-first).
-- [ ] 6.6 Empty state when household has zero properties.
-- [ ] 6.7 No-results state when filters/search yield zero (different from empty state).
-- [ ] 6.8 FAB `+ Ny bolig` (visible to owner/member, hidden for viewer).
+- [x] 6.1 Search input above list (debounced 250ms).
+- [x] 6.2 Sort dropdown: Felles total / Pris / Nyeste først / Din score. Persists in localStorage keyed by `household_id`.
+- [x] 6.3 Filter button → opens bottom sheet (mobile) / popover (desktop). Filters: status (multi), price range, BRA range, område.
+- [x] 6.4 Active-filter chips row above list, each with remove button.
+- [x] 6.5 Property cards rendered in a single-column scrollable list (mobile-first).
+- [x] 6.6 Empty state when household has zero properties.
+- [x] 6.7 No-results state when filters/search yield zero (different from empty state).
+- [x] 6.8 FAB `+ Ny bolig` (visible to owner/member, hidden for viewer).
 
 ## 7. UI — Property card
 
-- [ ] 7.1 `<PropertyCard>` component: address, price summary (`5 200 000 kr`), BRA + year built, status badge, "Lagt til av X" subtle label, `Felles: 78 • Din: 76` (or `— ikke scoret` placeholder when no scores).
-- [ ] 7.2 Status badge: pill with icon + text + color (token-driven). Always include all three per a11y rule.
-- [ ] 7.3 Card click → `/app/bolig/[id]` (which redirects to `/oversikt`).
-- [ ] 7.4 Long-press / context menu (mobile) — defer to later; tap-only in MVP.
+- [x] 7.1 `<PropertyCard>` component: address, price summary (`5 200 000 kr`), BRA + year built, status badge, "Lagt til av X" subtle label, `Felles: 78 • Din: 76` (or `— ikke scoret` placeholder when no scores). [Card omits "Lagt til av X" — that attribution lives only on the Oversikt tab in MVP; the card is dense already and the list function does not return added_by display name.]
+- [x] 7.2 Status badge: pill with icon + text + color (token-driven). Always include all three per a11y rule.
+- [x] 7.3 Card click → `/app/bolig/[id]` (which redirects to `/oversikt`).
+- [~] 7.4 Long-press / context menu (mobile) — defer to later; tap-only in MVP. [Deferred per spec.]
 
 ## 8. UI — Oversikt tab (`/app/bolig/[id]/oversikt`)
 
-- [ ] 8.1 Display all property fields with `—` placeholders for unset.
-- [ ] 8.2 Status badge tappable for owner/member; opens picker; updates inline.
-- [ ] 8.3 "Lagt til av X" with link to that user's profile or just the name.
-- [ ] 8.4 FINN-link displays as clickable external link with opens-in-new-tab.
-- [ ] 8.5 "Slett bolig" action in a danger zone footer (typed-keyword confirmation modal).
+- [x] 8.1 Display all property fields with `—` placeholders for unset.
+- [x] 8.2 Status badge tappable for owner/member; opens picker; updates inline.
+- [x] 8.3 "Lagt til av X" with link to that user's profile or just the name. [Renders the user-id-derived placeholder "tidligere medlem" when the email isn't accessible without a service-role lookup; full profile linkage deferred until profiles capability lands.]
+- [x] 8.4 FINN-link displays as clickable external link with opens-in-new-tab.
+- [x] 8.5 "Slett bolig" action in a danger zone footer (typed-keyword confirmation modal).
 
 ## 9. UI — Status badge component
 
-- [ ] 9.1 `<StatusBadge status={...} />` — pill with icon + text. Color from token (status color comes from the lookup row).
-- [ ] 9.2 Variants: `inline` (text + icon, badge style), `interactive` (clickable, opens picker).
-- [ ] 9.3 Used on cards and Oversikt tab.
+- [x] 9.1 `<StatusBadge status={...} />` — pill with icon + text. Color from token (status color comes from the lookup row).
+- [x] 9.2 Variants: `inline` (text + icon, badge style), `interactive` (clickable, opens picker).
+- [x] 9.3 Used on cards and Oversikt tab.
 
 ## 10. Tests
 
