@@ -79,3 +79,87 @@ body {
   background: var(--color-bg);
   color: var(--color-fg);
 }
+
+/*
+ * Vekter sliders. Native <input type="range"> with custom thumb + track.
+ * Thumb size = 44x44px to satisfy the touch-target floor (conventions.md).
+ * Track is colored with the brand primary up to the current value and
+ * the muted border color past it.
+ */
+.vekter-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  height: 44px;
+  margin: 0;
+}
+
+.vekter-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.vekter-slider::-moz-range-track {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.vekter-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  /* Center on the 6px track within a 44px-tall input. */
+  margin-top: -11px;
+}
+
+.vekter-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+
+.vekter-slider:disabled::-webkit-slider-thumb {
+  background: var(--color-fg-muted);
+  cursor: not-allowed;
+}
+
+.vekter-slider:disabled::-moz-range-thumb {
+  background: var(--color-fg-muted);
+  cursor: not-allowed;
+}
+
+/* Saved-flash pulse — used by the "lagret" indicator. */
+@keyframes vekterSavedPulse {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+.vekter-saved {
+  animation: vekterSavedPulse 1200ms ease-out;
+}
