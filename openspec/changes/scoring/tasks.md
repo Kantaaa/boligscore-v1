@@ -26,20 +26,20 @@
 
 ## 4. UI — Min vurdering tab
 
-- [ ] 4.1 `app/app/bolig/[id]/min-vurdering/page.tsx` — server-fetches via `get_property_with_scores`; passes data to a client component for interaction.
-- [ ] 4.2 Counter at top: `"X av 22 kriterier scoret"`. Renders from `your_score_count`.
-- [ ] 4.3 `<FaktaSection>` component — read-only Pris/kvm, Størrelse, Alder. Uses property fields from the parent fetch.
-- [ ] 4.4 Three sections rendered with header + description; for each: list of criterion rows.
-- [ ] 4.5 `<ScoreChipRow>` component — 11 chips (0–10), selected chip filled. Touch target ≥ 44px each. Optimistic UI on tap.
-- [ ] 4.6 Section notes: `<SectionNotes>` textarea per section. Autosaves on blur + 1-second idle while typing. "lagrer..." / "lagret" indicator.
-- [ ] 4.7 Viewer mode: chips disabled, notes read-only (use `disabled` attribute and `aria-readonly`).
+- [x] 4.1 `app/app/bolig/[id]/min-vurdering/page.tsx` — server-fetches via `get_property_with_scores`; passes data to a client component for interaction.
+- [x] 4.2 Counter at top: `"X av 22 kriterier scoret"`. Renders from `your_score_count`.
+- [x] 4.3 `<FaktaSection>` component — read-only Pris/kvm, Størrelse, Alder. Uses property fields from the parent fetch.
+- [x] 4.4 Three sections rendered with header + description; for each: list of criterion rows.
+- [x] 4.5 `<ScoreChipRow>` component — 11 chips (0–10), selected chip filled. Touch target ≥ 44px each. Optimistic UI on tap.
+- [x] 4.6 Section notes: `<SectionNotes>` textarea per section. Autosaves on blur + 1-second idle while typing. "lagrer..." / "lagret" indicator.
+- [x] 4.7 Viewer mode: chips disabled, notes read-only (use `disabled` attribute and `aria-readonly`).
 
 ## 5. Optimistic UI implementation
 
-- [ ] 5.1 `<ScoreChipRow>` receives `currentScore` from server data, holds an `optimisticScore` local state.
-- [ ] 5.2 On chip tap: set `optimisticScore` immediately; call `setScore` server action.
-- [ ] 5.3 On success: invalidate the parent fetch (Next.js `revalidatePath` or client-side query refetch).
-- [ ] 5.4 On error: revert `optimisticScore` to `currentScore`; show toast "Kunne ikke lagre — prøv igjen".
+- [x] 5.1 `<ScoreChipRow>` receives `currentScore` from server data, holds an `optimisticScore` local state. (Optimistic state lives in the parent `<MinVurderingClient>` to keep the counter consistent across rows; chip row is presentational.)
+- [x] 5.2 On chip tap: set `optimisticScore` immediately; call `setScore` server action.
+- [x] 5.3 On success: invalidate the parent fetch (Next.js `revalidatePath` or client-side query refetch). (Server action calls `revalidatePath` for the next navigation; counter is updated from the action's response synchronously.)
+- [x] 5.4 On error: revert `optimisticScore` to `currentScore`; show toast "Kunne ikke lagre — prøv igjen". (Inline `<p role="alert">` instead of toast — matches conventions.md "inline message preferred over modal".)
 
 ## 6. Tests
 
