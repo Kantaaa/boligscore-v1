@@ -44,9 +44,9 @@
 
 ## 7. Threshold setting UI
 
-- [ ] 7.1 In `Husstand` page (or `Meg` → `Innstillinger`): a small section "Uenighetsgrense" with a slider 1–10 (default 3). Owner sees and can edit; non-owners see read-only.
-- [ ] 7.2 Helper text: "Rader hvor dere er uenige med [N] eller mer markeres."
-- [ ] 7.3 On change: call `setDisagreementThreshold`. Comparison views refetch on next focus.
+- [x] 7.1 In `Husstand` page (or `Meg` → `Innstillinger`): a small section "Uenighetsgrense" with a slider 1–10 (default 3). Owner sees and can edit; non-owners see read-only.
+- [x] 7.2 Helper text: "Rader hvor dere er uenige med [N] eller mer markeres."
+- [x] 7.3 On change: call `setDisagreementThreshold`. Comparison views refetch on next focus.
 
 ## 8. Tests
 

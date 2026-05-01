@@ -18,6 +18,8 @@ import type {
   HouseholdWithMembers,
 } from "@/lib/households/types";
 
+import { DisagreementThresholdSection } from "@/components/comparison/DisagreementThresholdSection";
+
 import { Modal } from "./Modal";
 import { RoleBadge } from "./RoleBadge";
 
@@ -64,6 +66,12 @@ export function HusstandClient({
         origin={origin}
         myRole={myRole}
         onChanged={() => router.refresh()}
+      />
+
+      <DisagreementThresholdSection
+        householdId={data.household.id}
+        initialThreshold={data.household.comparison_disagreement_threshold}
+        canEdit={isOwner}
       />
 
       {!isOwner ? (
