@@ -62,5 +62,5 @@
 
 ## 7. Documentation
 
-- [ ] 7.1 `docs/criteria.md` — full list of 22 criteria + 3 sections + descriptions, with the canonical English keys and Norwegian labels.
-- [ ] 7.2 `docs/architecture/weights.md` — schema, triggers, RLS, math contract with comparison.
+- [x] 7.1 `docs/criteria.md` — full list of 22 criteria + 3 sections + descriptions, with the canonical English keys and Norwegian labels.
+- [x] 7.2 `docs/architecture/weights.md` — schema, triggers, RLS, math contract with comparison.
