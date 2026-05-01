@@ -20,10 +20,10 @@
 
 ## 4. Server actions / data layer
 
-- [ ] 4.1 `setFellesScore(propertyId, criterionId, score)` — upsert. Returns the new `felles_total` for client to update without full refetch.
-- [ ] 4.2 `clearFellesScore(propertyId, criterionId)` — DELETE.
-- [ ] 4.3 `getComparison(propertyId)` — wraps `get_property_comparison` SQL function.
-- [ ] 4.4 `setDisagreementThreshold(householdId, threshold)` — owner only.
+- [x] 4.1 `setFellesScore(propertyId, criterionId, score)` — upsert. Returns the new `felles_total` for client to update without full refetch.
+- [x] 4.2 `clearFellesScore(propertyId, criterionId)` — DELETE.
+- [x] 4.3 `getComparison(propertyId)` — wraps `get_property_comparison` SQL function.
+- [x] 4.4 `setDisagreementThreshold(householdId, threshold)` — owner only.
 
 ## 5. UI — Sammenligning tab
 
