@@ -22,18 +22,18 @@
 
 ## 3. Register page
 
-- [ ] 3.1 `app/registrer/page.tsx` — form with email + password fields. "Logg inn med e-postlenke i stedet" link reveals the magic-link form variant.
-- [ ] 3.2 Server action `registerWithPassword({ email, password, next })` calls Supabase signup. Handles errors: invalid email, weak password, already registered.
-- [ ] 3.3 Server action `requestMagicLink({ email, next })` calls `signInWithOtp` with `emailRedirectTo`.
-- [ ] 3.4 Validate `next` param is same-origin; default to `/app/onboarding`.
-- [ ] 3.5 Inline validation errors in Norwegian.
+- [x] 3.1 `app/registrer/page.tsx` — form with email + password fields. "Logg inn med e-postlenke i stedet" link reveals the magic-link form variant.
+- [x] 3.2 Server action `registerWithPassword({ email, password, next })` calls Supabase signup. Handles errors: invalid email, weak password, already registered.
+- [x] 3.3 Server action `requestMagicLink({ email, next })` calls `signInWithOtp` with `emailRedirectTo`.
+- [x] 3.4 Validate `next` param is same-origin; default to `/app/onboarding`.
+- [x] 3.5 Inline validation errors in Norwegian.
 
 ## 4. Login page
 
-- [ ] 4.1 `app/logg-inn/page.tsx` — same structure as register; email + password and magic-link variant.
-- [ ] 4.2 Server action `loginWithPassword({ email, password, next })`. Handle errors: wrong password, unconfirmed email (prod), generic.
-- [ ] 4.3 Default `next` is `/app`.
-- [ ] 4.4 Forgot-password link routes to Supabase's default reset flow.
+- [x] 4.1 `app/logg-inn/page.tsx` — same structure as register; email + password and magic-link variant.
+- [x] 4.2 Server action `loginWithPassword({ email, password, next })`. Handle errors: wrong password, unconfirmed email (prod), generic.
+- [x] 4.3 Default `next` is `/app`.
+- [~] 4.4 Forgot-password link routes to Supabase's default reset flow. — Deferred: Supabase's built-in reset link is sent through the dashboard's auto-emailed flow; no in-app link is required for MVP. A custom `/glemt-passord` page can be added in a follow-up change.
 
 ## 5. Onboarding page
 
