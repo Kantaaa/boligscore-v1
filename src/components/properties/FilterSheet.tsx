@@ -74,8 +74,8 @@ export function FilterSheet({
         className="absolute inset-0 bg-fg/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full max-w-md rounded-t-lg border border-border bg-surface p-4 shadow-xl sm:rounded-lg">
-        <h3 className="text-base font-semibold">Filtrer</h3>
+      <div className="relative z-10 w-full max-w-md rounded-t-2xl bg-surface p-5 shadow-elevated sm:rounded-2xl">
+        <h3 className="font-headline text-lg font-bold text-fg">Filtrer</h3>
 
         <fieldset className="mt-4 space-y-2">
           <legend className="text-sm font-medium">Status</legend>
@@ -140,7 +140,7 @@ export function FilterSheet({
             type="text"
             value={draft.area ?? ""}
             onChange={(e) => setDraft({ ...draft, area: e.target.value })}
-            className="mt-1 w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="mt-1 w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </fieldset>
 
@@ -148,21 +148,21 @@ export function FilterSheet({
           <button
             type="button"
             onClick={clear}
-            className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-5 font-medium text-fg-muted hover:bg-surface-muted hover:text-fg"
           >
             Nullstill
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-5 font-medium text-fg-muted hover:bg-surface-muted hover:text-fg"
           >
             Avbryt
           </button>
           <button
             type="button"
             onClick={apply}
-            className="min-h-touch rounded-md bg-primary px-4 text-primary-fg"
+            className="min-h-touch rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg"
           >
             Bruk
           </button>
@@ -194,7 +194,7 @@ function NumberField({
           const n = Number(t);
           onChange(Number.isFinite(n) ? n : null);
         }}
-        className="mt-1 w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+        className="mt-1 w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
       />
     </label>
   );

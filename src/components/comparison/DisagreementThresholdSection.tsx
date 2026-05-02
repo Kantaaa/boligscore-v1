@@ -95,7 +95,10 @@ export function DisagreementThresholdSection({
       data-testid="threshold-section"
     >
       <div className="space-y-1">
-        <h2 id="hh-threshold-heading" className="text-lg font-semibold">
+        <h2
+          id="hh-threshold-heading"
+          className="font-headline text-xl font-bold text-fg"
+        >
           Uenighetsgrense
         </h2>
         <p className="text-sm text-fg-muted" data-testid="threshold-helper">
@@ -103,7 +106,7 @@ export function DisagreementThresholdSection({
         </p>
       </div>
 
-      <div className="rounded-md border border-border bg-surface-raised p-3">
+      <div className="rounded-xl bg-surface p-4 shadow-sm">
         <label
           htmlFor="threshold-slider"
           className="sr-only"
@@ -172,7 +175,7 @@ export function DisagreementThresholdSection({
           </p>
         ) : null}
         {error ? (
-          <p className="mt-2 text-sm text-status-bud-inne" role="alert">
+          <p className="mt-2 text-sm text-danger" role="alert">
             {error}
           </p>
         ) : null}

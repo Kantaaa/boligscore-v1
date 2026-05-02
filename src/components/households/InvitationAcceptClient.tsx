@@ -54,13 +54,13 @@ export function InvitationAcceptClient({
   if (alreadyMember) {
     return (
       <div className="space-y-3">
-        <div className="rounded-md border border-border bg-surface-raised p-3 text-sm">
+        <div className="rounded-xl bg-surface p-4 text-sm shadow-sm">
           Du er allerede medlem av denne husholdningen
         </div>
         <button
           type="button"
           onClick={() => setActiveAndGo(householdId)}
-          className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg"
+          className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg"
         >
           Bytt til denne husholdningen
         </button>
@@ -74,11 +74,11 @@ export function InvitationAcceptClient({
         type="button"
         onClick={accept}
         disabled={pending}
-        className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+        className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
       >
         Bli med
       </button>
-      {error ? <p className="text-sm text-status-bud-inne">{error}</p> : null}
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
     </div>
   );
 }

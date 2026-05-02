@@ -156,7 +156,7 @@ export function PropertyListClient({
           placeholder="Søk etter adresse"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+          className="w-full min-h-touch rounded-full bg-surface-muted px-5 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
         />
 
         <div className="flex flex-wrap items-center gap-2">
@@ -165,7 +165,7 @@ export function PropertyListClient({
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as PropertySort)}
-              className="min-h-touch rounded-md border border-border bg-surface px-2 text-sm text-fg"
+              className="min-h-touch rounded-full bg-surface-muted px-3 text-sm text-fg shadow-sm focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {SORT_OPTIONS.map((o) => (
                 <option key={o.value} value={o.value}>
@@ -178,7 +178,7 @@ export function PropertyListClient({
           <button
             type="button"
             onClick={() => setFiltersOpen(true)}
-            className="min-h-touch rounded-md border border-border bg-surface px-3 text-sm"
+            className="min-h-touch rounded-full bg-surface-muted px-4 text-sm font-medium text-fg shadow-sm transition hover:bg-surface-strong"
           >
             Filtrer
           </button>
@@ -191,7 +191,7 @@ export function PropertyListClient({
                 <button
                   type="button"
                   onClick={() => setFilters(chip.removeFrom(filters))}
-                  className="inline-flex min-h-touch items-center gap-2 rounded-full border border-border bg-surface-raised px-3 text-xs text-fg"
+                  className="inline-flex min-h-touch items-center gap-2 rounded-full bg-primary-container px-3 text-xs font-medium text-primary-container-fg"
                 >
                   <span>{chip.label}</span>
                   <span aria-hidden>×</span>
@@ -213,7 +213,7 @@ export function PropertyListClient({
       </div>
 
       {error ? (
-        <p className="text-sm text-status-bud-inne">{error}</p>
+        <p className="text-sm text-danger">{error}</p>
       ) : null}
 
       {isEmpty && hasAnyFilter ? (
@@ -250,9 +250,11 @@ export function PropertyListClient({
 
 function EmptyState({ canCreate }: { canCreate: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-border bg-surface p-8 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-2xl bg-surface p-10 text-center shadow-sm">
       <div aria-hidden className="text-5xl">🏡</div>
-      <h2 className="text-lg font-semibold">Ingen boliger ennå</h2>
+      <h2 className="font-headline text-xl font-bold text-fg">
+        Ingen boliger ennå
+      </h2>
       <p className="max-w-md text-sm text-fg-muted">
         Legg til en bolig for å starte vurderingen sammen med
         husstanden.
@@ -260,7 +262,7 @@ function EmptyState({ canCreate }: { canCreate: boolean }) {
       {canCreate ? (
         <a
           href="/app/bolig/ny"
-          className="mt-2 min-h-touch rounded-md bg-primary px-4 py-2 text-primary-fg"
+          className="mt-2 min-h-touch rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg"
         >
           + Legg til bolig
         </a>
@@ -271,8 +273,8 @@ function EmptyState({ canCreate }: { canCreate: boolean }) {
 
 function NoResultsState({ onClear }: { onClear: () => void }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-border bg-surface p-8 text-center">
-      <h2 className="text-lg font-semibold">
+    <div className="flex flex-col items-center gap-3 rounded-2xl bg-surface p-10 text-center shadow-sm">
+      <h2 className="font-headline text-xl font-bold text-fg">
         Ingen boliger matcher filtrene
       </h2>
       <p className="text-sm text-fg-muted">
@@ -281,7 +283,7 @@ function NoResultsState({ onClear }: { onClear: () => void }) {
       <button
         type="button"
         onClick={onClear}
-        className="mt-2 min-h-touch rounded-md border border-border bg-surface px-4 py-2"
+        className="mt-2 min-h-touch rounded-full bg-surface-muted px-6 py-2 font-medium text-fg-muted hover:bg-surface-strong hover:text-fg"
       >
         Fjern filtre
       </button>

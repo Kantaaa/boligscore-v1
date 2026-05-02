@@ -46,7 +46,7 @@ export function Modal({
         className="absolute inset-0 bg-fg/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative z-10 w-full max-w-md rounded-lg border border-border bg-surface p-6 shadow-xl">
+      <div className="relative z-10 w-full max-w-md rounded-2xl bg-surface p-6 shadow-elevated">
         {children}
       </div>
     </div>

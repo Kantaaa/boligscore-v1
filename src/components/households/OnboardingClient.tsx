@@ -102,13 +102,13 @@ export function OnboardingClient({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="f.eks. Ine & Kanta"
-          className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+          className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
         />
-        {error ? <p className="text-sm text-status-bud-inne">{error}</p> : null}
+        {error ? <p className="text-sm text-danger">{error}</p> : null}
         <button
           type="submit"
           disabled={pending || name.trim().length === 0}
-          className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+          className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
         >
           Opprett husholdning
         </button>
@@ -119,9 +119,11 @@ export function OnboardingClient({
   // step.kind === "invite"
   return (
     <div className="space-y-4">
-      <div className="rounded-md border border-border bg-surface-raised p-3">
+      <div className="rounded-xl bg-surface p-4 shadow-sm">
         <p className="text-sm text-fg-muted">Husholdningen er klar:</p>
-        <p className="text-lg font-semibold">{step.householdName}</p>
+        <p className="font-headline text-xl font-bold text-fg">
+          {step.householdName}
+        </p>
       </div>
 
       <p className="text-fg">Vil du invitere noen med en gang?</p>
@@ -130,7 +132,7 @@ export function OnboardingClient({
         type="button"
         onClick={generateAndCopy}
         disabled={pending}
-        className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+        className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
       >
         {step.link
           ? copyState === "copied"
@@ -145,13 +147,13 @@ export function OnboardingClient({
         </code>
       ) : null}
 
-      {error ? <p className="text-sm text-status-bud-inne">{error}</p> : null}
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
 
       <button
         type="button"
         onClick={skip}
         disabled={pending}
-        className="min-h-touch w-full rounded-md border border-border bg-surface-raised px-4 text-fg"
+        className="min-h-touch w-full rounded-full bg-surface-muted px-6 font-medium text-fg-muted hover:bg-surface-strong hover:text-fg"
       >
         Hopp over
       </button>

@@ -50,9 +50,10 @@ export function MatrixRow({
           ? "grid-cols-[2fr_repeat(4,minmax(0,1fr))]"
           : "grid-cols-[2fr_minmax(0,1fr)_minmax(0,1fr)]",
         flagged
-          // Soft-yellow disagreement highlight. Uses a Tailwind utility
-          // chain that's defensible in both light/dark themes.
-          ? "rounded-md bg-amber-100/60 dark:bg-amber-300/10"
+          // Disagreement highlight uses the accent-container token
+          // (warm pale yellow in light, muted yellow in dark) so it
+          // reads cohesively with the rest of the M3 palette.
+          ? "rounded-md bg-accent-container"
           : "",
       ].join(" ")}
     >

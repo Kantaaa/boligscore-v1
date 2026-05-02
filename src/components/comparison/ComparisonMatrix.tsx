@@ -76,11 +76,11 @@ export function ComparisonMatrix({
         <section
           key={block.section_id}
           aria-labelledby={`comparison-section-${block.section_id}`}
-          className="space-y-2 rounded-lg border border-border bg-surface p-4"
+          className="space-y-3 rounded-xl bg-surface p-5 shadow-sm"
         >
           <h3
             id={`comparison-section-${block.section_id}`}
-            className="text-lg font-semibold text-fg"
+            className="font-headline text-xl font-bold text-fg"
           >
             {block.section_label}
           </h3>
@@ -106,7 +106,7 @@ export function ComparisonMatrix({
             <span className="text-center">Felles</span>
           </div>
 
-          <ul className="divide-y divide-border">
+          <ul className="divide-y divide-border-soft">
             {block.rows.map((row) => (
               <MatrixRow
                 key={row.criterion_id}

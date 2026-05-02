@@ -96,7 +96,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             aria-invalid={addressError ? "true" : "false"}
             aria-describedby={addressError ? "ny-address-error" : undefined}
             placeholder="Storgata 1, 0182 Oslo"
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="FINN-lenke (valgfritt)" htmlFor="ny-finn">
@@ -105,7 +105,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             name="finn_link"
             type="url"
             placeholder="https://www.finn.no/realestate/homes/ad.html?finnkode=..."
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
       </Section>
@@ -118,7 +118,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={0}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Omkostninger (kr)" htmlFor="ny-costs">
@@ -128,7 +128,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={0}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Felleskostnader (kr/mnd)" htmlFor="ny-monthly">
@@ -138,7 +138,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={0}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
       </Section>
@@ -152,7 +152,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             inputMode="decimal"
             min={0}
             step="0.1"
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Primærrom" htmlFor="ny-primary-rooms">
@@ -162,7 +162,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={0}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Soverom" htmlFor="ny-bedrooms">
@@ -172,7 +172,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={0}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Bad" htmlFor="ny-bathrooms">
@@ -183,7 +183,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             inputMode="decimal"
             min={0}
             step="0.5"
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
       </Section>
@@ -196,7 +196,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             type="number"
             inputMode="numeric"
             min={1800}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Boligtype" htmlFor="ny-type">
@@ -205,7 +205,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             name="property_type"
             type="text"
             placeholder="Leilighet, enebolig, …"
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
         <Field label="Etasje" htmlFor="ny-floor">
@@ -214,7 +214,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             name="floor"
             type="text"
             placeholder="2. etasje"
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </Field>
       </Section>
@@ -225,7 +225,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
             id="ny-status"
             name="status_id"
             defaultValue={defaultStatus?.id ?? ""}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {statuses.map((s) => (
               <option key={s.id} value={s.id}>
@@ -239,7 +239,7 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
       {error ? (
         <p
           role="alert"
-          className="rounded-md border border-status-bud-inne/50 bg-status-bud-inne/10 px-3 py-2 text-sm text-status-bud-inne"
+          className="rounded-md bg-status-bud-inne px-3 py-2 text-sm text-status-bud-inne-fg"
         >
           {error}
         </p>
@@ -250,14 +250,14 @@ export function NyBoligForm({ statuses }: NyBoligFormProps) {
           type="button"
           onClick={() => router.push("/app")}
           disabled={pending}
-          className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+          className="min-h-touch rounded-full px-5 text-fg hover:bg-surface-muted"
         >
           Avbryt
         </button>
         <button
           type="submit"
           disabled={pending}
-          className="min-h-touch rounded-md bg-primary px-4 py-2 text-primary-fg disabled:opacity-60"
+          className="min-h-touch rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
         >
           {pending ? "Lagrer…" : "Legg til bolig"}
         </button>
@@ -275,7 +275,7 @@ function Section({
 }) {
   return (
     <section className="space-y-3 rounded-lg border border-border bg-surface p-4">
-      <h2 className="text-base font-semibold">{title}</h2>
+      <h2 className="font-headline text-lg font-bold text-fg">{title}</h2>
       <div className="space-y-3">{children}</div>
     </section>
   );
@@ -299,7 +299,7 @@ function Field({
       <label htmlFor={htmlFor} className="block text-sm text-fg-muted">
         {label}
         {required ? (
-          <span aria-hidden className="ml-1 text-status-bud-inne">
+          <span aria-hidden className="ml-1 text-danger">
             *
           </span>
         ) : null}
@@ -310,7 +310,7 @@ function Field({
         <p
           id={`${htmlFor}-error`}
           role="alert"
-          className="text-xs text-status-bud-inne"
+          className="text-xs text-danger"
         >
           {error || EMPTY_ADDRESS_MESSAGE}
         </p>

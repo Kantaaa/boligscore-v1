@@ -26,7 +26,7 @@ export function SignOutButton() {
       type="button"
       onClick={onClick}
       disabled={pending}
-      className="min-h-touch w-full rounded-md border border-border bg-surface px-4 text-fg hover:bg-surface-raised disabled:opacity-60"
+      className="min-h-touch w-full rounded-full bg-surface-muted px-6 font-medium text-fg shadow-sm transition hover:bg-surface-strong disabled:opacity-60"
     >
       {pending ? "Logger ut…" : "Logg ut"}
     </button>

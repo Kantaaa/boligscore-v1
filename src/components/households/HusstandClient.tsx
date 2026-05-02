@@ -125,7 +125,7 @@ function HouseholdNameSection({
 
   return (
     <section aria-labelledby="hh-name-heading" className="space-y-2">
-      <h2 id="hh-name-heading" className="text-lg font-semibold">
+      <h2 id="hh-name-heading" className="font-headline text-xl font-bold text-fg">
         Husholdning
       </h2>
       {!editing ? (
@@ -154,15 +154,15 @@ function HouseholdNameSection({
             type="text"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+            className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
           />
-          {error ? <p className="text-sm text-status-bud-inne">{error}</p> : null}
+          {error ? <p className="text-sm text-danger">{error}</p> : null}
           <div className="flex gap-2">
             <button
               type="button"
               onClick={save}
               disabled={pending}
-              className="min-h-touch rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+              className="min-h-touch rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
             >
               Lagre
             </button>
@@ -170,7 +170,7 @@ function HouseholdNameSection({
               type="button"
               onClick={() => setEditing(false)}
               disabled={pending}
-              className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+              className="min-h-touch rounded-full px-5 text-fg hover:bg-surface-muted"
             >
               Avbryt
             </button>
@@ -198,7 +198,7 @@ function MembersSection({
 }) {
   return (
     <section aria-labelledby="hh-members-heading" className="space-y-3">
-      <h2 id="hh-members-heading" className="text-lg font-semibold">
+      <h2 id="hh-members-heading" className="font-headline text-xl font-bold text-fg">
         Medlemmer ({members.length})
       </h2>
       <ul className="space-y-2">
@@ -265,7 +265,7 @@ function MemberRow({
   }
 
   return (
-    <li className="rounded-md border border-border bg-surface-raised px-3 py-2">
+    <li className="rounded-xl bg-surface px-4 py-3 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
           <span className="text-fg" aria-label="Medlem">
@@ -301,7 +301,7 @@ function MemberRow({
         </div>
       </div>
       {error ? (
-        <p className="mt-2 text-sm text-status-bud-inne">{error}</p>
+        <p className="mt-2 text-sm text-danger">{error}</p>
       ) : null}
 
       <Modal
@@ -320,14 +320,14 @@ function MemberRow({
           husholdningen.
         </p>
         {error ? (
-          <p className="mt-2 text-sm text-status-bud-inne">{error}</p>
+          <p className="mt-2 text-sm text-danger">{error}</p>
         ) : null}
         <div className="mt-4 flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setConfirmRemove(false)}
             disabled={pending}
-            className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-5 text-fg hover:bg-surface-muted"
           >
             Avbryt
           </button>
@@ -335,7 +335,7 @@ function MemberRow({
             type="button"
             onClick={remove}
             disabled={pending}
-            className="min-h-touch rounded-md bg-status-bud-inne px-4 text-white"
+            className="min-h-touch rounded-full bg-danger px-5 font-medium text-danger-fg shadow-sm hover:brightness-110"
           >
             Fjern
           </button>
@@ -406,7 +406,7 @@ function InvitationsSection({
 
   return (
     <section aria-labelledby="hh-inv-heading" className="space-y-3">
-      <h2 id="hh-inv-heading" className="text-lg font-semibold">
+      <h2 id="hh-inv-heading" className="font-headline text-xl font-bold text-fg">
         Invitasjoner
       </h2>
 
@@ -435,7 +435,7 @@ function InvitationsSection({
             Generer invitasjonslenke
           </button>
           {error ? (
-            <p className="text-sm text-status-bud-inne">{error}</p>
+            <p className="text-sm text-danger">{error}</p>
           ) : null}
           {createdLink ? (
             <div className="mt-2 space-y-2 rounded-md border border-border bg-surface p-2">
@@ -542,7 +542,7 @@ function LeaveSection({
 
   return (
     <section aria-labelledby="hh-leave-heading" className="space-y-2">
-      <h2 id="hh-leave-heading" className="text-lg font-semibold">
+      <h2 id="hh-leave-heading" className="font-headline text-xl font-bold text-fg">
         Forlat husholdning
       </h2>
       <button
@@ -566,14 +566,14 @@ function LeaveSection({
           husholdningen.
         </p>
         {error ? (
-          <p className="mt-2 text-sm text-status-bud-inne">{error}</p>
+          <p className="mt-2 text-sm text-danger">{error}</p>
         ) : null}
         <div className="mt-4 flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setOpen(false)}
             disabled={pending}
-            className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-5 text-fg hover:bg-surface-muted"
           >
             Avbryt
           </button>
@@ -581,7 +581,7 @@ function LeaveSection({
             type="button"
             onClick={go}
             disabled={pending}
-            className="min-h-touch rounded-md bg-status-bud-inne px-4 text-white"
+            className="min-h-touch rounded-full bg-danger px-5 font-medium text-danger-fg shadow-sm hover:brightness-110"
           >
             Forlat
           </button>
@@ -627,7 +627,7 @@ function DangerZoneSection({
     >
       <h2
         id="hh-danger-heading"
-        className="text-lg font-semibold text-status-bud-inne"
+        className="font-headline text-xl font-bold text-danger"
       >
         Faresone
       </h2>
@@ -641,7 +641,7 @@ function DangerZoneSection({
           setTyped("");
           setOpen(true);
         }}
-        className="min-h-touch rounded-md bg-status-bud-inne px-4 text-white"
+        className="min-h-touch rounded-full bg-danger px-5 font-medium text-danger-fg shadow-sm hover:brightness-110"
       >
         Slett husholdning
       </button>
@@ -670,14 +670,14 @@ function DangerZoneSection({
           autoFocus
         />
         {error ? (
-          <p className="mt-2 text-sm text-status-bud-inne">{error}</p>
+          <p className="mt-2 text-sm text-danger">{error}</p>
         ) : null}
         <div className="mt-4 flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setOpen(false)}
             disabled={pending}
-            className="min-h-touch rounded-md px-4 text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-5 text-fg hover:bg-surface-muted"
           >
             Avbryt
           </button>

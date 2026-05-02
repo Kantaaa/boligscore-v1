@@ -19,7 +19,7 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       aria-pressed={isDark}
       aria-label={isDark ? "Bytt til lyst tema" : "Bytt til mørkt tema"}
-      className="inline-flex min-h-touch min-w-touch items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-fg hover:bg-surface-raised"
+      className="inline-flex min-h-touch min-w-touch items-center justify-center gap-2 rounded-full bg-surface-muted px-5 py-2 font-medium text-fg shadow-sm transition hover:bg-surface-strong"
     >
       <span aria-hidden className="text-lg">
         {isDark ? "☀" : "☾"}

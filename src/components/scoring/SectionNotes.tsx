@@ -116,7 +116,7 @@ export function SectionNotes({
           if (!readOnly) handleBlur();
         }}
         className={[
-          "min-h-[5.5rem] w-full resize-y rounded-md border border-border bg-bg px-3 py-2 text-sm text-fg",
+          "min-h-[5.5rem] w-full resize-y rounded-lg bg-surface-muted px-4 py-3 text-sm text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
           readOnly ? "cursor-default opacity-80" : "",
         ].join(" ")}
@@ -133,7 +133,7 @@ export function SectionNotes({
             <span className="text-primary">✓ {NOTES_SAVED_LABEL}</span>
           ) : null}
           {state === "error" && error ? (
-            <span role="alert" className="text-status-bud-inne">
+            <span role="alert" className="text-danger">
               {error}
             </span>
           ) : null}

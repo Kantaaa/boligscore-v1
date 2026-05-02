@@ -74,10 +74,12 @@ export function ChipPickerPopover({
       />
       <div
         ref={ref}
-        className="relative z-10 w-full max-w-sm rounded-lg border border-border bg-surface p-4 shadow-xl"
+        className="relative z-10 w-full max-w-sm rounded-2xl bg-surface p-5 shadow-elevated"
         data-testid="chip-picker-popover"
       >
-        <p className="mb-3 text-sm font-medium text-fg">Velg felles score</p>
+        <p className="mb-3 font-headline text-base font-bold text-fg">
+          Velg felles score
+        </p>
         {/* 6 chips top, 5 chips bottom */}
         <div className="grid grid-cols-6 gap-2">
           {Array.from({ length: 11 }, (_, i) => i).map((n) => {
@@ -91,11 +93,11 @@ export function ChipPickerPopover({
                 aria-label={`Felles: ${n}`}
                 onClick={() => onSelect(n)}
                 className={[
-                  "min-h-touch rounded-md border px-2 py-2 text-sm font-medium tabular-nums",
-                  "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  "min-h-touch rounded-md px-2 py-2 text-sm font-medium tabular-nums",
+                  "transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                   selected
-                    ? "border-primary bg-primary text-primary-fg"
-                    : "border-border bg-surface text-fg hover:bg-surface-raised",
+                    ? "bg-primary text-primary-fg shadow-sm"
+                    : "bg-surface-strong text-fg-muted hover:bg-surface-stronger hover:text-fg",
                 ].join(" ")}
               >
                 {n}
@@ -103,12 +105,12 @@ export function ChipPickerPopover({
             );
           })}
         </div>
-        <div className="mt-4 flex justify-end gap-2">
+        <div className="mt-5 flex justify-end gap-2">
           {onClear ? (
             <button
               type="button"
               onClick={onClear}
-              className="min-h-touch rounded-md px-3 text-sm text-status-bud-inne hover:bg-status-bud-inne/10"
+              className="min-h-touch rounded-full px-4 text-sm font-medium text-danger hover:bg-status-bud-inne/15"
             >
               Fjern felles
             </button>
@@ -116,7 +118,7 @@ export function ChipPickerPopover({
           <button
             type="button"
             onClick={onDismiss}
-            className="min-h-touch rounded-md px-3 text-sm text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full px-4 text-sm font-medium text-fg hover:bg-surface-muted"
           >
             Avbryt
           </button>

@@ -58,9 +58,9 @@ export function StatusPicker({
       />
       <div
         ref={dialogRef}
-        className="relative z-10 w-full max-w-md rounded-t-lg border border-border bg-surface p-4 shadow-xl sm:rounded-lg"
+        className="relative z-10 w-full max-w-md rounded-t-2xl bg-surface p-5 shadow-elevated sm:rounded-2xl"
       >
-        <h3 className="text-base font-semibold">Velg status</h3>
+        <h3 className="font-headline text-lg font-bold text-fg">Velg status</h3>
         <ul className="mt-3 flex flex-wrap gap-2">
           {statuses.map((s) => (
             <li key={s.id}>
