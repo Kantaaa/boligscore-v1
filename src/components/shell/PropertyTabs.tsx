@@ -40,9 +40,9 @@ export function PropertyTabs({ propertyId }: PropertyTabsProps) {
     <div
       role="tablist"
       aria-label="Boligfaner"
-      className="-mx-4 mb-4 overflow-x-auto border-b border-border"
+      className="sticky top-16 z-20 -mx-4 mb-6 overflow-x-auto bg-surface-raised hide-scrollbar"
     >
-      <ul className="flex min-w-max gap-1 px-4">
+      <ul className="flex min-w-max gap-6 px-4 sm:px-6">
         {TABS.map((tab) => {
           const href = `/app/bolig/${propertyId}/${tab.slug}`;
           const active = pathname.startsWith(href);
@@ -54,11 +54,11 @@ export function PropertyTabs({ propertyId }: PropertyTabsProps) {
                 aria-selected={active}
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "inline-flex min-h-touch items-center px-3 py-2 text-sm",
-                  "border-b-2 -mb-px",
+                  "inline-flex min-h-touch items-center whitespace-nowrap py-3 text-sm transition",
+                  "border-b-2",
                   active
-                    ? "border-primary text-primary font-semibold"
-                    : "border-transparent text-fg-muted hover:text-fg",
+                    ? "border-primary font-bold text-primary"
+                    : "border-transparent font-medium text-fg-muted hover:text-fg",
                 ].join(" ")}
               >
                 {tab.label}

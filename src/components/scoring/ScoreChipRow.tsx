@@ -49,13 +49,13 @@ export function ScoreChipRow({
             disabled={disabled}
             onClick={() => onSelect(n)}
             className={[
-              "min-h-touch min-w-touch flex-1 basis-[calc(11.111%-0.25rem)] rounded-md border px-2 py-2 text-sm font-medium tabular-nums",
-              "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+              "min-h-touch min-w-touch flex-1 basis-[calc(11.111%-0.25rem)] rounded-md px-2 py-2 text-sm font-medium tabular-nums",
+              "transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
               selected
-                ? "border-primary bg-primary text-primary-fg"
-                : "border-border bg-surface text-fg hover:bg-surface-raised",
+                ? "bg-primary text-primary-fg shadow-sm"
+                : "bg-surface-strong text-fg-muted hover:bg-surface-stronger hover:text-fg",
               disabled
-                ? "cursor-not-allowed opacity-60 hover:bg-surface"
+                ? "cursor-not-allowed opacity-60 hover:bg-surface-strong"
                 : "cursor-pointer",
             ].join(" ")}
           >

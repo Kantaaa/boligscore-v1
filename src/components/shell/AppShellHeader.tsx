@@ -13,11 +13,11 @@ import { HouseholdSwitcher } from "@/components/households/HouseholdSwitcher";
  */
 export function AppShellHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur supports-[backdrop-filter]:bg-surface/70">
-      <div className="mx-auto flex h-14 max-w-content items-center justify-between px-4">
+    <header className="sticky top-0 z-30 bg-surface-raised/90 backdrop-blur supports-[backdrop-filter]:bg-surface-raised/70">
+      <div className="mx-auto flex h-16 max-w-content items-center justify-between px-4 sm:px-6">
         <Link
           href="/app"
-          className="inline-flex min-h-touch items-center text-base font-semibold text-fg"
+          className="inline-flex min-h-touch items-center font-headline text-xl font-extrabold tracking-tight text-fg"
         >
           Boligscore
         </Link>

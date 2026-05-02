@@ -54,12 +54,12 @@ export function TotalscorePanel({
     return (
       <section
         aria-label="Totalscore"
-        className="space-y-3 rounded-lg border border-border bg-surface p-4"
+        className="space-y-3 rounded-xl bg-surface p-5 shadow-md"
       >
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-medium text-fg-muted">Din total:</span>
           <span
-            className="text-3xl font-bold tabular-nums text-fg"
+            className="font-headline text-4xl font-extrabold tabular-nums text-fg"
             data-testid="din-total"
           >
             {yourTotal !== null ? yourTotal : NOT_ENOUGH_DATA_MESSAGE}
@@ -75,13 +75,15 @@ export function TotalscorePanel({
   return (
     <section
       aria-label="Totalscore"
-      className="space-y-3 rounded-lg border border-border bg-surface p-4"
+      className="space-y-4 rounded-xl bg-surface p-5 shadow-md"
     >
       <div className="flex flex-col items-baseline gap-1">
-        <span className="text-sm font-medium text-fg-muted">Felles</span>
+        <span className="text-xs font-medium uppercase tracking-wide text-fg-muted">
+          Felles
+        </span>
         <div className="flex items-baseline gap-2">
           <span
-            className="text-4xl font-bold tabular-nums text-fg"
+            className="font-headline text-5xl font-extrabold tabular-nums text-primary"
             data-testid="felles-total"
           >
             {fellesTotal !== null ? fellesTotal : NOT_ENOUGH_DATA_MESSAGE}
@@ -92,11 +94,11 @@ export function TotalscorePanel({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-x-6 gap-y-2 pt-1 text-sm">
+      <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border-soft pt-3 text-sm">
         <div className="flex items-baseline gap-2">
           <span className="text-fg-muted">Din:</span>
           <span
-            className="text-base font-semibold tabular-nums text-fg"
+            className="font-headline text-lg font-bold tabular-nums text-fg"
             data-testid="din-total"
           >
             {yourTotal !== null ? yourTotal : NOT_ENOUGH_DATA_MESSAGE}
@@ -106,7 +108,7 @@ export function TotalscorePanel({
           <div className="flex items-baseline gap-2">
             <span className="text-fg-muted">{partnerName}:</span>
             <span
-              className="text-base font-semibold tabular-nums text-fg"
+              className="font-headline text-lg font-bold tabular-nums text-fg"
               data-testid="partner-total"
             >
               {partnerTotal !== null
@@ -120,7 +122,7 @@ export function TotalscorePanel({
       {showWarning ? (
         <p
           role="status"
-          className="rounded-md border border-status-bud-inne/40 bg-status-bud-inne/10 px-3 py-2 text-sm text-fg"
+          className="rounded-md bg-status-i-budrunde px-3 py-2 text-sm text-status-i-budrunde-fg"
           data-testid="missing-felles-warning"
         >
           {formatMissingFellesWarning(missingFelles)}

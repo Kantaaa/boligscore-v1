@@ -21,11 +21,13 @@ export function PropertyCard({ row }: { row: PropertyListRow }) {
   return (
     <Link
       href={`/app/bolig/${row.id}`}
-      className="block rounded-lg border border-border bg-surface p-3 transition hover:bg-surface-raised focus:bg-surface-raised"
+      className="block rounded-xl bg-surface p-4 shadow-sm transition hover:shadow-md focus:shadow-md"
     >
       <article className="space-y-2">
         <header className="flex items-start justify-between gap-3">
-          <h3 className="text-base font-semibold text-fg">{row.address}</h3>
+          <h3 className="font-headline text-lg font-bold text-fg">
+            {row.address}
+          </h3>
           <StatusBadge
             status={{
               label: row.status_label,

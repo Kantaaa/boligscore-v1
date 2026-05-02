@@ -57,10 +57,10 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Hovednavigasjon"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80"
+      className="fixed inset-x-0 bottom-0 z-40 rounded-t-2xl bg-surface/95 shadow-bottom-nav backdrop-blur supports-[backdrop-filter]:bg-surface/80"
       style={{ height: "var(--bottom-nav-h)" }}
     >
-      <ul className="mx-auto flex h-full max-w-content items-stretch">
+      <ul className="mx-auto flex h-full max-w-content items-center justify-around px-3">
         {DESTINATIONS.map((dest) => {
           const active = dest.isActive(pathname);
           return (
@@ -69,13 +69,13 @@ export function BottomNav() {
                 href={dest.href}
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "flex h-full min-h-touch flex-col items-center justify-center gap-0.5 px-2 text-xs",
+                  "mx-auto flex min-h-touch w-full max-w-[88px] flex-col items-center justify-center gap-0.5 rounded-2xl px-2 py-1.5 text-[11px] font-medium uppercase tracking-wide transition",
                   active
-                    ? "text-primary font-semibold"
-                    : "text-fg-muted hover:text-fg",
+                    ? "bg-primary text-primary-fg shadow-sm"
+                    : "text-fg-muted opacity-80 hover:opacity-100",
                 ].join(" ")}
               >
-                <span aria-hidden className="text-lg">
+                <span aria-hidden className="text-lg leading-none">
                   {dest.icon}
                 </span>
                 <span>{dest.label}</span>

@@ -123,17 +123,36 @@ export function MinVurderingClient({
     return r.ok ? null : r.error || SCORE_SAVE_FAILED_MESSAGE;
   }
 
+  const progressPct = Math.round(
+    (counter / Math.max(property.total_criteria, 1)) * 100,
+  );
+
   return (
-    <div className="space-y-4">
-      <header className="space-y-1">
-        <h2 className="text-xl font-semibold">Min vurdering</h2>
-        <p
-          className="text-sm text-fg-muted"
+    <div className="space-y-6">
+      <header className="space-y-3">
+        <h2 className="font-headline text-2xl font-extrabold tracking-tight text-fg">
+          Vurder boligen
+        </h2>
+        <p className="text-sm text-fg-muted">
+          Sett poeng fra 0–10 på hvor godt boligen treffer på deres felles
+          kriterier.
+        </p>
+        <div
+          className="flex items-center justify-between gap-4 rounded-xl bg-surface-muted p-4"
           aria-live="polite"
           data-testid="score-counter"
         >
-          {formatScoreCounter(counter, property.total_criteria)}
-        </p>
+          <span className="text-sm font-semibold text-primary">
+            {formatScoreCounter(counter, property.total_criteria)}
+          </span>
+          <div className="h-2 flex-1 max-w-[55%] overflow-hidden rounded-full bg-surface-stronger">
+            <div
+              className="h-full rounded-full bg-primary transition-all"
+              style={{ width: `${progressPct}%` }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
         {readOnly ? (
           <p className="text-xs text-fg-muted">
             Du har observatør-tilgang og kan ikke endre vurderingen.
@@ -144,7 +163,7 @@ export function MinVurderingClient({
       {error ? (
         <p
           role="alert"
-          className="rounded-md border border-status-bud-inne/40 bg-status-bud-inne/10 px-3 py-2 text-sm text-fg"
+          className="rounded-md bg-status-bud-inne px-3 py-2 text-sm text-status-bud-inne-fg"
           data-testid="score-error"
         >
           {error}
@@ -191,12 +210,12 @@ function ScoreSection({
   return (
     <section
       aria-labelledby={`score-section-${section.key}`}
-      className="space-y-4 rounded-lg border border-border bg-surface p-4"
+      className="space-y-5 rounded-xl bg-surface p-5 shadow-sm"
     >
       <header className="space-y-1">
         <h3
           id={`score-section-${section.key}`}
-          className="text-lg font-semibold text-fg"
+          className="font-headline text-xl font-bold text-fg"
         >
           {section.label}
         </h3>

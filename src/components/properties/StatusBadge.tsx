@@ -14,21 +14,20 @@ import type { PropertyStatus } from "@/lib/properties/types";
  * literal class strings at build time.
  */
 
-const STATUS_BG: Record<string, string> = {
-  "status-favoritt": "bg-status-favoritt/20 border-status-favoritt/60",
-  "status-vurderer": "bg-status-vurderer/20 border-status-vurderer/60",
-  "status-paa-visning":
-    "bg-status-paa-visning/20 border-status-paa-visning/60",
-  "status-i-budrunde":
-    "bg-status-i-budrunde/20 border-status-i-budrunde/60",
-  "status-bud-inne": "bg-status-bud-inne/20 border-status-bud-inne/60",
-  "status-kjopt": "bg-status-kjopt/20 border-status-kjopt/60",
-  "status-ikke-aktuell":
-    "bg-status-ikke-aktuell/20 border-status-ikke-aktuell/60",
+// Paired bg + fg per status — both tokens defined in globals.css and
+// matched for WCAG AA contrast in both themes.
+const STATUS_CLASS: Record<string, string> = {
+  "status-favoritt": "bg-status-favoritt text-status-favoritt-fg",
+  "status-vurderer": "bg-status-vurderer text-status-vurderer-fg",
+  "status-paa-visning": "bg-status-paa-visning text-status-paa-visning-fg",
+  "status-i-budrunde": "bg-status-i-budrunde text-status-i-budrunde-fg",
+  "status-bud-inne": "bg-status-bud-inne text-status-bud-inne-fg",
+  "status-kjopt": "bg-status-kjopt text-status-kjopt-fg",
+  "status-ikke-aktuell": "bg-status-ikke-aktuell text-status-ikke-aktuell-fg",
 };
 
 function statusClass(token: string): string {
-  return STATUS_BG[token] ?? "bg-surface-raised border-border";
+  return STATUS_CLASS[token] ?? "bg-surface-strong text-fg";
 }
 
 interface StatusBadgeProps {
@@ -47,10 +46,10 @@ export function StatusBadge({
   className,
 }: StatusBadgeProps) {
   const cls = [
-    "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium",
+    "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",
     statusClass(status.color),
     variant === "interactive" && !disabled
-      ? "min-h-touch min-w-touch hover:brightness-110 cursor-pointer"
+      ? "min-h-touch hover:brightness-105 cursor-pointer"
       : "",
     disabled ? "opacity-60 cursor-not-allowed" : "",
     className ?? "",
@@ -68,7 +67,7 @@ export function StatusBadge({
         className={cls}
       >
         <span aria-hidden="true">{status.icon}</span>
-        <span className="text-fg">{status.label}</span>
+        <span>{status.label}</span>
       </button>
     );
   }
@@ -76,7 +75,7 @@ export function StatusBadge({
   return (
     <span className={cls} aria-label={`Status: ${status.label}`}>
       <span aria-hidden="true">{status.icon}</span>
-      <span className="text-fg">{status.label}</span>
+      <span>{status.label}</span>
     </span>
   );
 }
