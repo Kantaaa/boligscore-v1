@@ -70,5 +70,5 @@
 
 ## 8. Operational
 
-- [ ] 8.1 Document in `docs/architecture/property-images.md` that storage usage should be monitored — at 800 MB used (out of 1 GB free tier), set up an alert via Supabase dashboard.
-- [ ] 8.2 Note that orphaned files (replaced photos that didn't get deleted) should be cleaned up by a future scheduled job; for MVP, no cleanup.
+- [x] 8.1 Document in `docs/architecture/property-images.md` that storage usage should be monitored — at 800 MB used (out of 1 GB free tier), set up an alert via Supabase dashboard.
+- [x] 8.2 Note that orphaned files (replaced photos that didn't get deleted) should be cleaned up by a future scheduled job; for MVP, no cleanup.
