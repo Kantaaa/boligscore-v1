@@ -1,0 +1,76 @@
+<!doctype html>
+<!--
+  SYNTHETIC FIXTURE — modeled after a typical FINN ad page.
+
+  When real anonymized FINN HTML becomes available, replace this file
+  (and `listing-2.html`) with the captured markup. Anonymize phone
+  numbers, agent names, and finnkode IDs first.
+
+  Field coverage in this fixture:
+    - JSON-LD: address (via name), price, image, floorSize (BRA),
+      yearBuilt, category (property type), numberOfBedrooms.
+    - CSS fallback: not exercised here; see listing-2.html.
+-->
+<html lang="nb">
+  <head>
+    <meta charset="utf-8" />
+    <title>Storgata 1, 0182 Oslo — FINN-eiendom</title>
+    <meta property="og:image" content="https://images.finncdn.no/dynamic/example/listing-1.jpg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Storgata 1, 0182 Oslo",
+        "description": "Lys 3-roms leilighet i sentrum.",
+        "image": "https://images.finncdn.no/dynamic/example/listing-1.jpg",
+        "category": "Leilighet",
+        "yearBuilt": 1932,
+        "numberOfBedrooms": 2,
+        "numberOfRooms": 3,
+        "floorSize": {
+          "@type": "QuantitativeValue",
+          "value": 72.5,
+          "unitCode": "MTK"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Storgata 1",
+          "postalCode": "0182",
+          "addressLocality": "Oslo"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": 5250000,
+          "priceCurrency": "NOK",
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": []
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Storgata 1, 0182 Oslo</h1>
+    <section>
+      <dl>
+        <dt>Prisantydning</dt>
+        <dd>5 250 000 kr</dd>
+        <dt>Felleskostnader</dt>
+        <dd>3 200 kr/mnd</dd>
+        <dt>Boligtype</dt>
+        <dd>Leilighet</dd>
+        <dt>Bruksareal</dt>
+        <dd>72,5 m²</dd>
+        <dt>Soverom</dt>
+        <dd>2</dd>
+        <dt>Byggeår</dt>
+        <dd>1932</dd>
+      </dl>
+    </section>
+  </body>
+</html>

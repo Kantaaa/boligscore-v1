@@ -40,11 +40,11 @@
 
 ## 6. Tests
 
-- [ ] 6.1 **Unit (Vitest)**: `validateFinnUrl` — accept valid finn.no, reject other hosts, reject malformed URLs, accept both `finn.no` and `www.finn.no`.
-- [ ] 6.2 **Unit**: `parseFinnHtml` against checked-in fixtures (`tests/fixtures/finn/listing-1.html`, `listing-2.html`). Cover: full extraction, partial extraction, JSON-LD missing → CSS fallback, garbage input.
-- [ ] 6.3 **Unit**: `fetchFinnHtml` mock-fetch with `vi.mock('node:fetch')` (or `undici` mocks). Cover timeout, 404, 5xx, oversized body.
-- [ ] 6.4 **Integration / Route**: `POST /api/properties/parse-finn` — happy path, unauthenticated 401, non-FINN URL 400, fetch failure → `ok: false`.
-- [ ] 6.5 **E2E (Playwright)**: open `/app/bolig/ny` → FINN tab focused → paste URL (mocked via Playwright's `route()` interceptor) → parse → form prefills → save → property visible on `/app`.
+- [x] 6.1 **Unit (Vitest)**: `validateFinnUrl` — accept valid finn.no, reject other hosts, reject malformed URLs, accept both `finn.no` and `www.finn.no`.
+- [x] 6.2 **Unit**: `parseFinnHtml` against checked-in fixtures (`tests/fixtures/finn/listing-1.html`, `listing-2.html`). Cover: full extraction, partial extraction, JSON-LD missing → CSS fallback, garbage input.
+- [x] 6.3 **Unit**: `fetchFinnHtml` mock-fetch with `vi.mock('node:fetch')` (or `undici` mocks). Cover timeout, 404, 5xx, oversized body.
+- [x] 6.4 **Integration / Route**: `POST /api/properties/parse-finn` — happy path, unauthenticated 401, non-FINN URL 400, fetch failure → `ok: false`.
+- [~] 6.5 **E2E (Playwright)**: open `/app/bolig/ny` → FINN tab focused → paste URL (mocked via Playwright's `route()` interceptor) → parse → form prefills → save → property visible on `/app`. (Authored as `test.fixme()` — flips on with the existing Supabase + dev-users harness.)
 
 ## 7. Documentation
 
