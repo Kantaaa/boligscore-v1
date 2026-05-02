@@ -109,7 +109,7 @@ export function RegisterForm({ next }: Props) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+              className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -126,7 +126,7 @@ export function RegisterForm({ next }: Props) {
               minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+              className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <p className="text-xs text-fg-muted">Minst 8 tegn.</p>
           </div>
@@ -145,7 +145,7 @@ export function RegisterForm({ next }: Props) {
           <button
             type="submit"
             disabled={pending}
-            className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+            className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
           >
             {pending ? "Oppretter konto…" : "Opprett konto"}
           </button>
@@ -164,7 +164,7 @@ export function RegisterForm({ next }: Props) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full min-h-touch rounded-md border border-border bg-surface px-3 text-fg"
+              className="w-full min-h-touch rounded-lg bg-surface-muted px-4 text-fg shadow-sm placeholder:text-fg-soft focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -182,7 +182,7 @@ export function RegisterForm({ next }: Props) {
           <button
             type="submit"
             disabled={pending}
-            className="min-h-touch w-full rounded-md bg-primary px-4 text-primary-fg disabled:opacity-60"
+            className="min-h-touch w-full rounded-full bg-primary px-6 font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg disabled:opacity-60"
           >
             {pending ? "Sender…" : "Send innloggingslenke"}
           </button>

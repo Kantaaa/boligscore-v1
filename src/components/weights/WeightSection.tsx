@@ -48,12 +48,12 @@ export function WeightSection({
   return (
     <section
       aria-labelledby={`section-${section.key}`}
-      className="space-y-3 rounded-lg border border-border bg-surface p-4"
+      className="space-y-4 rounded-xl bg-surface p-5 shadow-sm"
     >
       <header className="space-y-1">
         <h2
           id={`section-${section.key}`}
-          className="text-lg font-semibold text-fg"
+          className="font-headline text-xl font-bold text-fg"
         >
           {section.label}
         </h2>

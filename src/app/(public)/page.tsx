@@ -26,13 +26,13 @@ export default async function LandingPage() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-content flex-col px-6 py-10">
       <header className="flex items-center justify-between">
-        <span className="text-base font-semibold tracking-tight text-fg">
+        <span className="font-headline text-xl font-extrabold tracking-tight text-fg">
           Boligscore
         </span>
         {isAuthed ? (
           <Link
             href="/app"
-            className="inline-flex min-h-touch items-center rounded-md border border-border bg-surface px-4 text-sm font-medium text-fg"
+            className="inline-flex min-h-touch items-center rounded-full bg-surface-muted px-4 text-sm font-medium text-fg hover:bg-surface-strong"
           >
             Gå til appen
           </Link>
@@ -47,10 +47,14 @@ export default async function LandingPage() {
       </header>
 
       <section className="mt-16 flex flex-1 flex-col items-start justify-center gap-6 sm:mt-24">
-        <h1 className="text-4xl font-semibold leading-tight text-fg sm:text-5xl">
+        <span className="inline-flex items-center gap-2 rounded-full bg-primary-container px-4 py-1.5 text-sm font-medium text-primary-container-fg">
+          <span aria-hidden>♥</span>
+          For par på boligjakt
+        </span>
+        <h1 className="font-headline text-5xl font-extrabold leading-[1.05] tracking-tight text-fg sm:text-6xl">
           Score boliger sammen.
           <br />
-          <span className="text-fg-muted">Bli enige raskere.</span>
+          <span className="text-primary">Bli enige raskere.</span>
         </h1>
         <p className="max-w-prose text-base text-fg-muted sm:text-lg">
           Boligscore er for deg som leter etter bolig sammen med noen.
@@ -61,13 +65,13 @@ export default async function LandingPage() {
         <div className="mt-2 flex flex-wrap gap-3">
           <Link
             href="/registrer"
-            className="inline-flex min-h-touch items-center rounded-md bg-primary px-6 text-base font-medium text-primary-fg shadow-sm hover:opacity-90"
+            className="inline-flex min-h-touch items-center rounded-full bg-primary px-7 text-base font-semibold text-primary-fg shadow-md transition hover:bg-primary-dim hover:shadow-lg"
           >
             Registrer
           </Link>
           <Link
             href="/logg-inn"
-            className="inline-flex min-h-touch items-center rounded-md border border-border bg-surface px-6 text-base font-medium text-fg hover:bg-surface-raised"
+            className="inline-flex min-h-touch items-center rounded-full bg-surface-muted px-7 text-base font-medium text-fg transition hover:bg-surface-strong"
           >
             Logg inn
           </Link>
@@ -76,7 +80,7 @@ export default async function LandingPage() {
         <HeroIllustration />
       </section>
 
-      <footer className="mt-16 border-t border-border pt-6 text-xs text-fg-muted">
+      <footer className="mt-16 pt-6 text-xs text-fg-muted">
         Vi spør ikke om mer enn nødvendig. Ingen reklame, ingen sporing.
       </footer>
     </main>

@@ -205,9 +205,12 @@ export function VekterClient({
   const referenceMap = view === "personal" ? fellesMap : undefined;
 
   return (
-    <section aria-labelledby="vekter-heading" className="space-y-4">
-      <header className="space-y-1">
-        <h1 id="vekter-heading" className="text-2xl font-semibold">
+    <section aria-labelledby="vekter-heading" className="space-y-6">
+      <header className="space-y-2">
+        <h1
+          id="vekter-heading"
+          className="font-headline text-2xl font-extrabold tracking-tight text-fg"
+        >
           Vekter
         </h1>
         <p className="text-sm text-fg-muted">
@@ -218,7 +221,7 @@ export function VekterClient({
       <div
         role="tablist"
         aria-label="Vis vekter"
-        className="inline-flex w-full rounded-md border border-border bg-surface p-1 sm:w-auto"
+        className="inline-flex w-full rounded-full bg-surface-muted p-1 sm:w-auto"
       >
         <button
           type="button"
@@ -226,9 +229,9 @@ export function VekterClient({
           aria-selected={view === "felles"}
           onClick={() => setView("felles")}
           className={[
-            "min-h-touch flex-1 rounded px-4 py-2 text-sm sm:flex-initial",
+            "min-h-touch flex-1 rounded-full px-4 py-2 text-sm font-medium transition sm:flex-initial",
             view === "felles"
-              ? "bg-primary text-primary-fg"
+              ? "bg-primary text-primary-fg shadow-sm"
               : "text-fg-muted hover:text-fg",
           ].join(" ")}
         >
@@ -240,9 +243,9 @@ export function VekterClient({
           aria-selected={view === "personal"}
           onClick={() => setView("personal")}
           className={[
-            "min-h-touch flex-1 rounded px-4 py-2 text-sm sm:flex-initial",
+            "min-h-touch flex-1 rounded-full px-4 py-2 text-sm font-medium transition sm:flex-initial",
             view === "personal"
-              ? "bg-primary text-primary-fg"
+              ? "bg-primary text-primary-fg shadow-sm"
               : "text-fg-muted hover:text-fg",
           ].join(" ")}
         >
@@ -253,7 +256,7 @@ export function VekterClient({
       {error ? (
         <p
           role="alert"
-          className="rounded-md border border-status-bud-inne/40 bg-status-bud-inne/10 px-3 py-2 text-sm text-fg"
+          className="rounded-md bg-status-bud-inne px-3 py-2 text-sm text-status-bud-inne-fg"
         >
           {error}
         </p>
@@ -281,7 +284,7 @@ export function VekterClient({
           <button
             type="button"
             onClick={() => setResetOpen(true)}
-            className="min-h-touch rounded-md border border-border bg-surface px-4 py-2 text-sm text-fg hover:bg-surface-raised"
+            className="min-h-touch rounded-full bg-surface-muted px-5 py-2 text-sm font-medium text-fg-muted transition hover:bg-surface-strong hover:text-fg"
           >
             Tilbakestill alle til 5
           </button>
@@ -293,7 +296,10 @@ export function VekterClient({
         onClose={() => setResetOpen(false)}
         labelledBy="reset-modal-title"
       >
-        <h2 id="reset-modal-title" className="text-lg font-semibold">
+        <h2
+          id="reset-modal-title"
+          className="font-headline text-xl font-bold text-fg"
+        >
           {view === "felles"
             ? "Tilbakestill felles vekter?"
             : "Tilbakestill mine vekter?"}
@@ -303,18 +309,18 @@ export function VekterClient({
             ? "Dette tilbakestiller VEKTENE FOR HELE HUSHOLDNINGEN til 5 over hele linjen. Alle medlemmer ser endringen."
             : "Dette tilbakestiller dine personlige vekter til 5 over hele linjen. Andre medlemmer ser ikke dette."}
         </p>
-        <div className="mt-4 flex justify-end gap-2">
+        <div className="mt-5 flex justify-end gap-2">
           <button
             type="button"
             onClick={() => setResetOpen(false)}
-            className="min-h-touch rounded-md border border-border bg-surface px-4 py-2 text-sm"
+            className="min-h-touch rounded-full bg-surface-muted px-5 py-2 text-sm font-medium text-fg-muted hover:bg-surface-strong hover:text-fg"
           >
             Avbryt
           </button>
           <button
             type="button"
             onClick={handleConfirmReset}
-            className="min-h-touch rounded-md bg-primary px-4 py-2 text-sm text-primary-fg"
+            className="min-h-touch rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-fg shadow-sm hover:bg-primary-dim"
           >
             Tilbakestill
           </button>

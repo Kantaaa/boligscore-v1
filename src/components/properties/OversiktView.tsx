@@ -72,8 +72,10 @@ export function OversiktView({
 
   return (
     <article className="space-y-6">
-      <header className="space-y-2">
-        <h2 className="text-xl font-semibold">{property.address}</h2>
+      <header className="space-y-3">
+        <h2 className="font-headline text-2xl font-extrabold tracking-tight text-fg">
+          {property.address}
+        </h2>
         <div className="flex flex-wrap items-center gap-2">
           {canEdit ? (
             <StatusBadge
@@ -155,9 +157,11 @@ export function OversiktView({
 
 function Fact({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-border bg-surface-raised px-3 py-2">
-      <dt className="text-xs text-fg-muted">{label}</dt>
-      <dd className="text-sm font-medium text-fg">{value}</dd>
+    <div className="rounded-lg bg-surface px-4 py-3 shadow-sm">
+      <dt className="text-xs uppercase tracking-wide text-fg-muted">
+        {label}
+      </dt>
+      <dd className="mt-0.5 text-sm font-semibold text-fg">{value}</dd>
     </div>
   );
 }
@@ -213,11 +217,11 @@ function DangerZone({
   return (
     <section
       aria-labelledby="property-danger-heading"
-      className="space-y-2 rounded-md border border-status-bud-inne/40 p-3"
+      className="space-y-3 rounded-xl bg-surface p-5 shadow-sm"
     >
       <h3
         id="property-danger-heading"
-        className="text-base font-semibold text-status-bud-inne"
+        className="font-headline text-lg font-bold text-danger"
       >
         Faresone
       </h3>
@@ -231,7 +235,7 @@ function DangerZone({
           setError(null);
           setOpen(true);
         }}
-        className="min-h-touch rounded-md bg-status-bud-inne px-4 text-white"
+        className="min-h-touch rounded-full bg-danger px-5 text-sm font-medium text-danger-fg shadow-sm hover:brightness-110"
       >
         Slett bolig
       </button>
