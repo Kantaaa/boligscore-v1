@@ -17,10 +17,10 @@
 
 ## 2. Image compression library
 
-- [ ] 2.1 Create `src/lib/images/types.ts` exporting `CompressedImage = { blob: Blob; width: number; height: number; bytes: number; mimeType: 'image/jpeg' }`.
-- [ ] 2.2 Create `src/lib/images/compress.ts` exporting `async compressImage(file: File, opts?: { maxDimension?: number; quality?: number }): Promise<CompressedImage>`. Uses `createImageBitmap` → `OffscreenCanvas` (or HTMLCanvasElement fallback) → `canvas.toBlob('image/jpeg', quality)`. Defaults: maxDimension 1920, quality 0.85.
-- [ ] 2.3 Create `src/lib/images/validate.ts` exporting `validateImageFile(file: File): { ok: true } | { ok: false; error: string }`. Checks size ≤ 8 MB and MIME type in the allowlist.
-- [ ] 2.4 Unit tests for both: mock the Image / Canvas APIs (jsdom limitations — may need `@testing-library/jest-dom` or just direct stubbing).
+- [x] 2.1 Create `src/lib/images/types.ts` exporting `CompressedImage = { blob: Blob; width: number; height: number; bytes: number; mimeType: 'image/jpeg' }`.
+- [x] 2.2 Create `src/lib/images/compress.ts` exporting `async compressImage(file: File, opts?: { maxDimension?: number; quality?: number }): Promise<CompressedImage>`. Uses `createImageBitmap` → `OffscreenCanvas` (or HTMLCanvasElement fallback) → `canvas.toBlob('image/jpeg', quality)`. Defaults: maxDimension 1920, quality 0.85.
+- [x] 2.3 Create `src/lib/images/validate.ts` exporting `validateImageFile(file: File): { ok: true } | { ok: false; error: string }`. Checks size ≤ 8 MB and MIME type in the allowlist.
+- [x] 2.4 Unit tests for both: mock the Image / Canvas APIs (jsdom limitations — may need `@testing-library/jest-dom` or just direct stubbing).
 
 ## 3. Server actions
 
