@@ -7,13 +7,13 @@
 
 ## 2. Parser library
 
-- [ ] 2.1 Create `src/lib/finn/types.ts` with `ParsedListing` and `ParseResult` discriminated union.
-- [ ] 2.2 Create `src/lib/finn/parse.ts` exporting `async parseFinnHtml(html: string): Promise<ParsedListing>`. Order:
+- [x] 2.1 Create `src/lib/finn/types.ts` with `ParsedListing` and `ParseResult` discriminated union.
+- [x] 2.2 Create `src/lib/finn/parse.ts` exporting `async parseFinnHtml(html: string): Promise<ParsedListing>`. Order:
    - Try JSON-LD extraction first (look for `<script type="application/ld+json">` containing `@type: "Product"` or `"Place"`/`"RealEstateListing"`).
    - Fall back to CSS selectors for fields not found in JSON-LD.
    - Always return a partial — never throw on missing fields.
-- [ ] 2.3 Create `src/lib/finn/fetch.ts` exporting `async fetchFinnHtml(url: string): Promise<string>` with the 5-second timeout, 200 KB body cap, and the polite `User-Agent`.
-- [ ] 2.4 URL validator helper `validateFinnUrl(input: string): { ok: true; url: URL } | { ok: false; error: string }` enforcing the hostname allowlist (D4). Reject any non-`finn.no` host.
+- [x] 2.3 Create `src/lib/finn/fetch.ts` exporting `async fetchFinnHtml(url: string): Promise<string>` with the 5-second timeout, 200 KB body cap, and the polite `User-Agent`.
+- [x] 2.4 URL validator helper `validateFinnUrl(input: string): { ok: true; url: URL } | { ok: false; error: string }` enforcing the hostname allowlist (D4). Reject any non-`finn.no` host.
 
 ## 3. Route Handler
 
