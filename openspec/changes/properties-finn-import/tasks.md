@@ -17,12 +17,12 @@
 
 ## 3. Route Handler
 
-- [ ] 3.1 Create `src/app/api/properties/parse-finn/route.ts` exporting an async `POST` handler.
-- [ ] 3.2 Auth check via `createSupabaseServerClient()`; 401 if no session.
-- [ ] 3.3 Validate the URL via `validateFinnUrl`; 400 on bad input.
-- [ ] 3.4 Fetch the page via `fetchFinnHtml`; surface fetch errors with Norwegian messages.
-- [ ] 3.5 Parse via `parseFinnHtml`; build the `ParsedListing` response.
-- [ ] 3.6 Return JSON: `{ ok: true, data: ParsedListing }` or `{ ok: false, error: string }`. Never 500 on a parse problem — always a structured `ok: false`.
+- [x] 3.1 Create `src/app/api/properties/parse-finn/route.ts` exporting an async `POST` handler.
+- [x] 3.2 Auth check via `createSupabaseServerClient()`; 401 if no session.
+- [x] 3.3 Validate the URL via `validateFinnUrl`; 400 on bad input.
+- [x] 3.4 Fetch the page via `fetchFinnHtml`; surface fetch errors with Norwegian messages.
+- [x] 3.5 Parse via `parseFinnHtml`; build the `ParsedListing` response.
+- [x] 3.6 Return JSON: `{ ok: true, data: ParsedListing }` or `{ ok: false, error: string }`. Never 500 on a parse problem — always a structured `ok: false`.
 
 ## 4. UI — NyBoligForm tabs
 
