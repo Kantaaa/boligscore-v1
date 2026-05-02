@@ -26,17 +26,17 @@
 
 ## 4. UI — NyBoligForm tabs
 
-- [ ] 4.1 Add a tab strip above the form: `Fra FINN-lenke` (default, focused) | `Manuelt`. Tabs match the existing PropertyTabs style (underline + primary).
-- [ ] 4.2 FINN tab body: URL input (`<input type="url" placeholder="https://www.finn.no/...">`), "Hent fra FINN" submit button, optional `<a>` to "Eller fyll inn manuelt" that switches tabs.
-- [ ] 4.3 Manual tab body: existing form sections, unchanged.
-- [ ] 4.4 Persist tab choice in `useState`, not URL — refreshes reset to FINN default.
+- [x] 4.1 Add a tab strip above the form: `Fra FINN-lenke` (default, focused) | `Manuelt`. Tabs match the existing PropertyTabs style (underline + primary).
+- [x] 4.2 FINN tab body: URL input (`<input type="url" placeholder="https://www.finn.no/...">`), "Hent fra FINN" submit button, optional `<a>` to "Eller fyll inn manuelt" that switches tabs.
+- [x] 4.3 Manual tab body: existing form sections, unchanged.
+- [x] 4.4 Persist tab choice in `useState`, not URL — refreshes reset to FINN default.
 
 ## 5. UI — fetch + prefill flow
 
-- [ ] 5.1 On "Hent fra FINN" click: client POST to `/api/properties/parse-finn` with `{ url }`. Show inline spinner.
-- [ ] 5.2 On success: switch to the Manual tab with form values prefilled from the parsed data. Show a non-blocking info banner: `Hentet {N} felter fra FINN — sjekk og rediger ved behov.`
-- [ ] 5.3 On failure: show an inline error with the server's Norwegian message. The user can retry with a different URL or switch to Manual.
-- [ ] 5.4 On any user edit after prefill: keep the user's edit. Never re-trigger the parser unless the user explicitly clicks "Hent fra FINN" again.
+- [x] 5.1 On "Hent fra FINN" click: client POST to `/api/properties/parse-finn` with `{ url }`. Show inline spinner.
+- [x] 5.2 On success: switch to the Manual tab with form values prefilled from the parsed data. Show a non-blocking info banner: `Hentet {N} felter fra FINN — sjekk og rediger ved behov.`
+- [x] 5.3 On failure: show an inline error with the server's Norwegian message. The user can retry with a different URL or switch to Manual.
+- [x] 5.4 On any user edit after prefill: keep the user's edit. Never re-trigger the parser unless the user explicitly clicks "Hent fra FINN" again.
 
 ## 6. Tests
 
