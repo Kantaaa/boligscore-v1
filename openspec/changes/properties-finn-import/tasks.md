@@ -54,5 +54,5 @@
 
 ## 8. Operational
 
-- [ ] 8.1 Add `cheerio` to `package.json` (already in 1.1 — keep one source).
-- [ ] 8.2 Add a `// TODO(monitoring)` comment in the route handler noting where to add a Sentry/log call when parser extraction count drops below a threshold (e.g. < 3 fields). The actual instrumentation is deferred until we have a logging backend.
+- [x] 8.1 Add `cheerio` to `package.json` (already in 1.1 — keep one source).
+- [x] 8.2 Add a `// TODO(monitoring)` comment in the route handler noting where to add a Sentry/log call when parser extraction count drops below a threshold (e.g. < 3 fields). The actual instrumentation is deferred until we have a logging backend.
