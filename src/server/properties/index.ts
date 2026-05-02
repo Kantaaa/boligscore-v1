@@ -15,3 +15,5 @@ export type { GetPropertyResult } from "./getProperty";
 export { listStatuses } from "./listStatuses";
 export { createStatus } from "./createStatus";
 export { setPropertyStatus } from "./setPropertyStatus";
+export { setPropertyImagePath } from "./setPropertyImagePath";
+export { clearPropertyImage } from "./clearPropertyImage";

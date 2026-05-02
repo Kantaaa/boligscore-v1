@@ -24,17 +24,16 @@
 
 ## 3. Server actions
 
-- [ ] 3.1 `src/server/properties/setPropertyImage.ts`:
-   - Accepts `propertyId: string` + `compressedImage: { bytes: ArrayBuffer | Uint8Array; mimeType: string }` from the client.
-   - Calls `supabase.storage.from('property-images').upload(path, file, { cacheControl: '604800', contentType: 'image/jpeg' })`.
+- [x] 3.1 `src/server/properties/setPropertyImagePath.ts`:
+   - Accepts `propertyId: string` + `path: string` (the Storage object path written by the browser-side direct upload — see implementation guidance, the client uploads via `supabase.storage.from(...).upload(...)` directly so RLS gates the request via the user's session).
    - Updates `properties.image_url = path`.
    - If the property already had a Storage path, best-effort delete the old object.
    - Returns the new path on success.
-- [ ] 3.2 `src/server/properties/clearPropertyImage.ts`:
+- [x] 3.2 `src/server/properties/clearPropertyImage.ts`:
    - Sets `properties.image_url = null`.
    - Best-effort deletes the old Storage object if it was a Storage path (not http://).
-- [ ] 3.3 Cascade-on-delete: extend the existing `deleteProperty` server action to also best-effort delete the Storage object for the property's `image_url` (when it's a Storage path) BEFORE deleting the row. If Storage delete fails, log + proceed with the row delete (non-blocking).
-- [ ] 3.4 `src/lib/properties/imageUrl.ts` exporting `getImageSrc(supabase, imageUrl: string | null): Promise<string | null>` — returns external URL as-is, signs Storage paths with 1h TTL, returns null when input is null.
+- [x] 3.3 Cascade-on-delete: extend the existing `deleteProperty` server action to also best-effort delete the Storage object for the property's `image_url` (when it's a Storage path) BEFORE deleting the row. If Storage delete fails, log + proceed with the row delete (non-blocking).
+- [x] 3.4 `src/lib/properties/imageUrl.ts` exporting `getImageSrc(supabase, imageUrl: string | null): Promise<string | null>` — returns external URL as-is, signs Storage paths with 1h TTL, returns null when input is null. Also `getImageSrcMany()` for bulk-signing on the list page.
 
 ## 4. UI — PropertyImageEditor on Oversikt
 
