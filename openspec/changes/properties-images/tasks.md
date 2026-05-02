@@ -2,17 +2,18 @@
 
 ## 1. Storage bucket + policies
 
-- [ ] 1.1 Migration `supabase/migrations/<ts>_property_images_bucket.sql`. Create the bucket via `INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types) VALUES ('property-images', 'property-images', false, 9000000, ARRAY['image/jpeg','image/png','image/webp','image/heic'])` (idempotent — `ON CONFLICT DO NOTHING`).
-- [ ] 1.2 SECURITY DEFINER helper `public.has_household_role_for_storage_path(path text, roles text[])` that:
+- [x] 1.1 Migration `supabase/migrations/<ts>_property_images_bucket.sql`. Create the bucket via `INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types) VALUES ('property-images', 'property-images', false, 9000000, ARRAY['image/jpeg','image/png','image/webp','image/heic'])` (idempotent — `ON CONFLICT DO NOTHING`).
+- [x] 1.2 SECURITY DEFINER helper `public.has_household_role_for_storage_path(path text, roles text[])` that:
    - Splits the path on `/` to get `[..., 'households', '{hid}', 'properties', '{pid}', '{file}']`.
    - Validates the prefix matches the expected pattern.
    - Calls `has_household_role(hid, roles)` (existing helper).
    - Returns false on any malformed input.
-- [ ] 1.3 Storage policies (insert into `storage.policies` or via `CREATE POLICY ON storage.objects`):
+- [x] 1.3 Storage policies (insert into `storage.policies` or via `CREATE POLICY ON storage.objects`):
    - SELECT: `bucket_id = 'property-images' AND has_household_role_for_storage_path(name, ARRAY['owner','member','viewer'])`.
    - INSERT: same as SELECT but roles = `['owner','member']`.
    - UPDATE: same as INSERT (used for replace flow).
    - DELETE: same as INSERT.
+- [x] 1.4 Extend `get_property_list()` to return `image_url` so `/app` cards can render uploaded images alongside FINN external URLs.
 
 ## 2. Image compression library
 
