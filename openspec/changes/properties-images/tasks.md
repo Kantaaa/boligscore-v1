@@ -56,11 +56,11 @@
 
 ## 6. Tests
 
-- [ ] 6.1 **Unit (Vitest)**: `validateImageFile` — accepts allowed types under 8 MB, rejects oversized, rejects PDF.
-- [ ] 6.2 **Unit**: `compressImage` — mock `createImageBitmap` + `OffscreenCanvas`. Verify maxDimension, quality, output mime.
-- [ ] 6.3 **Unit**: `getImageSrc` — null → null, http URL → returned as-is, Storage path → calls `createSignedUrl`.
-- [ ] 6.4 **Integration (Vitest + Supabase, gated on TEST_SUPABASE_URL)**: Storage policies — owner/member can upload + read, viewer can read but not upload, non-member denied.
-- [ ] 6.5 **E2E (Playwright)**: upload from Oversikt → card renders new image → reload persists → delete → placeholder. `test.fixme()`-marked pending dev-users harness.
+- [x] 6.1 **Unit (Vitest)**: `validateImageFile` — accepts allowed types under 8 MB, rejects oversized, rejects PDF.
+- [x] 6.2 **Unit**: `compressImage` — mock `createImageBitmap` + `OffscreenCanvas`. Verify maxDimension, quality, output mime.
+- [x] 6.3 **Unit**: `getImageSrc` — null → null, http URL → returned as-is, Storage path → calls `createSignedUrl`.
+- [x] 6.4 **Integration (Vitest + Supabase, gated on TEST_SUPABASE_URL)**: Storage policies — owner/member can upload + read, viewer can read but not upload, non-member denied.
+- [x] 6.5 **E2E (Playwright)**: upload from Oversikt → card renders new image → reload persists → delete → placeholder. `test.fixme()`-marked pending dev-users harness.
 
 ## 7. Documentation
 
