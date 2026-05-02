@@ -40,6 +40,8 @@ export interface Property {
   added_by: string;
   created_at: string;
   updated_at: string;
+  /** Primary image URL — populated by the FINN parser when available. */
+  image_url: string | null;
 }
 
 /** Joined row returned by `get_property_list()`. */
@@ -91,6 +93,8 @@ export interface CreatePropertyInput {
   property_type?: string | null;
   floor?: string | null;
   status_id?: string | null;
+  /** Primary image URL — populated by the FINN parser. Optional. */
+  image_url?: string | null;
 }
 
 export type PropertyPatch = Partial<

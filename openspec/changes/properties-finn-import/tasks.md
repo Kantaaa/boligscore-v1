@@ -2,8 +2,8 @@
 
 ## 1. Dependencies + scaffolding
 
-- [ ] 1.1 Add `cheerio` to `package.json` dependencies. Also `@types/cheerio` if not already pulled in transitively.
-- [ ] 1.2 Verify `properties.image_url` column exists (it does — added by `properties` capability stub). If absent, add a small migration.
+- [x] 1.1 Add `cheerio` to `package.json` dependencies. Also `@types/cheerio` if not already pulled in transitively.
+- [x] 1.2 Verify `properties.image_url` column exists (it does — added by `properties` capability stub). If absent, add a small migration.
 
 ## 2. Parser library
 

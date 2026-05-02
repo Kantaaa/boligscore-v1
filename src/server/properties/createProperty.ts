@@ -71,6 +71,7 @@ export async function createProperty(
       floor: input.floor ?? null,
       status_id: statusId,
       added_by: user.id,
+      image_url: input.image_url ?? null,
     })
     .select("id")
     .single<Pick<Property, "id">>();
