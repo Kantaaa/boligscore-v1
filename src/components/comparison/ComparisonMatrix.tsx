@@ -114,6 +114,8 @@ export function ComparisonMatrix({
                 isFullMatrix={isFullMatrix}
                 threshold={threshold}
                 readOnly={readOnly}
+                yourName={yourName}
+                partnerName={partnerName}
                 onSetFelles={(score) => onSetFelles(row.criterion_id, score)}
                 onClearFelles={() => onClearFelles(row.criterion_id)}
               />

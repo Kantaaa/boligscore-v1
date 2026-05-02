@@ -37,7 +37,11 @@ export function ScoreChipRow({
       aria-label={ariaLabel}
       className="-mx-1 flex flex-wrap gap-1 px-1"
     >
-      {Array.from({ length: 11 }, (_, i) => i).map((n) => {
+      {/* Chips 1-10. 0 was removed from the UI per user feedback —
+         "0 / mangler" is rare and the score column accepts null
+         (unscored) for that case. The DB still allows score=0 if ever
+         needed, just not via a chip tap. */}
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
         const selected = score === n;
         return (
           <button

@@ -11,6 +11,10 @@ interface MatrixRowProps {
   isFullMatrix: boolean;
   threshold: number;
   readOnly: boolean;
+  /** Display name for the viewer — used in quick-action labels. */
+  yourName: string;
+  /** Partner display name (null in single-member). */
+  partnerName: string | null;
   onSetFelles: (score: number) => void;
   onClearFelles: () => void;
 }
@@ -33,6 +37,8 @@ export function MatrixRow({
   isFullMatrix,
   threshold,
   readOnly,
+  yourName,
+  partnerName,
   onSetFelles,
   onClearFelles,
 }: MatrixRowProps) {
@@ -83,6 +89,8 @@ export function MatrixRow({
       <FellesCell
         row={row}
         readOnly={readOnly}
+        yourName={yourName}
+        partnerName={partnerName}
         onSetFelles={onSetFelles}
         onClearFelles={onClearFelles}
       />

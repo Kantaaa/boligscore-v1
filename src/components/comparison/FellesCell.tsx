@@ -11,6 +11,10 @@ interface FellesCellProps {
   row: ComparisonRow;
   /** True for viewer — cell is non-interactive. */
   readOnly: boolean;
+  /** Display name for the viewer — used in quick-action label. */
+  yourName: string;
+  /** Partner display name (null in single-member). */
+  partnerName: string | null;
   onSetFelles: (score: number) => void;
   onClearFelles: () => void;
 }
@@ -34,6 +38,8 @@ interface FellesCellProps {
 export function FellesCell({
   row,
   readOnly,
+  yourName,
+  partnerName,
   onSetFelles,
   onClearFelles,
 }: FellesCellProps) {
@@ -110,6 +116,15 @@ export function FellesCell({
           onSelect={handleSelect}
           onDismiss={() => setOpen(false)}
           onClear={showsCommittedFelles ? handleClear : undefined}
+          quickActions={[
+            { label: `Bruk ${yourName} sin`, score: row.your_score },
+            partnerName
+              ? { label: `Bruk ${partnerName} sin`, score: row.partner_score }
+              : { label: "", score: null },
+            row.snitt !== null && row.snitt !== row.your_score && row.snitt !== row.partner_score
+              ? { label: "Bruk snitt", score: row.snitt }
+              : { label: "", score: null },
+          ]}
         />
       ) : null}
     </>

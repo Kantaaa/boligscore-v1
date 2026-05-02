@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from "react";
 
+interface QuickAction {
+  /** Visible label, e.g. "Bruk min" or "Bruk Kanta sin". */
+  label: string;
+  /** Score that fires onSelect when this action is tapped. Null hides the action. */
+  score: number | null;
+}
+
 interface ChipPickerPopoverProps {
   /** Currently-highlighted value in the picker (existing felles or snitt). */
   value: number | null;
@@ -13,6 +20,15 @@ interface ChipPickerPopoverProps {
   ariaLabel: string;
   /** Optional clear button — fires on tap. Hidden when undefined. */
   onClear?: () => void;
+  /**
+   * Optional quick-action shortcuts shown above the chip grid. Each
+   * one calls `onSelect(score)` when tapped. Items with `score === null`
+   * are skipped (e.g. the partner action when the partner hasn't scored
+   * the criterion). User feedback: many couples won't want to negotiate
+   * a felles score — they want to keep one person's score as felles
+   * directly. These shortcuts make that one tap.
+   */
+  quickActions?: QuickAction[];
 }
 
 /**
@@ -33,7 +49,11 @@ export function ChipPickerPopover({
   onDismiss,
   ariaLabel,
   onClear,
+  quickActions,
 }: ChipPickerPopoverProps) {
+  const visibleQuickActions = (quickActions ?? []).filter(
+    (a): a is QuickAction & { score: number } => a.score !== null,
+  );
   const ref = useRef<HTMLDivElement | null>(null);
 
   // Escape + click-outside dismisses without save.
@@ -80,9 +100,26 @@ export function ChipPickerPopover({
         <p className="mb-3 font-headline text-base font-bold text-fg">
           Velg felles score
         </p>
-        {/* 6 chips top, 5 chips bottom */}
-        <div className="grid grid-cols-6 gap-2">
-          {Array.from({ length: 11 }, (_, i) => i).map((n) => {
+
+        {visibleQuickActions.length > 0 ? (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {visibleQuickActions.map((a) => (
+              <button
+                key={a.label}
+                type="button"
+                onClick={() => onSelect(a.score)}
+                className="min-h-touch rounded-full bg-primary-container px-4 text-sm font-medium text-primary-container-fg transition hover:brightness-95"
+              >
+                {a.label} ({a.score})
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Chips 1-10 in 5×2 grid. 0 was removed from the picker per
+           user feedback — same reason as ScoreChipRow. */}
+        <div className="grid grid-cols-5 gap-2">
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
             const selected = value === n;
             return (
               <button

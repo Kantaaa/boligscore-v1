@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { Modal } from "@/components/households/Modal";
+import { TotalscoreStrip } from "@/components/comparison/TotalscoreStrip";
 import { canWrite } from "@/lib/households/roles";
 import type { HouseholdRole } from "@/lib/households/types";
 import type {
@@ -36,6 +37,12 @@ interface OversiktViewProps {
   statuses: PropertyStatus[];
   myRole: HouseholdRole;
   addedByEmail: string | null;
+  /** Totals for the slim Totalscore-strip above the facts. */
+  totals: {
+    fellesTotal: number | null;
+    yourTotal: number | null;
+    memberCount: number;
+  } | null;
 }
 
 export function OversiktView({
@@ -44,6 +51,7 @@ export function OversiktView({
   statuses,
   myRole,
   addedByEmail,
+  totals,
 }: OversiktViewProps) {
   const router = useRouter();
   const canEdit = canWrite(myRole);
@@ -72,6 +80,13 @@ export function OversiktView({
 
   return (
     <article className="space-y-6">
+      {totals ? (
+        <TotalscoreStrip
+          fellesTotal={totals.fellesTotal}
+          yourTotal={totals.yourTotal}
+          memberCount={totals.memberCount}
+        />
+      ) : null}
       <header className="space-y-3">
         <h2 className="font-headline text-2xl font-extrabold tracking-tight text-fg">
           {property.address}

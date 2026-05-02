@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 
+import { TotalscoreStrip } from "@/components/comparison/TotalscoreStrip";
 import { FaktaSection } from "@/components/scoring/FaktaSection";
 import { MinVurderingClient } from "@/components/scoring/MinVurderingClient";
 import type { HouseholdRole } from "@/lib/households/types";
+import { getComparison } from "@/server/comparison";
 import { listMyHouseholds } from "@/server/households/listMyHouseholds";
 import {
   getMyNotes,
@@ -32,13 +34,19 @@ export default async function MinVurderingPage({
   }
   const property = propertyResult.data;
 
-  const [catalogResult, scoresResult, notesResult, householdsResult] =
-    await Promise.all([
-      getCriteria(),
-      getMyScores(params.id),
-      getMyNotes(params.id),
-      listMyHouseholds(),
-    ]);
+  const [
+    catalogResult,
+    scoresResult,
+    notesResult,
+    householdsResult,
+    cmpResult,
+  ] = await Promise.all([
+    getCriteria(),
+    getMyScores(params.id),
+    getMyNotes(params.id),
+    listMyHouseholds(),
+    getComparison(params.id),
+  ]);
 
   if (!catalogResult.ok) {
     return (
@@ -58,8 +66,23 @@ export default async function MinVurderingPage({
   const initialScores = scoresResult.ok ? scoresResult.data : [];
   const initialNotes = notesResult.ok ? notesResult.data : [];
 
+  const totals = cmpResult.ok
+    ? {
+        fellesTotal: cmpResult.data.felles_total,
+        yourTotal: cmpResult.data.your_total,
+        memberCount: cmpResult.data.member_count,
+      }
+    : null;
+
   return (
     <article className="space-y-4">
+      {totals ? (
+        <TotalscoreStrip
+          fellesTotal={totals.fellesTotal}
+          yourTotal={totals.yourTotal}
+          memberCount={totals.memberCount}
+        />
+      ) : null}
       <FaktaSection
         price={property.price}
         bra={property.bra}
