@@ -149,6 +149,23 @@ the household's `Felles` total, and the user's `Din` total. Status is
 an extensible lookup — seven defaults ship as global rows; households
 may add custom statuses via the API.
 
+### Adding a property
+
+`/app/bolig/ny` opens a tabbed form:
+
+- **Fra FINN-lenke** (default) — paste a `https://www.finn.no/...` URL
+  and click "Hent fra FINN". The server fetches the listing, extracts
+  whatever fields it can (address, price, BRA, byggeår, boligtype,
+  primary image), and switches the form to **Manuelt** with the
+  parsed values prefilled. You can edit anything before saving. See
+  `docs/architecture/finn-import.md` for the parser strategy.
+- **Manuelt** — type every field by hand. Used when FINN-import
+  fails, the listing is private, or you're recording a place you
+  found offline.
+
+Either path saves through the same `createProperty` server action and
+lands in `/app/bolig/[id]/oversikt`.
+
 To get demo properties locally, `supabase db reset` runs
 `supabase/seed.sql` which seeds three properties at varied statuses
 (`vurderer`, `på visning`, `favoritt`) for the shared `Alice & Bob`

@@ -48,9 +48,9 @@
 
 ## 7. Documentation
 
-- [ ] 7.1 `docs/architecture/finn-import.md` — JSON-LD-first parser strategy, fixture-based tests, how to capture a new fixture when FINN's HTML changes.
-- [ ] 7.2 Update `properties` proposal `## Out of MVP scope` section: remove the FINN bullet (it's no longer deferred).
-- [ ] 7.3 Update `README.md` "Adding a property" section to mention the FINN paste path.
+- [x] 7.1 `docs/architecture/finn-import.md` — JSON-LD-first parser strategy, fixture-based tests, how to capture a new fixture when FINN's HTML changes.
+- [x] 7.2 Update `properties` proposal `## Out of MVP scope` section: remove the FINN bullet (it's no longer deferred).
+- [x] 7.3 Update `README.md` "Adding a property" section to mention the FINN paste path.
 
 ## 8. Operational
 
