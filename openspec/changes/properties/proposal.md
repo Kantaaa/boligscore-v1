@@ -29,7 +29,7 @@ In v1, adding a property means filling out a manual form. v2 keeps the manual fo
 ## Out of MVP scope (future changes)
 
 - ~~**FINN-import**: paste FINN URL → server-side parse → prefill form.~~ Shipped via the separate `properties-finn-import` capability — see `openspec/changes/properties-finn-import/`.
-- **Image upload**: per-property photo gallery via Supabase Storage. Will be a separate `properties-images` change. MVP shows a placeholder thumbnail.
+- ~~**Image upload**: per-property photo gallery via Supabase Storage.~~ Shipped via the separate `properties-images` capability (single primary image — gallery is a future change). See `openspec/changes/properties-images/`.
 - **Property comments thread** (`Kommentarer` tab content): tab placeholder in MVP, full comments capability later.
 
 ## Capabilities

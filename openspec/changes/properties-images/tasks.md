@@ -64,9 +64,9 @@
 
 ## 7. Documentation
 
-- [ ] 7.1 `docs/architecture/property-images.md`: bucket layout, RLS strategy, fallback chain, compression contract.
-- [ ] 7.2 Update `properties` proposal "Out of MVP scope" section: remove the image-upload bullet (no longer deferred).
-- [ ] 7.3 Update `README.md` "Adding a property" section: mention how to add a photo on Oversikt.
+- [x] 7.1 `docs/architecture/property-images.md`: bucket layout, RLS strategy, fallback chain, compression contract.
+- [x] 7.2 Update `properties` proposal "Out of MVP scope" section: remove the image-upload bullet (no longer deferred).
+- [x] 7.3 Update `README.md` "Adding a property" section: mention how to add a photo on Oversikt.
 
 ## 8. Operational
 
