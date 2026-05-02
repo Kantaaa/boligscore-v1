@@ -55,6 +55,14 @@ export interface PropertyListRow extends Property {
   partner_id: string | null;
   partner_total: number | null;
   your_score_count: number;
+  /**
+   * Resolved image URL for direct rendering. The server action signs
+   * Storage paths and passes external (FINN) URLs through unchanged
+   * before returning. NULL when the row has no image. The raw
+   * `image_url` column remains available for branching on the
+   * value's shape if a caller needs it.
+   */
+  resolved_image_url: string | null;
 }
 
 export type PropertySort = "felles" | "price" | "newest" | "your";

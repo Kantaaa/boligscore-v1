@@ -48,11 +48,11 @@
 
 ## 5. UI — PropertyCard image rendering
 
-- [ ] 5.1 Update `PropertyCard` to render the image when present:
+- [x] 5.1 Update `PropertyCard` to render the image when present:
    - Server-side resolve `getImageSrc` and pass the URL down (server component preferred — fewer roundtrips than client signing per card).
    - Render `<img>` with `loading="lazy"`, `alt={property.address}`, `className="aspect-[16/10] w-full rounded-lg object-cover bg-surface-muted"`.
    - On `onError`: swap to a placeholder div (the existing 🏡 emoji on a primary-container background).
-- [ ] 5.2 Resolve `image_url` on the list-server-component side: extend `listProperties` (or wrap its result) to bulk-sign all the Storage paths in one round (one `createSignedUrls` call instead of N).
+- [x] 5.2 Resolve `image_url` on the list-server-component side: extend `listProperties` (or wrap its result) to bulk-sign all the Storage paths in one round (one `createSignedUrls` call instead of N).
 
 ## 6. Tests
 

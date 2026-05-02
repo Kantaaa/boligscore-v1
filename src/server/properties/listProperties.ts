@@ -1,5 +1,6 @@
 "use server";
 
+import { getImageSrcMany } from "@/lib/properties/imageUrl";
 import type {
   ActionResult,
   ListPropertiesInput,
@@ -17,7 +18,12 @@ import { requireUser } from "./_auth";
  * conditions.
  *
  * Sort persistence (localStorage) is handled client-side per the spec
- * — this action accepts the sort key from the caller.
+ * \u2014 this action accepts the sort key from the caller.
+ *
+ * Image rendering (properties-images, task 5.2): we bulk-sign every
+ * row's Storage path in a single `createSignedUrls` call rather than
+ * issuing N RTTs from the card. External (FINN) URLs pass through
+ * unchanged. The result is exposed on each row as `resolved_image_url`.
  */
 export async function listProperties(
   input: ListPropertiesInput,
@@ -33,7 +39,20 @@ export async function listProperties(
 
   if (error) return err(error.message);
 
-  const rows = (data ?? []) as PropertyListRow[];
+  const rawRows = (data ?? []) as Array<
+    Omit<PropertyListRow, "resolved_image_url">
+  >;
+
+  const resolved = await getImageSrcMany(
+    supabase,
+    rawRows.map((r) => r.image_url),
+  );
+
+  const rows: PropertyListRow[] = rawRows.map((r, i) => ({
+    ...r,
+    resolved_image_url: resolved[i],
+  }));
+
   const filtered = applyFilters(rows, input);
   const sorted = applySort(filtered, input.sort ?? "felles");
   return ok(sorted);
