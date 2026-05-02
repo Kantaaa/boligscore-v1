@@ -37,14 +37,14 @@
 
 ## 4. UI — PropertyImageEditor on Oversikt
 
-- [ ] 4.1 New component `src/components/properties/PropertyImageEditor.tsx`:
+- [x] 4.1 New component `src/components/properties/PropertyImageEditor.tsx`:
    - Renders the current image (signed URL or placeholder).
    - When `canEdit`: drop-zone + click-to-pick file input, accepts only the four allowed MIME types.
-   - On file selection: validate → compress → call `setPropertyImage` server action → on success, refresh.
+   - On file selection: validate → compress → upload via browser-direct `supabase.storage.upload()` → call `setPropertyImagePath` server action → on success, refresh.
    - Progress / spinner state during upload.
    - Delete button when an image exists.
-- [ ] 4.2 Add the editor at the top of `OversiktView`, above the address heading. Render it in viewer mode (read-only image) when role is `viewer`.
-- [ ] 4.3 Pass the resolved signed URL (or external URL) from the server page to the client component, so the initial render doesn't need a roundtrip.
+- [x] 4.2 Add the editor at the top of `OversiktView`, above the address heading. Render it in viewer mode (read-only image) when role is `viewer`.
+- [x] 4.3 Pass the resolved signed URL (or external URL) from the server page to the client component, so the initial render doesn't need a roundtrip.
 
 ## 5. UI — PropertyCard image rendering
 
