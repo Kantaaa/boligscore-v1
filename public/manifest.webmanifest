@@ -9,20 +9,26 @@
   "orientation": "portrait",
   "lang": "nb-NO",
   "dir": "ltr",
-  "theme_color": "#3a6ea5",
-  "background_color": "#f8f6f1",
+  "theme_color": "#4f6c45",
+  "background_color": "#fefcf2",
   "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
