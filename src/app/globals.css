@@ -103,6 +103,15 @@
   --color-border: #4b4b3f;
   --color-border-soft: #37392d;
 
+  /* Shadow overrides — primary-tinted alpha is invisible against the
+   * dark surface ladder (#1c1c16 → #5b5c4f). Switch to plain black with
+   * higher alpha so cards retain elevation in dark mode. */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.32);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.52);
+  --shadow-elevated: 0 20px 40px rgba(0, 0, 0, 0.55);
+  --shadow-bottom-nav: 0 -8px 24px rgba(0, 0, 0, 0.45);
+
   --color-primary: #a3b69a;        /* lighter green for dark bg */
   --color-primary-dim: #8aa481;
   --color-primary-fg: #1c1c16;
