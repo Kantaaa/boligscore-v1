@@ -3,64 +3,139 @@
 @tailwind utilities;
 
 /*
- * Design tokens. Values below are PLACEHOLDERS aligned with the brief
- * (rolig blå primary, varm grå nøytraler, pastell statusfarger).
- * They are pending a Stitch-extraction pass — see `docs/design-tokens.md`
- * and `openspec/changes/navigation-shell/tasks.md` task 2.
+ * Design tokens — extracted from Stitch (Boligscore v2 designs).
+ * Material 3 inspired palette: green primary (#4f6c45), warm-grey surfaces
+ * (#fefcf2), tertiary yellow accent (#686730). Manrope for headlines,
+ * Inter for body. See docs/design-tokens.md for the full mapping.
+ *
+ * Components consume these via semantic Tailwind classes (`bg-surface`,
+ * `text-fg`, `text-primary`, …). Don't reference raw hex anywhere.
  */
 
 :root {
   /* Layout primitives — same in both themes. */
   --bottom-nav-h: 64px;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --font-headline: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: var(--font-body);
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+  --radius-2xl: 1.5rem;  /* 24px */
+  --radius-full: 9999px;
+
+  /* Stitch-tinted shadows (primary-color drop). */
+  --shadow-sm: 0 4px 12px rgba(79, 108, 69, 0.04);
+  --shadow-md: 0 8px 24px rgba(79, 108, 69, 0.08);
+  --shadow-lg: 0 12px 32px rgba(79, 108, 69, 0.16);
+  --shadow-elevated: 0 20px 40px rgba(79, 108, 69, 0.1);
+  --shadow-bottom-nav: 0 -8px 24px rgba(79, 108, 69, 0.08);
 }
 
 :root[data-theme="light"] {
-  /* Surfaces — varm grå (warm grey) neutrals. */
-  --color-bg: #f8f6f1;
-  --color-surface: #ffffff;
-  --color-surface-raised: #fdfcf8;
-  --color-fg: #1c1f1d;
-  --color-fg-muted: #5b605c;
-  --color-border: #e6e2d8;
+  /* Surfaces — Stitch warm-grey neutrals. */
+  --color-bg: #fefcf2;             /* surface / background */
+  --color-surface: #ffffff;        /* surface-container-lowest — cards */
+  --color-surface-raised: #fbfaed; /* surface-container-low — top bars */
+  --color-surface-muted: #f5f4e6;  /* surface-container — section bg */
+  --color-surface-strong: #efefe0; /* surface-container-high — chip bg */
+  --color-surface-stronger: #e9e9d8; /* surface-container-highest */
 
-  /* Brand — rolig blå (calm blue). Decision: blue over green so status-kjopt (green) reads cleanly against it. */
-  --color-primary: #3a6ea5;
+  --color-fg: #37392d;             /* on-surface */
+  --color-fg-muted: #646658;       /* on-surface-variant */
+  --color-fg-soft: #808273;        /* outline */
+  --color-border: #b9baab;         /* outline-variant */
+  --color-border-soft: #e9e9d8;    /* surface-container-highest as subtle divider */
+
+  /* Brand — Stitch green primary. */
+  --color-primary: #4f6c45;
+  --color-primary-dim: #43603a;
   --color-primary-fg: #ffffff;
-  --color-accent: #c8a96a;
+  --color-primary-container: #caecbc;
+  --color-primary-container-fg: #3d5934;
 
-  /* Status — pastel palette (icon + text + color, never color alone). */
-  --color-status-favoritt: #f4d35e;       /* gul */
-  --color-status-vurderer: #8fb4d8;       /* blå */
-  --color-status-paa-visning: #b8a4d4;    /* lilla */
-  --color-status-i-budrunde: #f0a868;     /* oransje */
-  --color-status-bud-inne: #d97c7c;       /* rød */
-  --color-status-kjopt: #88b894;          /* grønn */
-  --color-status-ikke-aktuell: #b8b3a8;   /* grå */
+  /* Secondary (subtler green) */
+  --color-secondary: #5a6953;
+  --color-secondary-container: #d7e8cd;
+  --color-secondary-container-fg: #475641;
+
+  /* Tertiary — yellow-green accent */
+  --color-accent: #686730;
+  --color-accent-container: #f7f4af;
+  --color-accent-container-fg: #5d5c27;
+
+  /* Error — Stitch warm red */
+  --color-danger: #ae4025;
+  --color-danger-fg: #ffffff;
+  --color-danger-container: #fd795a;
+  --color-danger-container-fg: #6e1400;
+
+  /* Status pills — derived from the same M3 palette so they read cohesive. */
+  --color-status-favoritt: #f7f4af;       /* tertiary-container — pale yellow */
+  --color-status-favoritt-fg: #5d5c27;
+  --color-status-vurderer: #efefe0;       /* surface-container-high — neutral */
+  --color-status-vurderer-fg: #37392d;
+  --color-status-paa-visning: #d7e8cd;    /* secondary-container — soft green */
+  --color-status-paa-visning-fg: #475641;
+  --color-status-i-budrunde: #ffd6b3;     /* warm orange-pastel */
+  --color-status-i-budrunde-fg: #5d3a14;
+  --color-status-bud-inne: #fd795a;       /* error-container — strong warning */
+  --color-status-bud-inne-fg: #6e1400;
+  --color-status-kjopt: #caecbc;          /* primary-container — bought = brand */
+  --color-status-kjopt-fg: #2b4623;
+  --color-status-ikke-aktuell: #b9baab;   /* outline-variant — muted grey */
+  --color-status-ikke-aktuell-fg: #37392d;
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #15181a;
-  --color-surface: #1c1f1d;
-  --color-surface-raised: #242826;
-  --color-fg: #ece9e1;
-  --color-fg-muted: #a0a39e;
-  --color-border: #2f3431;
+  /* Stitch dark-mode tokens. */
+  --color-bg: #1c1c16;
+  --color-surface: #262620;
+  --color-surface-raised: #2f2f28;
+  --color-surface-muted: #37392d;
+  --color-surface-strong: #4b4b3f;
+  --color-surface-stronger: #5b5c4f;
 
-  --color-primary: #6fa3d4;
-  --color-primary-fg: #0e1213;
-  --color-accent: #d6b97a;
+  --color-fg: #e5e2d9;
+  --color-fg-muted: #a3a39a;
+  --color-fg-soft: #808273;
+  --color-border: #4b4b3f;
+  --color-border-soft: #37392d;
 
-  --color-status-favoritt: #d4b03e;
-  --color-status-vurderer: #6f95bc;
-  --color-status-paa-visning: #9885b8;
-  --color-status-i-budrunde: #cc8b50;
-  --color-status-bud-inne: #b86060;
-  --color-status-kjopt: #6a9676;
-  --color-status-ikke-aktuell: #8d8a82;
+  --color-primary: #a3b69a;        /* lighter green for dark bg */
+  --color-primary-dim: #8aa481;
+  --color-primary-fg: #1c1c16;
+  --color-primary-container: #2b4623;
+  --color-primary-container-fg: #caecbc;
+
+  --color-secondary: #beceb4;
+  --color-secondary-container: #354330;
+  --color-secondary-container-fg: #d7e8cd;
+
+  --color-accent: #cfcc7a;
+  --color-accent-container: #4b4a16;
+  --color-accent-container-fg: #f7f4af;
+
+  --color-danger: #ff8a73;
+  --color-danger-fg: #5c0e00;
+  --color-danger-container: #791903;
+  --color-danger-container-fg: #ffd6cd;
+
+  --color-status-favoritt: #4b4a16;
+  --color-status-favoritt-fg: #f7f4af;
+  --color-status-vurderer: #4b4b3f;
+  --color-status-vurderer-fg: #e5e2d9;
+  --color-status-paa-visning: #354330;
+  --color-status-paa-visning-fg: #d7e8cd;
+  --color-status-i-budrunde: #5d3a14;
+  --color-status-i-budrunde-fg: #ffd6b3;
+  --color-status-bud-inne: #791903;
+  --color-status-bud-inne-fg: #ffd6cd;
+  --color-status-kjopt: #2b4623;
+  --color-status-kjopt-fg: #caecbc;
+  --color-status-ikke-aktuell: #4b4b3f;
+  --color-status-ikke-aktuell-fg: #b9baab;
 }
 
 /* Visible focus ring for keyboard users on every interactive element. */
@@ -78,4 +153,107 @@ body {
 body {
   background: var(--color-bg);
   color: var(--color-fg);
+  font-family: var(--font-body);
+}
+
+/* Headline class — used for h1/h2/h3 inside content. Components can
+ * apply `font-headline` (Tailwind utility) to swap to Manrope.
+ */
+.font-headline {
+  font-family: var(--font-headline);
+}
+
+/* Hide scrollbars on horizontal-scrolling elements (chip rows, tab bars).
+ * Replicates Stitch's .hide-scrollbar utility. */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/*
+ * Vekter sliders. Native <input type="range"> with custom thumb + track.
+ * Thumb size = 44x44px to satisfy the touch-target floor (conventions.md).
+ * Track is colored with the brand primary up to the current value and
+ * the muted border color past it.
+ */
+.vekter-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  height: 44px;
+  margin: 0;
+}
+
+.vekter-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: var(--color-border-soft);
+  border-radius: 999px;
+}
+
+.vekter-slider::-moz-range-track {
+  height: 6px;
+  background: var(--color-border-soft);
+  border-radius: 999px;
+}
+
+.vekter-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  /* Center on the 6px track within a 44px-tall input. */
+  margin-top: -11px;
+}
+
+.vekter-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 3px solid var(--color-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+}
+
+.vekter-slider:disabled::-webkit-slider-thumb {
+  background: var(--color-fg-muted);
+  cursor: not-allowed;
+}
+
+.vekter-slider:disabled::-moz-range-thumb {
+  background: var(--color-fg-muted);
+  cursor: not-allowed;
+}
+
+/* Saved-flash pulse — used by the "lagret" indicator. */
+@keyframes vekterSavedPulse {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+.vekter-saved {
+  animation: vekterSavedPulse 1200ms ease-out;
 }

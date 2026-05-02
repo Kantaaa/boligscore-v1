@@ -3,14 +3,22 @@ import { expect, test } from "@playwright/test";
 /**
  * Spec: "Bottom navigation"
  *
- * NOTE: All routes under /app require authentication. Until
- * `auth-onboarding` ships the /dev/login form, these scenarios cannot
- * actually reach /app and are marked fixme. The test bodies are written
- * so they unfreeze automatically once the dev-login fixture exists.
+ * NOTE: All routes under /app require authentication. The /dev/login
+ * route now ships (auth-onboarding 7), but these scenarios still need
+ * `alice@test.local` seeded — run `node scripts/seed-dev-users.mjs`
+ * once and then unfreeze.
  */
 
 test.describe("Bottom navigation across /app destinations", () => {
-  test.fixme(true, "Awaits /dev/login from auth-onboarding capability.");
+  test.fixme(
+    true,
+    "Run `node scripts/seed-dev-users.mjs` once, then unfreeze.",
+  );
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/dev/login?as=alice");
+    await page.waitForURL(/\/app/);
+  });
 
   test("active state matches URL across all four destinations", async ({
     page,

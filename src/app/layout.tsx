@@ -1,10 +1,29 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { InstallPromptProvider } from "@/components/pwa/InstallPromptProvider";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 import "./globals.css";
+
+// Stitch design uses Manrope (headlines) + Inter (body) per the
+// extracted token set. CSS variables are bound globally so the
+// fonts are reachable from `font-headline` / `font-body` Tailwind
+// classes anywhere in the tree.
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["500", "700", "800"],
+  variable: "--font-headline",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Boligscore",
@@ -18,8 +37,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8f6f1" },
-    { media: "(prefers-color-scheme: dark)", color: "#1c1f1d" },
+    { media: "(prefers-color-scheme: light)", color: "#fefcf2" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1c16" },
   ],
 };
 
@@ -44,14 +63,19 @@ const themeBootstrap = `
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="nb" data-theme="light" suppressHydrationWarning>
+    <html
+      lang="nb"
+      data-theme="light"
+      className={`${manrope.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           // The bootstrap runs synchronously before paint — see design D4.
           dangerouslySetInnerHTML={{ __html: themeBootstrap }}
         />
       </head>
-      <body className="bg-bg text-fg font-sans antialiased">
+      <body className="bg-bg text-fg font-body antialiased">
         <ThemeProvider>
           <InstallPromptProvider>{children}</InstallPromptProvider>
         </ThemeProvider>
