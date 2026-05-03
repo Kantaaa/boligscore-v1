@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 
 import { OversiktView } from "@/components/properties/OversiktView";
 import type { HouseholdRole } from "@/lib/households/types";
+import { getImageSrc, isExternalImageUrl } from "@/lib/properties/imageUrl";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getComparison } from "@/server/comparison";
 import { getProperty } from "@/server/properties/getProperty";
 import { listMyHouseholds } from "@/server/households/listMyHouseholds";
@@ -46,6 +48,13 @@ export default async function OversiktPage({
       }
     : null;
 
+  // Pre-resolve the image source server-side so the first paint
+  // doesn't need a roundtrip to sign the Storage URL.
+  const supabase = createSupabaseServerClient();
+  const imageSrc = await getImageSrc(supabase, property.image_url);
+  const hasUploadedImage =
+    property.image_url != null && !isExternalImageUrl(property.image_url);
+
   return (
     <OversiktView
       property={property}
@@ -54,6 +63,8 @@ export default async function OversiktPage({
       myRole={myRole}
       addedByEmail={added_by_email}
       totals={totals}
+      imageSrc={imageSrc}
+      hasUploadedImage={hasUploadedImage}
     />
   );
 }

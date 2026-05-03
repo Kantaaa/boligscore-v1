@@ -166,6 +166,19 @@ may add custom statuses via the API.
 Either path saves through the same `createProperty` server action and
 lands in `/app/bolig/[id]/oversikt`.
 
+### Adding a photo
+
+Open a property's **Oversikt** tab — owner and member roles see a
+"Last opp bilde" button (and a drop-zone area) above the address.
+Pick or drop a JPEG / PNG / WebP / HEIC up to 8 MB; the browser
+compresses it to ≤ 1920px on the longest side at JPEG quality 0.85
+before uploading to a private Supabase Storage bucket
+(`property-images`). Replacing keeps the previous file around just
+long enough to swap in the new one, then best-effort deletes it.
+Viewer role sees the image but no edit affordance. See
+`docs/architecture/property-images.md` for the full bucket layout,
+RLS strategy, and operational caveats.
+
 To get demo properties locally, `supabase db reset` runs
 `supabase/seed.sql` which seeds three properties at varied statuses
 (`vurderer`, `på visning`, `favoritt`) for the shared `Alice & Bob`

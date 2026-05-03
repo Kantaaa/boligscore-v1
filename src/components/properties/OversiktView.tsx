@@ -18,6 +18,7 @@ import {
 import { deleteProperty } from "@/server/properties/deleteProperty";
 import { setPropertyStatus } from "@/server/properties/setPropertyStatus";
 
+import { PropertyImageEditor } from "./PropertyImageEditor";
 import { StatusBadge } from "./StatusBadge";
 import { StatusPicker } from "./StatusPicker";
 
@@ -43,6 +44,10 @@ interface OversiktViewProps {
     yourTotal: number | null;
     memberCount: number;
   } | null;
+  /** Pre-resolved image URL (signed Storage URL, external URL, or null). */
+  imageSrc: string | null;
+  /** True when image_url is a Storage path (uploaded by the household). */
+  hasUploadedImage: boolean;
 }
 
 export function OversiktView({
@@ -52,6 +57,8 @@ export function OversiktView({
   myRole,
   addedByEmail,
   totals,
+  imageSrc,
+  hasUploadedImage,
 }: OversiktViewProps) {
   const router = useRouter();
   const canEdit = canWrite(myRole);
@@ -80,6 +87,14 @@ export function OversiktView({
 
   return (
     <article className="space-y-6">
+      <PropertyImageEditor
+        propertyId={property.id}
+        householdId={property.household_id}
+        currentSrc={imageSrc}
+        hasUploadedImage={hasUploadedImage}
+        canEdit={canEdit}
+        address={property.address}
+      />
       {totals ? (
         <TotalscoreStrip
           fellesTotal={totals.fellesTotal}

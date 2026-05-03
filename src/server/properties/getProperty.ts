@@ -35,7 +35,7 @@ export async function getProperty(
       `
       id, household_id, address, finn_link, price, costs, monthly_costs,
       bra, primary_rooms, bedrooms, bathrooms, year_built, property_type,
-      floor, status_id, added_by, created_at, updated_at,
+      floor, status_id, added_by, created_at, updated_at, image_url,
       status:property_statuses!inner(
         id, household_id, label, color, icon, is_terminal, sort_order
       )
