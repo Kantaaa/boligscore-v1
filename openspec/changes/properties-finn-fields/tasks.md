@@ -2,11 +2,11 @@
 
 ## 1. Schema migration
 
-- [ ] 1.1 Create `supabase/migrations/<timestamp>_properties_finn_fields.sql` adding 8 nullable columns: `felleskostnader int`, `omkostninger int`, `fellesgjeld int`, `tomteareal int`, `etasje text`, `energimerke_letter char(1)`, `energimerke_color text`, `finnkode int`.
-- [ ] 1.2 Add CHECK constraints: `energimerke_letter IN ('A','B','C','D','E','F','G')` (allowing null) and `energimerke_color IN ('dark_green','light_green','yellow','orange','red')` (allowing null).
-- [ ] 1.3 Add `etasje` length constraint: `CHECK (etasje IS NULL OR length(etasje) <= 20)`.
-- [ ] 1.4 Add partial unique index: `CREATE UNIQUE INDEX properties_household_finnkode_uniq ON properties (household_id, finnkode) WHERE finnkode IS NOT NULL`.
-- [ ] 1.5 Re-run `supabase db reset` locally; verify migration applies cleanly + seed.sql still loads.
+- [x] 1.1 Create `supabase/migrations/<timestamp>_properties_finn_fields.sql` adding 8 nullable columns: `felleskostnader int`, `omkostninger int`, `fellesgjeld int`, `tomteareal int`, `etasje text`, `energimerke_letter char(1)`, `energimerke_color text`, `finnkode int`.
+- [x] 1.2 Add CHECK constraints: `energimerke_letter IN ('A','B','C','D','E','F','G')` (allowing null) and `energimerke_color IN ('dark_green','light_green','yellow','orange','red')` (allowing null).
+- [x] 1.3 Add `etasje` length constraint: `CHECK (etasje IS NULL OR length(etasje) <= 20)`.
+- [x] 1.4 Add partial unique index: `CREATE UNIQUE INDEX properties_household_finnkode_uniq ON properties (household_id, finnkode) WHERE finnkode IS NOT NULL`.
+- [x] 1.5 Re-run `supabase db reset` locally; verify migration applies cleanly + seed.sql still loads.
 
 ## 2. Types + parser
 
