@@ -19,7 +19,7 @@
 insert into auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, instance_id, aud, role)
 values
     (
-        '00000000-0000-0000-0000-00000000a11ce',
+        '00000000-0000-0000-0000-0000000a11ce',
         'alice@test.local',
         crypt('test1234', gen_salt('bf')),
         now(), now(), now(),
@@ -28,7 +28,7 @@ values
         'authenticated'
     ),
     (
-        '00000000-0000-0000-0000-00000000b0b00',
+        '00000000-0000-0000-0000-0000000b0b00',
         'bob@test.local',
         crypt('test1234', gen_salt('bf')),
         now(), now(), now(),
@@ -45,7 +45,7 @@ values
     (
         '00000000-0000-0000-0000-0000000000A1',
         'Alice & Bob',
-        '00000000-0000-0000-0000-00000000a11ce'
+        '00000000-0000-0000-0000-0000000a11ce'
     )
 on conflict (id) do nothing;
 
@@ -53,12 +53,12 @@ insert into public.household_members (household_id, user_id, role)
 values
     (
         '00000000-0000-0000-0000-0000000000A1',
-        '00000000-0000-0000-0000-00000000a11ce',
+        '00000000-0000-0000-0000-0000000a11ce',
         'owner'
     ),
     (
         '00000000-0000-0000-0000-0000000000A1',
-        '00000000-0000-0000-0000-00000000b0b00',
+        '00000000-0000-0000-0000-0000000b0b00',
         'member'
     )
 on conflict (household_id, user_id) do nothing;
@@ -83,7 +83,7 @@ select
     72, 3, 2, 1, 2010,
     'Leilighet', '4. etasje',
     s.id,
-    '00000000-0000-0000-0000-00000000a11ce'
+    '00000000-0000-0000-0000-0000000a11ce'
 from public.property_statuses s
 where s.household_id is null and s.label = 'vurderer'
 on conflict (id) do nothing;
@@ -102,7 +102,7 @@ select
     98, 4, 3, 2, 1985,
     'Rekkehus', '1. etasje',
     s.id,
-    '00000000-0000-0000-0000-00000000b0b00'
+    '00000000-0000-0000-0000-0000000b0b00'
 from public.property_statuses s
 where s.household_id is null and s.label = 'på visning'
 on conflict (id) do nothing;
@@ -121,7 +121,7 @@ select
     55, 2, 1, 1, 2002,
     'Leilighet', '2. etasje',
     s.id,
-    '00000000-0000-0000-0000-00000000a11ce'
+    '00000000-0000-0000-0000-0000000a11ce'
 from public.property_statuses s
 where s.household_id is null and s.label = 'favoritt'
 on conflict (id) do nothing;
