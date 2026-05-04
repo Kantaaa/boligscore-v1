@@ -10,6 +10,17 @@
  * with an `extracted_fields` array reflecting what was actually found.
  */
 
+/** Allowed energimerke letters. */
+export type EnergimerkeLetter = "A" | "B" | "C" | "D" | "E" | "F" | "G";
+
+/** Allowed energimerke colors (matches the schema CHECK constraint). */
+export type EnergimerkeColor =
+  | "dark_green"
+  | "light_green"
+  | "yellow"
+  | "orange"
+  | "red";
+
 /** Fields the parser tries to populate from a FINN listing. */
 export interface ParsedListing {
   address: string | null;
@@ -23,6 +34,20 @@ export interface ParsedListing {
   year_built: number | null;
   property_type: string | null;
   image_url: string | null;
+  /** Felleskostnader (NOK / month). */
+  felleskostnader: number | null;
+  /** Omkostninger (NOK, one-time). */
+  omkostninger: number | null;
+  /** Fellesgjeld / andel fellesgjeld (NOK). */
+  fellesgjeld: number | null;
+  /** Tomteareal (m²). */
+  tomteareal: number | null;
+  /** Etasje — verbatim text (e.g. "1", "U. etasje", "Loft"); ≤ 20 chars. */
+  etasje: string | null;
+  energimerke_letter: EnergimerkeLetter | null;
+  energimerke_color: EnergimerkeColor | null;
+  /** FINN listing id (numeric), parsed from URL or page text. */
+  finnkode: number | null;
   /** The original FINN URL — echoed back so the client doesn't re-derive. */
   finn_link: string;
   /**
@@ -42,7 +67,15 @@ export type ParsedListingKey =
   | "bathrooms"
   | "year_built"
   | "property_type"
-  | "image_url";
+  | "image_url"
+  | "felleskostnader"
+  | "omkostninger"
+  | "fellesgjeld"
+  | "tomteareal"
+  | "etasje"
+  | "energimerke_letter"
+  | "energimerke_color"
+  | "finnkode";
 
 /** Discriminated union returned by the route handler. */
 export type ParseResult =

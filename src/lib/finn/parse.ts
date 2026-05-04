@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 
+import { extractEnergimerke } from "./extractEnergimerke";
 import type { ParsedListing, ParsedListingKey } from "./types";
 
 /**
@@ -27,6 +28,7 @@ export async function parseFinnHtml(
 ): Promise<ParsedListing> {
   const $ = cheerio.load(html);
   const fromJsonLd = extractFromJsonLd($);
+  const energimerke = extractEnergimerke($);
   const merged: Omit<ParsedListing, "extracted_fields" | "finn_link"> = {
     address: fromJsonLd.address ?? extractAddress($),
     price: fromJsonLd.price ?? extractPrice($),
@@ -37,6 +39,14 @@ export async function parseFinnHtml(
     year_built: fromJsonLd.year_built ?? extractYearBuilt($),
     property_type: fromJsonLd.property_type ?? extractPropertyType($),
     image_url: fromJsonLd.image_url ?? extractImageUrl($),
+    felleskostnader: extractFelleskostnader($),
+    omkostninger: extractOmkostninger($),
+    fellesgjeld: extractFellesgjeld($),
+    tomteareal: extractTomteareal($),
+    etasje: extractEtasje($),
+    energimerke_letter: energimerke.letter,
+    energimerke_color: energimerke.color,
+    finnkode: extractFinnkode($, finnLink),
   };
 
   const extracted_fields = (
@@ -318,6 +328,87 @@ function extractImageUrl($: cheerio.CheerioAPI): string | null {
   // First gallery image, fallback.
   const firstImg = $('img[src^="https://"]').first().attr("src");
   return firstImg ?? null;
+}
+
+// TODO(monitoring): if these label-based extractors return null on a high
+// proportion of FINN imports, FINN may have renamed the labels — log and
+// add the new alias to the relevant `findLabelledValue` candidates.
+
+function extractFelleskostnader($: cheerio.CheerioAPI): number | null {
+  const v = findLabelledValue($, [
+    "Felleskost/mnd.",
+    "Felleskost/mnd",
+    "Felleskostnader",
+    "Felleskost",
+  ]);
+  return v ? parseNorwegianInt(v) : null;
+}
+
+function extractOmkostninger($: cheerio.CheerioAPI): number | null {
+  const v = findLabelledValue($, ["Omkostninger"]);
+  return v ? parseNorwegianInt(v) : null;
+}
+
+function extractFellesgjeld($: cheerio.CheerioAPI): number | null {
+  const v = findLabelledValue($, ["Fellesgjeld", "Andel fellesgjeld"]);
+  return v ? parseNorwegianInt(v) : null;
+}
+
+function extractTomteareal($: cheerio.CheerioAPI): number | null {
+  const v = findLabelledValue($, ["Tomteareal"]);
+  if (!v) return null;
+  // FINN renders "865 m² (eiet)" — parseSquareMeters grabs the leading
+  // numeric chunk and ignores the suffix. Truncate to int per schema.
+  const n = parseSquareMeters(v);
+  return n == null ? null : Math.trunc(n);
+}
+
+function extractEtasje($: cheerio.CheerioAPI): string | null {
+  const v = findLabelledValue($, ["Etasje"]);
+  if (!v) return null;
+  const trimmed = v.trim();
+  if (!trimmed) return null;
+  // Schema CHECK enforces ≤20 chars; truncate defensively so a freak FINN
+  // value never blocks the insert.
+  return trimmed.length > 20 ? trimmed.slice(0, 20) : trimmed;
+}
+
+function extractFinnkode(
+  $: cheerio.CheerioAPI,
+  finnLink: string,
+): number | null {
+  // Strategy 1: parse the URL query string. This is the canonical source
+  // and works even when the page failed to fetch the full body.
+  try {
+    const url = new URL(finnLink);
+    const fromQuery = url.searchParams.get("finnkode");
+    if (fromQuery) {
+      const n = parseInt(fromQuery, 10);
+      if (Number.isFinite(n) && n > 0) return n;
+    }
+  } catch {
+    // fall through to text-based extraction
+  }
+
+  // Strategy 2: the "FINN-kode" label appears in the Annonseinformasjon
+  // section near the bottom of every ad page.
+  const labelled = findLabelledValue($, ["FINN-kode", "Finn-kode", "Finnkode"]);
+  if (labelled) {
+    const n = parseInt(labelled.replace(/[^\d]/g, ""), 10);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+
+  // Strategy 3: scan body text for `finnkode=<digits>` (covers cases
+  // where the label is missing but a finnkode appears elsewhere).
+  const bodyMatch = $("body")
+    .text()
+    .match(/finnkode[=:\s]+(\d{4,})/i);
+  if (bodyMatch) {
+    const n = parseInt(bodyMatch[1]!, 10);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+
+  return null;
 }
 
 /**

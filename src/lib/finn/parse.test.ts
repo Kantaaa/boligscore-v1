@@ -22,7 +22,8 @@ function loadFixture(name: string): string {
   );
 }
 
-const FAKE_URL = "https://www.finn.no/realestate/homes/ad.html?finnkode=1";
+const FAKE_URL =
+  "https://www.finn.no/realestate/homes/ad.html?finnkode=123456789";
 
 describe("parseFinnHtml — JSON-LD extraction", () => {
   it("extracts every field from a well-formed JSON-LD block", async () => {
@@ -56,8 +57,29 @@ describe("parseFinnHtml — JSON-LD extraction", () => {
         "year_built",
         "property_type",
         "image_url",
+        "felleskostnader",
+        "omkostninger",
+        "fellesgjeld",
+        "etasje",
+        "energimerke_letter",
+        "energimerke_color",
+        "finnkode",
       ]),
     );
+  });
+
+  it("extracts the new budget + energi + finnkode fields", async () => {
+    const html = loadFixture("listing-1.html");
+    const r = await parseFinnHtml(html, FAKE_URL);
+
+    expect(r.felleskostnader).toBe(3_200);
+    expect(r.omkostninger).toBe(148_890);
+    expect(r.fellesgjeld).toBe(119_100);
+    expect(r.etasje).toBe("3");
+    expect(r.energimerke_letter).toBe("B");
+    expect(r.energimerke_color).toBe("light_green");
+    // URL takes precedence over the page label, both 123456789 here.
+    expect(r.finnkode).toBe(123_456_789);
   });
 
   it("ignores non-listing JSON-LD blocks (BreadcrumbList, etc.)", async () => {
@@ -86,6 +108,20 @@ describe("parseFinnHtml — CSS-selector fallback", () => {
       "https://images.finncdn.no/dynamic/example/listing-2.jpg",
     );
   });
+
+  it("extracts new fields from a <th>/<td> table", async () => {
+    const html = loadFixture("listing-2.html");
+    const r = await parseFinnHtml(html, FAKE_URL);
+
+    expect(r.omkostninger).toBe(112_000);
+    expect(r.tomteareal).toBe(865);
+    expect(r.etasje).toBe("U. etasje");
+    expect(r.energimerke_letter).toBe("E");
+    expect(r.energimerke_color).toBe("orange");
+    // listing-2 has no Felleskost/Fellesgjeld rows
+    expect(r.felleskostnader).toBeNull();
+    expect(r.fellesgjeld).toBeNull();
+  });
 });
 
 describe("parseFinnHtml — partial extraction", () => {
@@ -104,9 +140,34 @@ describe("parseFinnHtml — partial extraction", () => {
     expect(r.bathrooms).toBeNull();
     expect(r.primary_rooms).toBeNull();
     expect(r.property_type).toBeNull();
+    // New fields are also null when neither label nor energi text is present.
+    expect(r.felleskostnader).toBeNull();
+    expect(r.omkostninger).toBeNull();
+    expect(r.fellesgjeld).toBeNull();
+    expect(r.tomteareal).toBeNull();
+    expect(r.etasje).toBeNull();
+    expect(r.energimerke_letter).toBeNull();
+    expect(r.energimerke_color).toBeNull();
     expect(r.extracted_fields).toEqual(
       expect.arrayContaining(["address", "image_url"]),
     );
+    // finnkode comes from the URL even on a near-empty page.
+    expect(r.finnkode).toBe(123_456_789);
+    expect(r.extracted_fields).toContain("finnkode");
+  });
+
+  it("falls back from URL to page text when finnkode is not in the URL", async () => {
+    const html = loadFixture("listing-1.html");
+    const noQueryUrl = "https://www.finn.no/realestate/homes/ad.html";
+    const r = await parseFinnHtml(html, noQueryUrl);
+    // listing-1 has <dt>FINN-kode</dt><dd>123456789</dd>
+    expect(r.finnkode).toBe(123_456_789);
+  });
+
+  it("returns null finnkode when URL is opaque and page lacks it", async () => {
+    const r = await parseFinnHtml("<html><body></body></html>", "not-a-url");
+    expect(r.finnkode).toBeNull();
+    expect(r.extracted_fields).not.toContain("finnkode");
   });
 });
 
@@ -114,7 +175,8 @@ describe("parseFinnHtml — robustness", () => {
   it("does not throw on garbage input", async () => {
     const r = await parseFinnHtml("not really html", FAKE_URL);
     expect(r.finn_link).toBe(FAKE_URL);
-    expect(r.extracted_fields).toEqual([]);
+    // finnkode is URL-derived, so it survives garbage HTML.
+    expect(r.extracted_fields).toEqual(["finnkode"]);
   });
 
   it("does not throw on malformed JSON-LD", async () => {
@@ -130,7 +192,8 @@ describe("parseFinnHtml — robustness", () => {
 
   it("handles empty html", async () => {
     const r = await parseFinnHtml("", FAKE_URL);
-    expect(r.extracted_fields).toEqual([]);
+    // finnkode is URL-derived, so empty HTML still yields one extracted key.
+    expect(r.extracted_fields).toEqual(["finnkode"]);
     expect(r.finn_link).toBe(FAKE_URL);
   });
 });
