@@ -10,11 +10,11 @@
 
 ## 2. Types + parser
 
-- [ ] 2.1 Extend `src/lib/finn/types.ts` `ParsedListing` with the 8 new fields (all `| null`). Extend `ParsedListingKey` union.
-- [ ] 2.2 Add label-based extractors in `src/lib/finn/parse.ts`: `extractFelleskostnader`, `extractOmkostninger`, `extractFellesgjeld`, `extractTomteareal`, `extractEtasje`. Reuse `findLabelledValue` + Norwegian-int parsing where applicable.
-- [ ] 2.3 New module `src/lib/finn/extractEnergimerke.ts` exporting `(($: cheerio.CheerioAPI) => { letter: 'A'|...|'G'|null, color: <enum>|null })`. Strategy: look for FINN's energy badge by class/data-attr; fall back to scanning text content for "Energimerking: A" patterns.
-- [ ] 2.4 Add `extractFinnkode` — parse the URL query string first; fall back to scanning page for `finnkode=<digits>`.
-- [ ] 2.5 Wire all new extractors into `parseFinnHtml`'s merge pipeline. Add each populated key to `extracted_fields`.
+- [x] 2.1 Extend `src/lib/finn/types.ts` `ParsedListing` with the 8 new fields (all `| null`). Extend `ParsedListingKey` union.
+- [x] 2.2 Add label-based extractors in `src/lib/finn/parse.ts`: `extractFelleskostnader`, `extractOmkostninger`, `extractFellesgjeld`, `extractTomteareal`, `extractEtasje`. Reuse `findLabelledValue` + Norwegian-int parsing where applicable.
+- [x] 2.3 New module `src/lib/finn/extractEnergimerke.ts` exporting `(($: cheerio.CheerioAPI) => { letter: 'A'|...|'G'|null, color: <enum>|null })`. Text-scan strategy: `Energimerking: <letter> - <Norwegian-color>` (real FINN uses Norwegian color words like "Oransje", "Lysegrønn" — module includes a translation table to the schema enum).
+- [x] 2.4 Add `extractFinnkode` — parse the URL query string first; fall back to "FINN-kode" label, then to scanning page for `finnkode=<digits>`.
+- [x] 2.5 Wire all new extractors into `parseFinnHtml`'s merge pipeline. Add each populated key to `extracted_fields`.
 
 ## 3. Dedupe pre-check
 
