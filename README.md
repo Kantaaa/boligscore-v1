@@ -17,44 +17,60 @@ This repository is in the middle of the **v2 rebuild** — see
 
 ## Local development
 
+Everything runs against a local Supabase stack — no hosted project, no
+account, no free-tier project that pauses on you. You need Docker running
+and the [Supabase CLI](https://supabase.com/docs/guides/cli).
+
 ```bash
-# 1. Install deps (npm or pnpm)
 npm install
+cp .env.example .env.local     # already filled in for the local stack
 
-# 2. Copy env template and fill in Supabase project values
-cp .env.example .env.local
-
-# 3. Run the dev server
-npm run dev
-# → http://localhost:3000
+npm run db:start               # boots Postgres + Auth + Storage + Studio
+npm run demo                   # resets the db, seeds demo data, starts dev
 ```
 
-The app expects Supabase to be reachable. For fully local development run
-`supabase start` (Supabase CLI) and point `NEXT_PUBLIC_SUPABASE_URL` /
-`NEXT_PUBLIC_SUPABASE_ANON_KEY` at the local instance. Mailpit, bundled
-with `supabase start`, captures dev emails on its built-in HTTP UI at
-`http://localhost:54324`.
+Then open <http://localhost:3000/dev/login?as=alice> to land in the app as a
+signed-in user with data. `?as=bob` gives you the other member of the same
+household, which is how you see the two-person comparison.
+
+| Service | URL |
+| --- | --- |
+| App | <http://localhost:3000> |
+| Supabase Studio (browse the database) | <http://localhost:54323> |
+| Mailpit (dev emails) | <http://localhost:54324> |
+
+### What the demo data contains
+
+`npm run db:seed` builds household **Ine & Kanta** with alice as owner and bob
+as member, four properties at different statuses, scores from both users with
+deliberate disagreement so the comparison view has something to show, a couple
+of adjusted weights, and one private section note.
+
+Re-run it any time; it deletes and rebuilds the household. `npm run db:reset`
+wipes the whole database back to migrations + `seed.sql` first.
 
 ### Database migrations
 
-SQL migrations live under `supabase/migrations/` (numbered timestamp
-prefix) and a seed file at `supabase/seed.sql` provisions two test
-users. With the Supabase CLI:
+SQL migrations live under `supabase/migrations/` (numbered timestamp prefix)
+and `supabase/seed.sql` provisions the two test users.
 
 ```bash
-supabase start             # boots local Postgres + Mailpit + Studio
-supabase db reset          # applies migrations + seed (destroys local data)
+npm run db:reset          # applies migrations + seed (destroys local data)
 ```
 
-Without the CLI (e.g. against a hosted Supabase project) paste each
-migration into the dashboard SQL Editor in numeric order. Full
-instructions in `supabase/README.md`.
+Without the CLI (e.g. against a hosted project) paste each migration into the
+dashboard SQL Editor in numeric order. Full instructions in
+`supabase/README.md`.
 
 ### Useful scripts
 
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Next.js dev server (port 3000) |
+| `npm run db:start` / `db:stop` | Boot / stop the local Supabase stack |
+| `npm run db:reset` | Re-apply migrations + `seed.sql` (destroys local data) |
+| `npm run db:seed` | Seed the demo household, properties and scores |
+| `npm run demo` | `db:reset` + `db:seed` + `dev` in one go |
 | `npm run build` | Production build (also generates the PWA service worker) |
 | `npm run start` | Run the production build locally |
 | `npm run lint` | ESLint via `next lint` |
