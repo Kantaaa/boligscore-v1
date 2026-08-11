@@ -16,7 +16,17 @@
 -- auth schema enforces additional constraints; in that case, use the
 -- Supabase auth admin API or `supabase auth signUp` instead.
 
-insert into auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, instance_id, aud, role)
+-- The token columns are set to '' rather than left NULL on purpose. GoTrue
+-- scans them into Go strings, and a NULL makes every /admin/users call fail
+-- with `converting NULL to string is unsupported` -- which blocks the seed
+-- scripts and the login flow on a database built from these files.
+insert into auth.users (
+    id, email, encrypted_password, email_confirmed_at, created_at, updated_at,
+    instance_id, aud, role,
+    confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current,
+    phone_change, phone_change_token, reauthentication_token
+)
 values
     (
         '00000000-0000-0000-0000-0000000a11ce',
@@ -25,7 +35,8 @@ values
         now(), now(), now(),
         '00000000-0000-0000-0000-000000000000',
         'authenticated',
-        'authenticated'
+        'authenticated',
+        '', '', '', '', '', '', '', ''
     ),
     (
         '00000000-0000-0000-0000-0000000b0b00',
@@ -34,7 +45,8 @@ values
         now(), now(), now(),
         '00000000-0000-0000-0000-000000000000',
         'authenticated',
-        'authenticated'
+        'authenticated',
+        '', '', '', '', '', '', '', ''
     )
 on conflict (id) do nothing;
 
