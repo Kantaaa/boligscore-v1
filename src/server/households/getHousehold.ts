@@ -8,17 +8,17 @@ import type {
 } from "@/lib/households/types";
 import { err, ok } from "@/lib/households/types";
 
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+
 import { requireUser } from "./_auth";
 
 /**
  * Fetch a single household plus its member list. RLS guarantees the
  * caller is a member; non-members get a "not found" response.
  *
- * Member email lookups go through Supabase's `auth.admin.getUserById`,
- * which requires the service-role key. In local dev (no service-role
- * configured) we fall back to returning `null` emails — the UI shows
- * the user_id then. This trade-off keeps the action functional in
- * environments without a service-role key.
+ * Member email lookups go through Supabase's `auth.admin.getUserById` on a
+ * service-role client. Without the key the emails come back null and the UI
+ * falls back to the user_id, so the action stays functional either way.
  */
 export async function getHousehold(
   id: string,
@@ -45,25 +45,23 @@ export async function getHousehold(
 
   if (mError) return err(mError.message);
 
-  // Best-effort email enrichment. Service-role key is server-only and
-  // optional in dev; if absent, emails are null.
+  // Best-effort email enrichment. Needs the service-role key: `auth.admin`
+  // is an admin API, and the cookie-bound anon client this action otherwise
+  // uses can never satisfy it. When the key is absent the emails stay null
+  // and the UI falls back to the user_id, which keeps this action working in
+  // environments without one.
+  const admin = createSupabaseAdminClient();
+
   const members = await Promise.all(
     (memberRows ?? []).map(async (row) => {
       let email: string | null = null;
-      try {
-        // Cast: auth.admin is only present when the client was built
-        // with a service-role key; the regular cookie-bound client used
-        // here will throw a permission error, which we swallow.
-        const { data } = await (supabase.auth as unknown as {
-          admin: {
-            getUserById(id: string): Promise<{
-              data: { user: { email: string | null } | null };
-            }>;
-          };
-        }).admin.getUserById(row.user_id);
-        email = data?.user?.email ?? null;
-      } catch {
-        email = null;
+      if (admin) {
+        try {
+          const { data } = await admin.auth.admin.getUserById(row.user_id);
+          email = data?.user?.email ?? null;
+        } catch {
+          email = null;
+        }
       }
       return {
         user_id: row.user_id,
